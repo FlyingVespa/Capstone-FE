@@ -20,6 +20,14 @@ import StockList from "./ProfilePage/StockList";
 import Map from "./ProfilePage/Map";
 
 function ProfilePage() {
+  const { API_URL } = process.env.REACT_APP;
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`${API_URL}/business`);
+    } catch (error) {}
+  };
+
   return (
     <div>
       <Jumbotron>
