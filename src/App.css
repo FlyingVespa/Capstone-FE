@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
+}
+.jumbotron {
+  height: 40vh;
+  overflow: hidden;
+  z-index: -1;
+  position: relative;
+}
+
+.header {
+  /* margin: -10vh; */
+  z-index: 2;
+  /* border: 10px solid blue; */
+  background-color: white;
+}
+
+.icon.star {
+  position: absolute;
+  top: 37vh;
+  right: 48vh;
+  cursor: pointer;
+  font-size: 50px;
+  opacity: 0.05;
+}
+
+#open_status {
+  border: solid 2px rgb(99, 150, 23);
+  width: fit-content;
+  padding: 5px;
+  border-radius: 3rem;
+}
+
+#open_status span {
+  font-size: 1.5rem;
+  color: rgb(108, 177, 85);
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.main {
+  margin-top: -10vh;
+  width: 55vw !important;
+}
+
+.featured img {
+  height: 9rem;
+}
+
+.stocklist img {
+  height: 50px;
+}
+
+.Logo {
+  margin-top: -10vh;
+}

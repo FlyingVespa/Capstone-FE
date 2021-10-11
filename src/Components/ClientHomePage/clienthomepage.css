@@ -1,0 +1,23 @@
+.savedStores img,
+.newStores img,
+.popularStores img {
+  height: 70px;
+}
+
+/* --------------------------------SEARCHBAR---------------------------- */
+
+.searchBar {
+  width: 40vw;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.form-control-underlined {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-radius: 0;
+  padding-left: 0;
+  width: 50vh;
+}
