@@ -3,10 +3,18 @@
   font-family: "Poppins", sans-serif;
 }
 .jumbotron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 100%; */
   height: 40vh;
   overflow: hidden;
   z-index: -1;
   position: relative;
+}
+.jumbotron #banner {
+  padding-top: 100px !important;
+  width: 100vw;
 }
 
 .header {

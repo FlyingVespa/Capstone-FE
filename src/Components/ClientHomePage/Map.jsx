@@ -1,6 +1,6 @@
 import React from "react";
 import MapImg from "../../map.jpg";
-import { Container, Jumbotron, Image } from "react-bootstrap";
+import { Jumbotron, Image } from "react-bootstrap";
 
 function Map() {
   return (

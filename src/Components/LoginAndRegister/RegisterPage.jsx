@@ -1,18 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import {
-  StepLabel,
-  Step,
-  Typography,
-  Stepper,
-  Container,
-  Button,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-} from "@mui/material";
+import { Container, Button } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
 import { Col, Row, Image } from "react-bootstrap";
 
@@ -49,7 +37,7 @@ function RegsiterPage({ routerProps }) {
                   </Link>
                 </Button>
               </>
-            ) : urlPath == "/register/business" ? (
+            ) : urlPath === "/register/business" ? (
               <RegBusiness />
             ) : (
               <RegUser />

@@ -69,6 +69,13 @@ const RegBusiness = () => {
       sunday: { trading: true, open: "", closed: "" },
       public: { trading: true, open: "", closed: "" },
     },
+    info: {
+      services: "",
+      bio: "",
+      img_log: "",
+      img_banner: "",
+      img_user: "",
+    },
   });
 
   const handlePasswordChange = ({ target }) => {

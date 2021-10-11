@@ -1,25 +1,16 @@
 import React from "react";
 import { Container, Image, Col, Row } from "react-bootstrap";
-function PopularStores() {
+function PopularStores({ users }) {
   return (
     <Container className="popularStores">
       <p>Popular Stores</p>
       <Row>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
+        {users.map((user) => (
+          <Col>
+            <Image src={user.info.img_logo} />
+            <p>{user.basic.name}</p>
+          </Col>
+        ))}
       </Row>
     </Container>
   );

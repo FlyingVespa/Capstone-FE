@@ -1,0 +1,56 @@
+/* stocklist.container > div > div:nth-child(1) */
+.stock-item-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+  margin: 5px !important;
+}
+
+.stock-item-img {
+  position: relative;
+  object-fit: cover;
+  width: 200px;
+  opacity: 1;
+  transition: 0.5s ease;
+  cursor: pointer;
+  backface-visibility: hidden;
+}
+
+.stock-item-overlay {
+  opacity: 0;
+  position: absolute;
+  top: 50px;
+  text-align: center;
+  height: 100%;
+}
+
+.stock-item-container:hover .stock-item-img {
+  transition-timing-function: ease-in;
+  transition: 0.3s;
+  opacity: 0.2;
+}
+
+.stock-item-container:hover .stock-item-overlay {
+  opacity: 1;
+  background: rgb(40, 121, 94);
+  width: 100%;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  transition: 0.5s;
+  top: 0;
+  left: 0;
+}
+
+.stock-item {
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  transition: 0.5s;
+  width: 100%;
+  height: 100%;
+}

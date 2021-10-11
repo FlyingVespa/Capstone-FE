@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Navbar, Button, FormControl } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 
 export class Success extends Component {
   continue = (e) => {
