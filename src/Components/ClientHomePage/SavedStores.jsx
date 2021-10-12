@@ -3,10 +3,6 @@ import { Container, Image, Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
-
-function SavedStores({ user }) {
-  const [selected, setSelected] = useState("");
-
 function SavedStores({ user }) {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState("");
@@ -31,14 +27,6 @@ function SavedStores({ user }) {
       <Row>
         {user.map((a) => (
           <Col>
-
-            <Image
-              id="newstore"
-              src={a.info.img_user}
-              value={a.basic.name}
-              onClick={(e) => setSelected(e.target.value)}
-            />
-
             <Link to={`/business/${a._id}`}>
               <Image
                 id="newstore"
@@ -47,7 +35,6 @@ function SavedStores({ user }) {
                 onClick={handleSelect}
               />
             </Link>
-
           </Col>
         ))}
       </Row>
