@@ -32,7 +32,7 @@ function LandingPage({ props }) {
 
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [usersData, loading]);
 
   const ss = Object.keys(usersData);
   return (
