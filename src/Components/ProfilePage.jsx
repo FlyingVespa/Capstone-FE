@@ -20,7 +20,11 @@ import Map from "./ProfilePage/Map";
 // import {REACT_APP_API_URL, REACT_APP_MONGO_DB} from "../env"
 // import { getUserData } from "./crud.js";
 
-function ProfilePage() {
+const ProfilePage = (props) => {
+  const userId = props.match.params.userId;
+
+  const [currentUser, setCurrentUser] = useState({});
+  const [profileData, setProfileData] = useState({});
   const [userData, setUserData] = useState({
     contact: {
       email: "",
@@ -65,7 +69,6 @@ function ProfilePage() {
     },
   });
   const URL = process.env.REACT_APP_API_URL;
-  const userId = "61645fad49cf4d66fec719e1";
 
   const getUserData = async () => {
     try {
@@ -133,6 +136,6 @@ function ProfilePage() {
       </Container>
     </div>
   );
-}
+};
 
 export default ProfilePage;

@@ -21,3 +21,18 @@
   padding-left: 0;
   width: 50vh;
 }
+
+/* --------------------------------------- home page */
+
+.container.homepage .jumbotron {
+  /* border: 5px violet solid; */
+  text-align: center;
+}
+
+.homepage-map image {
+  border: violet 5px solid;
+}
+
+#newstore {
+  border: solid orange 5px;
+}

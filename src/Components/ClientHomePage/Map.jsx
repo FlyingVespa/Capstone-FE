@@ -4,7 +4,7 @@ import { Jumbotron, Image } from "react-bootstrap";
 
 function Map() {
   return (
-    <Jumbotron>
+    <Jumbotron className="homepage-map">
       <Image src={MapImg} />
     </Jumbotron>
   );
