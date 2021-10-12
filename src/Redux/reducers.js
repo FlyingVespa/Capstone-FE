@@ -36,11 +36,17 @@ const initialState = {
       serviceArea: [],
     },
   },
+  selected: null,
 };
 
 export const appReducer = (state = initialState, action) => {
   console.log(action);
   switch (action.type) {
+    case "SELECT_BUSINESS":
+      return {
+        ...state,
+        selected: action.payload,
+      };
     // case "REG_FORM_BUSSINESS":
     //   return { ...state, formBusiness: action.payload };
     case "REG_BUSINESS_FIELD":
