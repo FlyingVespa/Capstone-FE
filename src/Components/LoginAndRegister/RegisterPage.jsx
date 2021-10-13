@@ -7,7 +7,6 @@ import { Col, Row, Image } from "react-bootstrap";
 import reg from "../../Reg.png";
 
 import RegBusiness from "./RegBusiness";
-import RegUser from "./RegUser";
 
 function RegsiterPage({ routerProps }) {
   const { match, location, history } = routerProps;
@@ -22,26 +21,20 @@ function RegsiterPage({ routerProps }) {
             <Image src={reg} style={{ width: "100%" }} />
           </Col>
           <Col md={7}>
-            {urlPath === "/register" ? (
-              <>
-                <h1>Regsiter</h1>
-                <div>You are now at {urlPath}</div>
-                <Button>
-                  <Link to="/register/business" exact replace>
-                    Register Business
-                  </Link>
-                </Button>
-                <Button>
-                  <Link to="/register/user" exact replace>
-                    Register UserAcc
-                  </Link>
-                </Button>
-              </>
-            ) : urlPath === "/register/business" ? (
-              <RegBusiness />
-            ) : (
-              <RegUser />
-            )}
+            <h1>Regsiter</h1>
+            <div>You are now at {urlPath}</div>
+            <Button>
+              <Link to="/register/business" exact replace>
+                Register Business
+              </Link>
+            </Button>
+            <Button>
+              <Link to="/register/user" exact replace>
+                Register UserAcc
+              </Link>
+            </Button>
+
+            <RegBusiness />
           </Col>
         </Row>
       </Container>

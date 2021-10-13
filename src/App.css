@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* width: 100%; */
   height: 40vh;
   overflow: hidden;
   z-index: -1;
@@ -13,18 +12,13 @@
 .jumbotron #banner,
 #map {
   padding-top: 100px !important;
-  width: 100vw;
 }
-#root > div > div.container > div.homepage-map.jumbotron {
-  /* padding-top: 100px !important; */
-  /* width: 100vw; */
+.container > div.homepage-map.jumbotron {
   overflow: hidden;
   height: 400px;
 }
 .header {
-  /* margin: -10vh; */
   z-index: 2;
-  /* border: 10px solid blue; */
   background-color: white;
 }
 
@@ -53,7 +47,7 @@
 
 .main {
   margin-top: -10vh;
-  width: 55vw !important;
+  width: 55vw;
 }
 
 .featured img {
@@ -121,9 +115,6 @@ footer a {
   text-decoration: none !important;
   z-index: 9;
 }
-#root {
-  background-color: #94ce89;
-}
 
 .homepage .shop,
 .spend,
@@ -133,16 +124,13 @@ footer a {
 }
 
 .landing_page {
-  height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 80px, 80px !important;
   /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
 }
-#landing_page {
-  margin: 80px !important;
-}
+
 #landing_page .row {
   margin: 150px !important;
 }
@@ -199,4 +187,37 @@ footer a {
   top: 10%;
   height: 80%;
   z-index: 1;
+}
+
+.navbar-top {
+  height: 70px;
+  background-color: #94ce89;
+  transition: 0.6s;
+  transition: ease-in-out;
+}
+.navbar-top:hover {
+  background-color: #ffffff;
+  -webkit-transition: background-color 0.3s ease-out;
+  -moz-transition: background-color 0.3s ease-out;
+  -o-transition: background-color 0.3s ease-out;
+  transition: background-color 0.3s ease-out;
+}
+
+.landing_page.container {
+  background-color: #94ce89;
+}
+/* NAVBAR--------------------------------------- */
+.navbar-brand {
+  width: 400px;
+  align-items: center;
+  display: flex;
+}
+.navbar_icon {
+  padding: 7px !important;
+  background-color: #ffffff;
+  margin: 15px;
+  /* border: hotpink 2px solid; */
+}
+.navbar:hover .navbar_icon {
+  background-color: #6ac77d;
 }

@@ -18,6 +18,8 @@ import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
 import Map from "./ProfilePage/Map";
+
+import MapImg from "../map.jpg";
 // import {REACT_APP_API_URL, REACT_APP_MONGO_DB} from "../env"
 // import { getUserData } from "./crud.js";
 
@@ -143,7 +145,7 @@ const ProfilePage = (props) => {
             <StockList promo={userData.info} />
             <Button>Create Shopping List</Button>
             <hr className="" id="location" />
-            <Map id="location" alt="map" loc={userData.location} />
+            <Image className="profile-map" src={MapImg} />
           </Container>
         </>
       )}

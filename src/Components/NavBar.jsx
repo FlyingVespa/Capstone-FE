@@ -1,36 +1,46 @@
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { animated, useTransition } from "react-spring";
+import { Button, Avatar } from "@mui/material";
 import { useState } from "react";
+import logo from "../shop.png";
 
 function NavBar() {
   const select = useSelector((s) => s.selected);
 
   // 6164515b5ab82a5ed833de3a
   return (
-    <Navbar bg="transparent" expand="lg">
+    <Navbar className="navbar-top" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">BuyLocal.online</Navbar.Brand>
+        <Navbar.Brand href="#home" style={{ fontWeight: "700" }}>
+          <Avatar className="navbar_icon" src={logo} />
+          BuyLocal.online
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href={`/business/${select}`}>profile</Nav.Link>
+            <Nav.Link href={`/business/${select}`}>Technologies Used</Nav.Link>
             <Nav.Link href="/register">regsiter</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
           </Nav>
           <Nav>
-            npm <Nav.Link>Sign Out</Nav.Link>
+            <Button
+              className="mx-2"
+              variant="contained"
+              color="success"
+              variant="outlined"
+              size="medium"
+            >
+              Login
+            </Button>
+            <Button
+              href="/register"
+              className="mx-2"
+              variant="contained"
+              color="success"
+              size="medium"
+            >
+              Sign Up Free
+            </Button>
           </Nav>
         </Navbar.Collapse>
       </Container>

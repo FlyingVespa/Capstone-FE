@@ -79,7 +79,7 @@ const RegBusiness = () => {
   });
 
   const handlePasswordChange = ({ target }) => {
-    setData({ ...datas, [target.id]: target.value });
+    // setData({ ...datas, [target.id]: target.value });
     // setData({
     //   ...datas,
     //   [target.id]: { ...datas[target.id], [target.name]: values.password },
