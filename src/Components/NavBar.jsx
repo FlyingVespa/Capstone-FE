@@ -8,7 +8,7 @@ function NavBar() {
 
   // 6164515b5ab82a5ed833de3a
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="transparent" expand="lg">
       <Container>
         <Navbar.Brand href="#home">BuyLocal.online</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

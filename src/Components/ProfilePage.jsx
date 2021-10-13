@@ -104,7 +104,7 @@ const ProfilePage = (props) => {
         </Spinner>
       ) : (
         <>
-          <Jumbotron>
+          <Jumbotron className="profile_page">
             <Image src={userData.info.img_logo || fishshop} id="banner" />
           </Jumbotron>
           <Container className="main mb-5">

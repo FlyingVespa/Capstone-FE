@@ -10,6 +10,7 @@ import ProfilePage from "./Components/ProfilePage";
 import LandingPage from "./Components/LandingPage";
 import NavBar from "./Components/NavBar";
 import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
+import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
 
 function App() {
@@ -19,11 +20,16 @@ function App() {
         <NavBar />
         <Router>
           <Route path="/" exact component={LandingPage} />
-
+          <Route
+            path="/business"
+            exact
+            render={(routeProps) => <HomePage {...routeProps} />}
+          ></Route>
           <Route
             path="/business/:userId"
             render={(routeProps) => <ProfilePage {...routeProps} />}
           ></Route>
+
           <Route
             path="/register"
             render={(routerProps) => <RegisterPage routerProps={routerProps} />}
@@ -36,3 +42,7 @@ function App() {
 }
 
 export default App;
+
+{
+  /* <img src="https://www.clipartmax.com/png/small/252-2520950_shop-local-icon.png" alt="Shop Local - Icon @clipartmax.com"></img> */
+}

@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
-* {
-  font-family: "Poppins", sans-serif;
-}
-.jumbotron {
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@600&family=Work+Sans:wght@700&display=swap");
+.profile_page.jumbotron {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,9 +64,9 @@
 /* FOOTER */
 
 footer {
+  margin-top: 80px;
   background: #eff2f9;
-  padding: 80px 0px;
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 50px 0px;
 }
 footer .footer-logo h2 {
   color: #333;
@@ -110,8 +108,75 @@ footer ul li a:hover:after {
 footer h6 {
   margin: 0px 0px 40px;
   font-weight: 600;
+  z-index: 9 !important;
 }
 
-a {
+footer a {
   text-decoration: none !important;
+  z-index: 9;
+}
+#root {
+  background-color: #94ce89;
+}
+
+.homepage .shop,
+.spend,
+.eat,
+.enjoy {
+  font-size: 50px;
+}
+
+.landing_page {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px, 80px !important;
+  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
+}
+#landing_page {
+  margin: 80px !important;
+}
+#landing_page .row {
+  margin: 150px !important;
+}
+
+.landing_page img {
+  width: 100%;
+}
+.landing_page > div:first-of-type {
+  border: red solid 4px;
+}
+.landing_page h1 {
+  font-family: "Work Sans", sans-serif;
+  color: #fff;
+  font-size: 100px;
+  position: relative;
+  margin-bottom: 30px;
+}
+.landing_page p:first-of-type {
+  text-align: end;
+}
+
+.landing_page > .row > .col p:nth-child(2) {
+  text-transform: uppercase;
+  font-size: 20px;
+}
+.landing_page > .row > .col p:nth-child(3) {
+  font-size: 18px;
+}
+
+.btn-explore {
+  margin: 30px 0;
+  border: #fff solid 5px;
+  padding: 10px;
+  width: fit-content;
+}
+
+#landing_background {
+  transform: rotate(-10deg);
+  position: absolute;
+  right: 0;
+  height: 80%;
+  z-index: 1;
 }
