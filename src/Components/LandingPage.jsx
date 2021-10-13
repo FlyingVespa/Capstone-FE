@@ -26,36 +26,28 @@ function LandingPage({ props }) {
   const ss = Object.keys(usersData);
   return (
     <>
-      <Image src={shopping} id="landing_background" />
       <Container className="landing_page" id="landing_page">
+        <Image src={shopping} id="landing_background" />
+
         <Row>
           <div>
-            <h1>Buy Local</h1>
-            <p className="m-0 p-0">.online</p>
+            <h1 className="m-0 p-0">Buy Local</h1>
           </div>
-        </Row>
-        <Row>
           <Col>
+            <p className="m-0 p-0">.online</p>
             <p>It takes you to start the trend</p>
             <p>
               Support the local businesses who support the area where you live,
               work and play
             </p>
             <div className="btn-explore">
-              <Button variant="light">List Your Business For Free</Button>
+              <Button href="/business" variant="light">
+                List Your Business For Free
+              </Button>
             </div>
-            <p>start exploring listed businesses</p>
+            <p>Start exploring listed businesses >> </p>
           </Col>
-          <Col className="m-2">
-            <Col className="m-3">
-              {/* <FormControl></FormControl>
-              <FormControl></FormControl>
-              <Button>Login</Button>
-            </Col>
-            <Col className="m-3">
-              <Button>Add your Business</Button> */}
-            </Col>
-          </Col>
+          <Col className="m-2"></Col>
         </Row>
       </Container>
     </>
