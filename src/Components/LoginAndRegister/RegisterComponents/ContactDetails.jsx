@@ -1,7 +1,6 @@
 import { StayCurrentLandscape } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { Col, Row, Navbar, Button, FormControl } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
 const ContactDetails = ({ d, f }) => {

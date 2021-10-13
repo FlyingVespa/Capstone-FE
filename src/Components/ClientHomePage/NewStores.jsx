@@ -1,28 +1,11 @@
 import React from "react";
 import { Container, Image, Col, Row } from "react-bootstrap";
 
-function NewStores() {
+function NewStores({ user }) {
   return (
-    <Container className="newStores">
-      <p>New Stores</p>
-      <Row>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-        <Col>
-          <Image src="./logo192.png" />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Image id="newstore" src={user?.info.img_user} />
+    </>
   );
 }
 

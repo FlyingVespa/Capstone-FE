@@ -21,3 +21,56 @@
   padding-left: 0;
   width: 50vh;
 }
+
+/* --------------------------------------- home page */
+
+.container.homepage .jumbotron {
+  /* border: 5px violet solid; */
+  text-align: center;
+}
+
+.homepage-map image {
+  border: violet 5px solid;
+}
+
+#newstore {
+  border: solid orange 5px;
+}
+
+/* ----------------------------- */
+
+.savedStores img {
+  border: 7px rgb(255, 255, 255) solid;
+  width: 100px;
+  height: 100px;
+}
+
+/* CArousel */
+.carousel-item {
+  width: 100%;
+  padding-left: 140px;
+  padding-right: 140px;
+}
+
+.carousel-control-next span {
+  color: rgb(0, 0, 0) !important;
+  visibility: hidden;
+}
+.carousel-control-next-icon {
+  visibility: visible !important;
+}
+.carousel-control-prev-icon {
+  visibility: visible !important;
+  font-weight: ;
+}
+.carousel-control-prev {
+  color: red !important;
+  visibility: hidden;
+}
+.carousel-item p {
+  padding-top: 10px;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+}

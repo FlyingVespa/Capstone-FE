@@ -2,7 +2,7 @@ import React from "react";
 import { Image, Container, Row, Col } from "react-bootstrap";
 import { TiBookmark } from "react-icons/ti";
 
-function Featured() {
+function Featured({ promo }) {
   return (
     <Container className=" featured m-1 -p1 mx-auto">
       <p>
@@ -11,22 +11,22 @@ function Featured() {
       <Container>
         <Row>
           <Col lg={2} md={4} xs={6} className="m-0 p-0">
-            <Image src="./logo512.png" />
+            <Image src={promo.img_logo} />
           </Col>
           <Col lg={2} md={4} xs={6} className="m-0 p-0">
-            <Image src="./logo512.png" />
+            <Image src={promo.img_banner} />
           </Col>
           <Col lg={2} md={4} xs={6} className="m-0 p-0">
-            <Image src="./logo512.png" />
+            <Image src={promo.img_user} />
           </Col>
           <Col lg={2} md={4} xs={6} className="m-0 p-0">
-            <Image src="./logo512.png" />
+            <Image src={promo.img_banner} />
           </Col>
           <Col lg={2} md={4} xs={6} className="m-0 p-0">
-            <Image src="./logo512.png" />
+            <Image src={promo.img_user} />
           </Col>
           <Col lg={2} md={4} xs={6} className="m-0 p-0">
-            <Image src="./logo512.png" />
+            <Image src={promo.img_logo} />
           </Col>
         </Row>
       </Container>

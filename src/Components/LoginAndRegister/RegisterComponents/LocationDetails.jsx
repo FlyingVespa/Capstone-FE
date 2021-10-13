@@ -1,17 +1,6 @@
 import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import {
-  Autocomplete,
-  TextField,
-  FormControl,
-  MenuItem,
-  InputLabel,
-  OutlinedInput,
-  Select,
-  Chip,
-  Box,
-  Checkbox,
-} from "@mui/material";
+
 import countrylist from "../../../json/countries.json";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";

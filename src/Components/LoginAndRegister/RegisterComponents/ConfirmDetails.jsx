@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Navbar, Button } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 const ConfirmDetails = ({ d }) => {

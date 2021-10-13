@@ -1,8 +1,11 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Form, Container } from "react-bootstrap";
 import { IoSearch } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
-function SearchBar() {
+function SearchBar({ users }) {
+  const [query, setQuery] = useState({});
+
   return (
     <Container className="searchBar">
       <Form action="">
@@ -26,6 +29,31 @@ function SearchBar() {
           </div>
         </div>
       </Form>
+
+      {users &&
+        users
+          .filter((user) =>
+            (user.name + user.surname)
+              .toLowerCase()
+              .includes(query.toLowerCase())
+          )
+          .map((user) => (
+            <Link to={`/business/${user._id}`}>
+              <div className={`d-flex align-items-center `}>
+                <img
+                  src={user.info.img_user}
+                  onError={(e) =>
+                    (e.target.src =
+                      "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png")
+                  }
+                  alt=""
+                />
+                <div>
+                  {user.basic.name} {user.locaion.city}
+                </div>
+              </div>
+            </Link>
+          ))}
     </Container>
   );
 }

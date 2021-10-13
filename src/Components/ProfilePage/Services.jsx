@@ -1,10 +1,9 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
 
-import { IoMdInformationCircleOutline } from "react-icons/io";
 import { FiTool } from "react-icons/fi";
 
-function Services() {
+function Services({ services }) {
   return (
     <Container className="m-1 -p1">
       <p>
@@ -13,6 +12,13 @@ function Services() {
       <Container>
         <Row>
           <ul>
+            {services.map((item) => {
+              return (
+                <li>
+                  <p>{item}</p>
+                </li>
+              );
+            })}
             <li>Birthday parties</li>
             <li>Birthday parties</li>
             <li>Birthday parties</li>
