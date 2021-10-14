@@ -7,6 +7,7 @@ import Map from "./ClientHomePage/Map";
 
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
+
 function HomePage({ props }) {
   const URL = process.env.REACT_APP_API_URL;
   const [usersData, setUsersData] = useState([]);

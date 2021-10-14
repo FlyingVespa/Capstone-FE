@@ -13,7 +13,7 @@ const TradingHoursDetails = ({ d, f, days, key, c }) => {
   const inputLProps = { shrink: true };
   const inputProps = { step: 300 };
   return (
-    <div>
+    <div className="tradinghours-details">
       <FormControl component="fieldset" variant="standard">
         <FormLabel component="legend">Trading Days Open/Closed</FormLabel>
         <FormGroup>
@@ -21,8 +21,8 @@ const TradingHoursDetails = ({ d, f, days, key, c }) => {
             <Row>
               <Col xs={4}>
                 <FormControlLabel
+                  id="trading-day"
                   label={day}
-                  // id="trading"
                   control={
                     <Checkbox
                       id="trading"
@@ -41,8 +41,8 @@ const TradingHoursDetails = ({ d, f, days, key, c }) => {
                 </Col>
               ) : (
                 <Col xs={7}>
-                  <Row>
-                    <Col xs={5}>
+                  <Row className="time-row">
+                    <Col xs={5} className="">
                       <TextField
                         name={day}
                         variant="standard"
@@ -52,12 +52,11 @@ const TradingHoursDetails = ({ d, f, days, key, c }) => {
                         value={d[day].open}
                         InputLabelProps={inputLProps}
                         inputProps={inputProps}
-                        fullWidth
                         onChange={f}
                       />
                     </Col>
-                    <Col xs={1}>to</Col>
-                    <Col xs={5}>
+                    <Col xs={2}>to</Col>
+                    <Col xs={5} className="">
                       <TextField
                         name={day}
                         variant="standard"
@@ -68,7 +67,6 @@ const TradingHoursDetails = ({ d, f, days, key, c }) => {
                         onChange={f}
                         InputLabelProps={inputLProps}
                         inputProps={inputProps}
-                        fullWidth
                       />
                     </Col>
                   </Row>
@@ -83,97 +81,3 @@ const TradingHoursDetails = ({ d, f, days, key, c }) => {
 };
 
 export default TradingHoursDetails;
-// {days.map((day) => (
-//   <Row>
-//     <Col xs={5}>
-//       <FormControlLabel
-//         label={day}
-//         control={
-//           <Checkbox
-//             id="times"
-//             key={day}
-//             name="trading"
-//             checked={d[day].trading}
-//             onChange={c}
-//             // onChange={(e) =>
-//             //   setTimes({
-//             //     ...times,
-//             //     [day]: {
-//             //       ...times[day],
-//             //       trading: e.target.checked,
-//             //     },
-//             //   })
-//             // }
-//           />
-//         }
-//       />
-//     </Col>
-//     {!d[day].trading ? (
-//       <Col xs={7}>
-//         <div>
-//           <p>Closed</p>
-//         </div>
-//       </Col>
-//     ) : (
-//       <Col xs={7}>
-//         <Row>
-//           <Col xs={5}>
-//             <TextField
-//               id={day}
-//               name="open"
-//               variant="standard"
-//               label="open"
-//               type="time"
-//               value={d[day].open}
-//               InputLabelProps={{
-//                 shrink: true,
-//               }}
-//               inputProps={{
-//                 step: 300, // 5 min
-//               }}
-//               fullWidth
-//               onChange={f}
-//               // onChange={(e) =>
-//               //   setTimes({
-//               //     ...times,
-//               //     [day]: {
-//               //       ...times[day],
-//               //       open: e.target.value,
-//               //     },
-//               //   })
-//               // }
-//             />
-//           </Col>
-//           <Col xs={1}>to</Col>
-//           <Col xs={5}>
-//             <TextField
-//               name="close"
-//               variant="standard"
-//               label="close"
-//               type="time"
-//               value={d[day].closed}
-//               onChange={f}
-//               // onChange={(e) =>
-//               //   setTimes({
-//               //     ...times,
-//               //     [day]: {
-//               //       ...times[day],
-//               //       closed: e.target.value,
-//               //     },
-//               //   })
-//               // }
-//               defaultValue="17:00"
-//               InputLabelProps={{
-//                 shrink: true,
-//               }}
-//               inputProps={{
-//                 step: 300, // 5 min
-//               }}
-//               fullWidth
-//             />
-//           </Col>
-//         </Row>
-//       </Col>
-//     )}
-//   </Row>
-// ))}

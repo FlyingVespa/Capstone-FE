@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import {
   Jumbotron,
   Image,
@@ -17,18 +17,18 @@ import Services from "./ProfilePage/Services";
 import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
-import Map from "./ProfilePage/Map";
+// import Map from "./ProfilePage/Map";
 
 import MapImg from "../map.jpg";
 // import {REACT_APP_API_URL, REACT_APP_MONGO_DB} from "../env"
 // import { getUserData } from "./crud.js";
 
 const ProfilePage = (props) => {
-  const select = useSelector((s) => s.selected);
+  // const select = useSelector((s) => s.selected);
   const userId = props.match.params.userId;
   const [loading, setLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-  const [profileData, setProfileData] = useState({});
+  // const [currentUser, setCurrentUser] = useState({});
+  // const [profileData, setProfileData] = useState({});
   const [userData, setUserData] = useState({
     contact: {
       email: "",

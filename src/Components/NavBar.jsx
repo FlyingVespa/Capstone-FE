@@ -1,8 +1,8 @@
-import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { animated, useTransition } from "react-spring";
+import { Container, Navbar, Nav } from "react-bootstrap";
+import { useSelector } from "react-redux";
+// import { animated, useTransition } from "react-spring";
 import { Button, Avatar } from "@mui/material";
-import { useState } from "react";
+// import { useState } from "react";
 import logo from "../shop.png";
 
 function NavBar() {
@@ -12,7 +12,7 @@ function NavBar() {
   return (
     <Navbar className="navbar-top" expand="lg">
       <Container>
-        <Navbar.Brand href="#home" style={{ fontWeight: "700" }}>
+        <Navbar.Brand href="/" style={{ fontWeight: "700" }}>
           <Avatar className="navbar_icon" src={logo} />
           BuyLocal.online
         </Navbar.Brand>

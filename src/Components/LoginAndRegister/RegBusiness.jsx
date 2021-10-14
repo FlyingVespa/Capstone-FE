@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   StepLabel,
@@ -13,32 +13,44 @@ import "./RegisterComponents/businessRegister.css";
 
 import ContactDetails from "./RegisterComponents/ContactDetails";
 import ConfirmDetails from "./RegisterComponents/ConfirmDetails";
-import Success from "./RegisterComponents/Success";
 import LocationDetails from "./RegisterComponents/LocationDetails";
 import AccDetails from "./RegisterComponents/AccDetails";
 import TradingHoursDetails from "./RegisterComponents/TradingHoursDetails";
 
-function getSteps() {
+const getSteps = () => {
   return [
     "Account Details",
     "Contact Details",
-    "Location",
+    "Services",
+    "Business Location",
     "Trading Hours",
     "Confirm Details",
   ];
-}
+};
 
-const RegBusiness = () => {
+const RegBusiness = (routerProps) => {
   const dispatch = useDispatch();
+  const URL = process.env.REACT_APP_API_URL;
+
+  const [loading, setLoading] = useState({});
   const form = useSelector((s) => s.formBusiness);
   const [values, setValues] = useState({
     amount: "",
-    password: "111",
+    password: "",
     weight: "",
     weightRange: "",
     showPassword: false,
   });
   const [datas, setData] = useState({
+    basic: {
+      name: "",
+      category: "",
+      email: "",
+      delivery: true,
+      password: "",
+      username: "",
+      url: "",
+    },
     contact: {
       email: "s",
       tel: "",
@@ -47,27 +59,15 @@ const RegBusiness = () => {
       whatsapp: "",
       twitter: "",
     },
-    basic: {
-      name: "Fish Palace",
-      category: "Fishery",
-      email: "test@email.com",
-      delivery: true,
-      password: "1234",
-      username: "",
-      amount: "",
-      weight: "",
-      weightRange: "",
-      showPassword: false,
-    },
     times: {
       monday: { trading: true, open: "09:15", closed: "16:00" },
-      tuesday: { trading: true, open: "", closed: "" },
-      wednesday: { trading: true, open: "", closed: "" },
-      thursday: { trading: true, open: "", closed: "" },
+      tuesday: { trading: true, open: "09:15", closed: "16:00" },
+      wednesday: { trading: true, open: "09:15", closed: "16:00" },
+      thursday: { trading: true, open: "09:15", closed: "16:00" },
       friday: { trading: true, open: "09:00", closed: "17:00" },
-      saturday: { trading: true, open: "", closed: "" },
-      sunday: { trading: true, open: "", closed: "" },
-      public: { trading: true, open: "", closed: "" },
+      saturday: { trading: true, open: "09:15", closed: "16:00" },
+      sunday: { trading: true, open: "09:15", closed: "16:00" },
+      public: { trading: true, open: "09:15", closed: "16:00" },
     },
     info: {
       services: "",
@@ -78,24 +78,36 @@ const RegBusiness = () => {
     },
   });
 
-  const handlePasswordChange = ({ target }) => {
-    // setData({ ...datas, [target.id]: target.value });
-    // setData({
-    //   ...datas,
-    //   [target.id]: { ...datas[target.id], [target.name]: values.password },
-    // });
+  const sendReg = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`${URL}/business`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datas),
+      });
+      if (response.ok) {
+        setLoading(false);
+        console.log(datas);
+      } else {
+        throw new Error("Could send data, but something went wrong");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
 
-  const handleClickShowPassword = ({ target }) => {
-    setData({
-      ...datas,
-      [target.id]: { ...datas[target.id], showPassword: !values.showPassword },
-    });
+  const handleClickShowPassword = () => {
     setValues({
       ...values,
       showPassword: !values.showPassword,
     });
   };
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -103,7 +115,7 @@ const RegBusiness = () => {
   const handleOnChange = ({ target }) => {
     setData({
       ...datas,
-      [target.id]: { ...datas[target.id], [target.name]: target.value },
+      [target.name]: { ...datas[target.name], [target.id]: target.value },
     });
     dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
   };
@@ -133,7 +145,7 @@ const RegBusiness = () => {
           return (
             <AccDetails
               handleMouseDownPassword={handleMouseDownPassword}
-              handlePasswordChange={handlePasswordChange}
+              handlePasswordChange={handleOnChange}
               handleClickShowPassword={handleClickShowPassword}
               v={values}
               f={handleOnChange}
@@ -145,6 +157,8 @@ const RegBusiness = () => {
         case 2:
           return <LocationDetails />;
         case 3:
+          return <LocationDetails />;
+        case 4:
           return (
             <TradingHoursDetails
               f={handleTimeChange}
@@ -152,7 +166,7 @@ const RegBusiness = () => {
               days={days}
             />
           );
-        case 4:
+        case 5:
           return <ConfirmDetails d={datas} />;
         default:
           return "Unknown step";
@@ -203,9 +217,19 @@ const RegBusiness = () => {
               <Button disabled={activeStep === 0} onClick={handleBack}>
                 Back
               </Button>
-              <Button variant="contained" color="primary" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Confirm" : "Next"}
-              </Button>
+              {activeStep === steps.length - 1 ? (
+                <Button variant="contained" color="primary" onClick={sendReg}>
+                  Confirm
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                >
+                  Next
+                </Button>
+              )}
               <Typography>{getStepContent(activeStep)}</Typography>
             </Container>
           </div>
