@@ -21,7 +21,6 @@ const getSteps = () => {
   return [
     "Account Details",
     "Contact Details",
-    "Services",
     "Business Location",
     "Trading Hours",
     "Confirm Details",
@@ -31,9 +30,10 @@ const getSteps = () => {
 const RegBusiness = (routerProps) => {
   const dispatch = useDispatch();
   const URL = process.env.REACT_APP_API_URL;
-
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState({});
   const [loading, setLoading] = useState({});
-  const form = useSelector((s) => s.formBusiness);
+  const steps = getSteps();
   const [values, setValues] = useState({
     amount: "",
     password: "",
@@ -112,6 +112,7 @@ const RegBusiness = (routerProps) => {
     event.preventDefault();
   };
   const days = Object.keys(datas.times);
+
   const handleOnChange = ({ target }) => {
     setData({
       ...datas,
@@ -130,49 +131,63 @@ const RegBusiness = (routerProps) => {
         },
       },
     });
-
-    dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
   };
 
-  const [activeStep, setActiveStep] = useState(0);
-  const [typeAccReg, setTypeAccReg] = useState("business");
-  const steps = getSteps();
+  const totalSteps = () => {
+    return steps.length;
+  };
+
+  const completedSteps = () => {
+    return Object.keys(completed).length;
+  };
+
+  const isLastStep = () => {
+    return activeStep === totalSteps() - 1;
+  };
+
+  const allStepsCompleted = () => {
+    return completedSteps() === totalSteps();
+  };
+  const handleComplete = () => {
+    const newCompleted = completed;
+    newCompleted[activeStep] = true;
+    setCompleted(newCompleted);
+    handleNext();
+  };
 
   function getStepContent(step) {
-    if (typeAccReg === "business") {
-      switch (step) {
-        case 0:
-          return (
-            <AccDetails
-              handleMouseDownPassword={handleMouseDownPassword}
-              handlePasswordChange={handleOnChange}
-              handleClickShowPassword={handleClickShowPassword}
-              v={values}
-              f={handleOnChange}
-              d={datas.basic}
-            />
-          );
-        case 1:
-          return <ContactDetails f={handleOnChange} d={datas.contact} />;
-        case 2:
-          return <LocationDetails />;
-        case 3:
-          return <LocationDetails />;
-        case 4:
-          return (
-            <TradingHoursDetails
-              f={handleTimeChange}
-              d={datas.times}
-              days={days}
-            />
-          );
-        case 5:
-          return <ConfirmDetails d={datas} />;
-        default:
-          return "Unknown step";
-      }
+    switch (step) {
+      case 0:
+        return (
+          <AccDetails
+            handleMouseDownPassword={handleMouseDownPassword}
+            handlePasswordChange={handleOnChange}
+            handleClickShowPassword={handleClickShowPassword}
+            v={values}
+            f={handleOnChange}
+            d={datas.basic}
+            i={datas.info}
+          />
+        );
+      case 1:
+        return <ContactDetails f={handleOnChange} d={datas.contact} />;
+      case 2:
+        return <LocationDetails />;
+
+      case 3:
+        return (
+          <TradingHoursDetails
+            f={handleTimeChange}
+            d={datas.times}
+            days={days}
+          />
+        );
+      case 4:
+        return <ConfirmDetails d={datas} />;
+
+      default:
+        return "Unknown step";
     }
-    return <div></div>;
   }
 
   const handleNext = () => {
@@ -187,7 +202,6 @@ const RegBusiness = (routerProps) => {
     setActiveStep(0);
   };
 
-  console.log(typeAccReg);
   return (
     <Container className="my-5">
       <h1>Regsiter Business Account</h1>
@@ -205,9 +219,12 @@ const RegBusiness = (routerProps) => {
       <div>
         {activeStep === steps.length ? (
           <div>
-            <Button onClick={handleReset}>Reset</Button>
             <Typography>All steps completed - you&apos;re finished</Typography>
-            <Button className="mx-auto" variant="primary">
+            <Button
+              className="mx-auto"
+              variant="primary"
+              href="/business/login"
+            >
               Go To Login
             </Button>
           </div>
@@ -217,7 +234,7 @@ const RegBusiness = (routerProps) => {
               <Button disabled={activeStep === 0} onClick={handleBack}>
                 Back
               </Button>
-              {activeStep === steps.length - 1 ? (
+              {completedSteps() === steps.length - 1 ? (
                 <Button variant="contained" color="primary" onClick={sendReg}>
                   Confirm
                 </Button>

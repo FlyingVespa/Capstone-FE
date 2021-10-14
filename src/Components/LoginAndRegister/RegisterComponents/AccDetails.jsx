@@ -16,6 +16,7 @@ const AccDetails = ({
   v,
   f,
   d,
+  i,
   handleClickShowPassword,
   handleMouseDownPassword,
   handlePasswordChange,
@@ -26,8 +27,8 @@ const AccDetails = ({
   return (
     <div className="my-5">
       <TextField
-        id="basic"
-        name="name"
+        id="name"
+        name="basic"
         className="my-1"
         variant="standard"
         placeholder="Enter Your Business Name"
@@ -38,8 +39,8 @@ const AccDetails = ({
       />
 
       <TextField
-        id="basic"
-        name="email"
+        id="email"
+        name="basic"
         className="my-1"
         variant="standard"
         placeholder="Enter Your email used for login"
@@ -52,8 +53,8 @@ const AccDetails = ({
       <Row>
         <Col>
           <TextField
-            name="username"
-            id="basic"
+            name="basic"
+            id="username"
             className="my-1"
             variant="standard"
             placeholder="Your preffered nickname?"
@@ -68,8 +69,8 @@ const AccDetails = ({
           </InputLabel>
           <Input
             label="password"
-            name="password"
-            id="basic"
+            name="basic"
+            id="password"
             type={v.showPassword ? "text" : "password"}
             value={d.password}
             onChange={f}
@@ -87,17 +88,46 @@ const AccDetails = ({
           />
         </Col>
       </Row>
+      <Row>
+        <Col>
+          {" "}
+          <TextField
+            name="basic"
+            id="url"
+            className="my-1"
+            variant="standard"
+            placeholder="Enter Your preffered"
+            label="Choose Custom Url"
+            value={d.url}
+            onChange={f}
+            fullWidth
+            helperText="*Required - an address online where customers can find your business"
+          />
+        </Col>
+        <Col>
+          <TextField
+            id="category"
+            name="basic"
+            label="Bussines Category"
+            variant="standard"
+            placeholder="Tell us about you business"
+            value={d.category}
+            onChange={f}
+            multiline
+            fullWidth
+          />
+        </Col>
+      </Row>
       <TextField
-        name="url"
-        id="basic"
-        className="my-1"
+        id="bio"
+        name="info"
+        label="Describe the business"
         variant="standard"
-        placeholder="Enter Your preffered"
-        label="Choose Custom Url"
-        value={d.url}
+        placeholder="Tell us about you business"
+        value={i.bio}
         onChange={f}
+        multiline
         fullWidth
-        helperText="*Required - an address online where customers can find your business"
       />
     </div>
   );

@@ -12,6 +12,7 @@ import NavBar from "./Components/NavBar";
 import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
+import LoginPage from "./Components/LoginAndRegister/LoginPage";
 
 function App() {
   return (
@@ -26,7 +27,12 @@ function App() {
             render={(routeProps) => <HomePage {...routeProps} />}
           ></Route>
           <Route
+            path="/login"
+            render={(routerProps) => <LoginPage routerProps={routerProps} />}
+          />
+          <Route
             path="/business/:userId"
+            exact
             render={(routeProps) => <ProfilePage {...routeProps} />}
           ></Route>
 

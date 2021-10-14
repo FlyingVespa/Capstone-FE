@@ -64,7 +64,10 @@
 /* FOOTER */
 
 footer {
-  margin-top: 80px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+
   background: #eff2f9;
   padding: 50px 0px;
 }

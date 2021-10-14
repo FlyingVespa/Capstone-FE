@@ -29,6 +29,8 @@ function NavBar() {
               color="success"
               variant="outlined"
               size="medium"
+              href="/login"
+              exact
             >
               Login
             </Button>
