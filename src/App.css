@@ -224,3 +224,54 @@ footer a {
 .navbar:hover .navbar_icon {
   background-color: #6ac77d;
 }
+
+.searchField {
+  background-color: white;
+  position: sticky;
+  top: 1px;
+  width: auto;
+  max-height: 200px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  z-index: 2;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-top: 6px;
+}
+
+.searchField::-webkit-scrollbar {
+  display: none;
+}
+
+.searchCard {
+  padding: 6px 12px 6px 12px;
+}
+
+.searchCard div {
+  font-weight: 600;
+  color: black;
+}
+
+.searchCard img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-right: 10px;
+}
+
+.searchCard div span {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.searchCard div span::before {
+  content: "\00B7";
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 3px;
+}
+
+.searchCard:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
