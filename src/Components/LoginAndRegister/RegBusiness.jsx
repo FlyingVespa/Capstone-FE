@@ -10,7 +10,10 @@ import {
   Button,
 } from "@mui/material";
 import "./RegisterComponents/businessRegister.css";
-
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 import ContactDetails from "./RegisterComponents/ContactDetails";
 import ConfirmDetails from "./RegisterComponents/ConfirmDetails";
 import LocationDetails from "./RegisterComponents/LocationDetails";
@@ -30,6 +33,13 @@ const getSteps = () => {
 const RegBusiness = (routerProps) => {
   const dispatch = useDispatch();
   const URL = process.env.REACT_APP_API_URL;
+  const [address, setAddress] = useState("");
+  const [fullAddress, setFuullAddress] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    lat: null,
+    lng: null,
+  });
+
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState({});
   const [loading, setLoading] = useState({});
@@ -59,6 +69,11 @@ const RegBusiness = (routerProps) => {
       whatsapp: "",
       twitter: "",
     },
+    location: {
+      lat: null,
+      lng: null,
+    },
+    address: "",
     times: {
       monday: { trading: true, open: "09:15", closed: "16:00" },
       tuesday: { trading: true, open: "09:15", closed: "16:00" },
@@ -133,26 +148,17 @@ const RegBusiness = (routerProps) => {
     });
   };
 
-  const totalSteps = () => {
-    return steps.length;
-  };
+  const handleLocationSelect = async (value) => {
+    const results = await geocodeByAddress(value);
 
+    setData({
+      ...datas,
+      address: value,
+      location: await getLatLng(results[0]),
+    });
+  };
   const completedSteps = () => {
     return Object.keys(completed).length;
-  };
-
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1;
-  };
-
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
-  };
-  const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    handleNext();
   };
 
   function getStepContent(step) {
@@ -172,7 +178,13 @@ const RegBusiness = (routerProps) => {
       case 1:
         return <ContactDetails f={handleOnChange} d={datas.contact} />;
       case 2:
-        return <LocationDetails />;
+        return (
+          <LocationDetails
+            f={handleLocationSelect}
+            a={datas.address}
+            c={datas.location}
+          />
+        );
 
       case 3:
         return (

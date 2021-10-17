@@ -5,171 +5,73 @@ import countrylist from "../../../json/countries.json";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-
+import MapTest from "../../MapTest";
 import { useTheme } from "@mui/material/styles";
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const cities = [
-  "Rome",
-  "Milan",
-  "Messina",
-  "Palermo",
-  "Catania",
-  "Veneto",
-  "Venezia",
-  "Firenze",
-  "Pisa",
-  "Constania",
-];
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 
 const LocationDetails = () => {
-  const countries = countrylist;
-  const [location, setLocation] = useState({
-    country: "",
-    city: "",
-    region: "",
-    address: "",
-    serviceArea: "",
+  const [address, setAddress] = useState("");
+  const [addresss, setAddresss] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    lat: null,
+    lng: null,
   });
 
-  const handleLocationChange = (input) => (e) => {
-    setLocation({ ...location, [e.target.name]: e.target.value });
-  };
+  const handleSelect = async (value) => {
+    const results = await geocodeByAddress(value);
+    const latLng = await getLatLng(results[0]);
+    setAddress(value);
+    setCoordinates(latLng);
+    const nameList = value.split(",");
 
-  const inputLocationChange = (e, newInputValue) => {
-    setLocation({ ...location, [e.target.name]: newInputValue });
+    setAddresss(nameList);
   };
+  const handlechange = () => {};
   return (
-    <Container>
-      <p className="m-3">Bussiness Location</p>
-      {/* <Container>
-        <Row className="gx-2">
-          <Col md={7}>
-            <Autocomplete
-              name="country"
-              value={location.country}
-              onInputChange={inputChange}
-              id="combo-box-demo"
-              options={countries}
-              renderInput={(params) => (
-                <TextField
-                  name="country"
-                  {...params}
-                  label="Country"
-                  variant="standard"
-                  onChange={handleChange}
-                />
-              )}
-            />
-          </Col>
+    <div>
+      <PlacesAutocomplete
+        value={address}
+        onChange={setAddress}
+        onSelect={handleSelect}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          <div>
+            <Row className="mt-3">
+              <Col>
+                <input {...getInputProps({ placeholder: "Type address" })} />
+                <div>
+                  {loading ? <div>...loading</div> : null}
 
-          <Col xs={5}>
-            <Autocomplete
-              name="region"
-              value={location.region}
-              onInputChange={inputChange}
-              id="combo-box-demo"
-              options={countries}
-              renderInput={(params) => (
-                <TextField
-                  name="region"
-                  {...params}
-                  label="Region"
-                  variant="standard"
-                  onChange={handleChange}
-                />
-              )}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <Autocomplete
-              name="city"
-              value={location.city}
-              onInputChange={inputChange}
-              id="combo-box-demo"
-              options={countries}
-              renderInput={(params) => (
-                <TextField
-                  name="city"
-                  {...params}
-                  label="City"
-                  variant="standard"
-                  onChange={handleChange}
-                />
-              )}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <Autocomplete
-              name="address"
-              value={location.address}
-              onInputChange={inputChange}
-              id="combo-box-demo"
-              options={countries}
-              renderInput={(params) => (
-                <TextField
-                  name="address"
-                  {...params}
-                  label="Address"
-                  variant="standard"
-                  onChange={handleChange}
-                />
-              )}
-            />
-          </Col>
-        </Row>
-      </Container>
-      <hr className="my-5" />
-      <p className="m-3">Service Areas</p>
-      <Container>
-        <Autocomplete
-          name="serviceArea"
-          multiple
-          value={location.serviceArea}
-          id="size-small-standard-multi"
-          options={cities}
-          onInputChange={inputChange}
-          disableCloseOnSelect
-          getOptionLabel={(city) => city}
-          renderOption={(props, city, { selected }) => (
-            <li {...props}>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {city}
-            </li>
-          )}
-          style={{ width: 500 }}
-          renderInput={(params) => (
-            <TextField
-              name="serviceArea"
-              {...params}
-              label="City"
-              variant="standard"
-            />
-          )}
-        />
-      </Container> */}
-    </Container>
+                  {suggestions.map((suggestion) => {
+                    const style = {
+                      backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                    };
+
+                    return (
+                      <div {...getSuggestionItemProps(suggestion, { style })}>
+                        {suggestion.description}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Col>
+              <Col>
+                <p>Latitude: {coordinates.lat}</p>
+                <p>Longitude: {coordinates.lng}</p>
+                <p>Street: {addresss[0]}</p>
+                <p>City: {addresss[1]}</p>
+                <p>State: {addresss[2]}</p>
+                <p>Country: {addresss[3]}</p>
+              </Col>
+            </Row>
+          </div>
+        )}
+      </PlacesAutocomplete>
+    </div>
   );
 };
 

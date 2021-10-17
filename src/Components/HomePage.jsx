@@ -4,9 +4,10 @@ import NewStores from "./ClientHomePage/NewStores";
 import PopularStores from "./ClientHomePage/PopularStores";
 import SavedStores from "./ClientHomePage/SavedStores";
 import Map from "./ClientHomePage/Map";
-import { Loader } from "@googlemaps/js-api-loader";
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
+import SimpleMap from "./ProfilePage/SimpleMap";
+import MapTest from "./MapTest";
 
 function HomePage({ props }) {
   const URL = process.env.REACT_APP_API_URL;
@@ -36,17 +37,6 @@ function HomePage({ props }) {
     getAllUsers();
   }, []);
 
-  const loader = new Loader({
-    apiKey: API_KEY,
-  });
-
-  loader.load().then(() => {
-    let map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: -34.397, lng: 150.644 },
-      zoom: 8,
-    });
-  });
-
   return (
     <Container className="homepage">
       <Jumbotron>
@@ -69,6 +59,8 @@ function HomePage({ props }) {
             crossorigin=""
           />
           <div id="map"></div>
+          {/* <SimpleMap /> */}
+          <MapTest />
           <SavedStores user={usersData} />
         </Container>
       )}
