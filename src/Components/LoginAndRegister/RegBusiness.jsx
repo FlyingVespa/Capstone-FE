@@ -33,31 +33,21 @@ const getSteps = () => {
 const RegBusiness = (routerProps) => {
   const dispatch = useDispatch();
   const URL = process.env.REACT_APP_API_URL;
-  const [address, setAddress] = useState("");
-  const [fullAddress, setFuullAddress] = useState("");
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
-
+  // const state =
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState({});
   const [loading, setLoading] = useState({});
   const steps = getSteps();
   const [values, setValues] = useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
     showPassword: false,
   });
   const [datas, setData] = useState({
+    password: "",
+    email: "",
     basic: {
       name: "",
       category: "",
-      email: "",
       delivery: true,
-      password: "",
       username: "",
       url: "",
     },
@@ -97,7 +87,7 @@ const RegBusiness = (routerProps) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${URL}/business`, {
+      const response = await fetch(`${URL}/business/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,6 +122,13 @@ const RegBusiness = (routerProps) => {
     setData({
       ...datas,
       [target.name]: { ...datas[target.name], [target.id]: target.value },
+    });
+    dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
+  };
+  const handleOnChanges = ({ target }) => {
+    setData({
+      ...datas,
+      [target.id]: target.value,
     });
     dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
   };
@@ -170,6 +167,8 @@ const RegBusiness = (routerProps) => {
             handlePasswordChange={handleOnChange}
             handleClickShowPassword={handleClickShowPassword}
             v={values}
+            p={datas}
+            ff={handleOnChanges}
             f={handleOnChange}
             d={datas.basic}
             i={datas.info}

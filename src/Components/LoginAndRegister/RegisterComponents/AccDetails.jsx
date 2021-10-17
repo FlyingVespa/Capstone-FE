@@ -17,6 +17,8 @@ const AccDetails = ({
   f,
   d,
   i,
+  p,
+  ff,
   handleClickShowPassword,
   handleMouseDownPassword,
   handlePasswordChange,
@@ -33,20 +35,19 @@ const AccDetails = ({
         variant="standard"
         placeholder="Enter Your Business Name"
         label="Business Name"
-        value={d.name}
+        value={p.basic.name}
         onChange={f}
         fullWidth
       />
 
       <TextField
         id="email"
-        name="basic"
         className="my-1"
         variant="standard"
         placeholder="Enter Your email used for login"
         label="Account Email"
-        value={d.email}
-        onChange={f}
+        value={p.email}
+        onChange={ff}
         fullWidth
         helperText="*Required - not shared with public"
       />
@@ -59,7 +60,7 @@ const AccDetails = ({
             variant="standard"
             placeholder="Your preffered nickname?"
             label="Username"
-            value={d.username}
+            value={p.basic.username}
             onChange={f}
           />
         </Col>
@@ -69,11 +70,11 @@ const AccDetails = ({
           </InputLabel>
           <Input
             label="password"
-            name="basic"
+            name="pasword"
             id="password"
             type={v.showPassword ? "text" : "password"}
-            value={d.password}
-            onChange={f}
+            value={p.password}
+            onChange={ff}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -81,7 +82,7 @@ const AccDetails = ({
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                 >
-                  {d.showPassword ? <VisibilityOff /> : <Visibility />}
+                  {p.showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             }

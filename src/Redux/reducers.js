@@ -36,6 +36,7 @@ const initialState = {
     },
   },
   selected: null,
+  showPassword: false,
 };
 
 export const appReducer = (state = initialState, action) => {
@@ -57,6 +58,11 @@ export const appReducer = (state = initialState, action) => {
             ...action.payload.data,
           },
         },
+      };
+    case "SHOW_PASSWORD":
+      return {
+        ...state,
+        showPassword: action.payload,
       };
 
     default:

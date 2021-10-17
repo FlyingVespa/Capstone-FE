@@ -9,13 +9,17 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 const LoginPage = () => {
+  const [login, setLogin] = useState({
+    email: null,
+    password: null,
+  });
   const [values, setValues] = useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
     showPassword: false,
   });
+
+  const handleChange = ({ target }) => {
+    setLogin({ ...login, [target.id]: target.value });
+  };
   const handleClickShowPassword = () => {
     setValues({
       ...values,
@@ -40,9 +44,10 @@ const LoginPage = () => {
               variant="standard"
               placeholder="Enter Your email used for login"
               label="Account Email"
-              value=""
+              value={login.email}
               helperText="*Required - not shared with public"
               fullWidth
+              onChange={handleChange}
             />
             <InputLabel htmlFor="standard-adornment-password">
               Password
@@ -52,8 +57,9 @@ const LoginPage = () => {
               label="password"
               name="basic"
               id="password"
+              onChange={handleChange}
               type={values.showPassword ? "text" : "password"}
-              value=""
+              value={login.password}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
