@@ -8,18 +8,14 @@ import {
   IconButton,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-const LoginPage = () => {
-  const [login, setLogin] = useState({
-    email: null,
-    password: null,
-  });
+const LoginPage = ({ routerProps }) => {
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const [values, setValues] = useState({
     showPassword: false,
   });
+  const URL = process.env.REACT_APP_API_URL;
 
-  const handleChange = ({ target }) => {
-    setLogin({ ...login, [target.id]: target.value });
-  };
   const handleClickShowPassword = () => {
     setValues({
       ...values,
@@ -29,6 +25,34 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+  const tryLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      const details = {
+        email: userEmail,
+        password: userPassword,
+      };
+
+      const res = await fetch(`${URL}/business/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details), // { details: { email: "hello", password: "pasword" } }
+      });
+      if (res.ok) {
+        const json = await res.json();
+        console.log(json);
+        localStorage.setItem("accessToken", json.accessToken);
+
+        routerProps.history.push("/main");
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -44,10 +68,10 @@ const LoginPage = () => {
               variant="standard"
               placeholder="Enter Your email used for login"
               label="Account Email"
-              value={login.email}
+              value={userEmail}
               helperText="*Required - not shared with public"
               fullWidth
-              onChange={handleChange}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
             <InputLabel htmlFor="standard-adornment-password">
               Password
@@ -57,9 +81,9 @@ const LoginPage = () => {
               label="password"
               name="basic"
               id="password"
-              onChange={handleChange}
               type={values.showPassword ? "text" : "password"}
-              value={login.password}
+              value={userPassword.password}
+              onChange={(e) => setUserPassword(e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -74,7 +98,7 @@ const LoginPage = () => {
             />
           </Col>
         </Row>
-        <Button>Login</Button>
+        <Button onClick={tryLogin}>Login</Button>
         <Button>Contine without login</Button>
       </Container>
     </div>
