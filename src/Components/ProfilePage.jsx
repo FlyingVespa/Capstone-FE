@@ -78,7 +78,43 @@ const ProfilePage = (props) => {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${URL}/business/${userId}`);
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${URL}/business/me`, {
+        method: "GET",
+        headers: {
+          // get localstorage bearer and send in headers
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        await setUserData(userData);
+        setLoading(false);
+
+        console.log(userData);
+        props.routerProps.history.push("/business/login");
+      } else {
+        throw new Error("Could access data, but something went wrong");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const LogoutUser = async () => {
+    setLoading(true);
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${URL}/business/logout`, {
+        method: "POST",
+        headers: {
+          // get localstorage bearer and send in headers
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
         const userData = await response.json();
         await setUserData(userData);
@@ -134,6 +170,7 @@ const ProfilePage = (props) => {
                 </Col>
               </Row>
             </Container>
+            <Button onClick={LogoutUser}> logout</Button>
             <About about={userData.info.bio} />
             <hr className="" />
             <Services services={userData.info.services} />

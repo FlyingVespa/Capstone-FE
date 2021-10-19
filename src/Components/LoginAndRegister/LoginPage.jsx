@@ -40,14 +40,14 @@ const LoginPage = ({ routerProps }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(details), // { details: { email: "hello", password: "pasword" } }
+        body: JSON.stringify(details),
       });
       if (res.ok) {
         const json = await res.json();
         console.log(json);
         localStorage.setItem("accessToken", json.accessToken);
 
-        routerProps.history.push("/main");
+        routerProps.history.push("/business/me");
       } else {
       }
     } catch (error) {
