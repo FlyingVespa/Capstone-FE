@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Jumbotron, Col, Spinner } from "react-bootstrap";
+import { Map, GoogleApiWrapper } from "google-maps-react";
 import NewStores from "./ClientHomePage/NewStores";
 import PopularStores from "./ClientHomePage/PopularStores";
 import SavedStores from "./ClientHomePage/SavedStores";
@@ -58,9 +59,13 @@ function HomePage({ props }) {
             integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
             crossorigin=""
           />
-          <div id="map"></div>
-          {/* <SimpleMap /> */}
-          <MapTest />
+          <Map
+            google={this.props.google}
+            zoom={8}
+            style={mapStyles}
+            initialCenter={{ lat: 47.444, lng: -122.176 }}
+          />
+
           <SavedStores user={usersData} />
         </Container>
       )}
