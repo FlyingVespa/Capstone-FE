@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { Container, Jumbotron, Col, Spinner } from "react-bootstrap";
 import { Map, GoogleApiWrapper } from "google-maps-react";
-import NewStores from "./ClientHomePage/NewStores";
-import PopularStores from "./ClientHomePage/PopularStores";
 import SavedStores from "./ClientHomePage/SavedStores";
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
-import SimpleMap from "./ProfilePage/SimpleMap";
-import MapTest from "./MapTest";
-
+import { fetchUsersReq } from "../Redux/";
+import axios from "axios";
 function HomePage({ props }) {
   const URL = process.env.REACT_APP_API_URL;
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [usersData, setUsersData] = useState([]);
   const [isMe, setIsMe] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const getAllBusinessUsers = async () => {};
 
   const getAllUsers = async () => {
     try {
@@ -70,5 +70,15 @@ function HomePage({ props }) {
     </Container>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    users: state.users.allBusinesses,
+  };
+};
 
-export default HomePage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    users: () => dispatch(fetchUsersReq()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

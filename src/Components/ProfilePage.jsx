@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Jumbotron,
   Image,
@@ -20,16 +20,20 @@ import StockList from "./ProfilePage/StockList";
 // import Map from "./ProfilePage/Map";
 
 import MapImg from "../map.jpg";
+
 // import {REACT_APP_API_URL, REACT_APP_MONGO_DB} from "../env"
 // import { getUserData } from "./crud.js";
 
 const ProfilePage = (props) => {
-  // const select = useSelector((s) => s.selected);
+  const dispatch = useDispatch();
+  const user = useSelector((s) => s.formBusiness);
   const userId = props.match.params.userId;
   const [loading, setLoading] = useState(false);
-  // const [currentUser, setCurrentUser] = useState({});
-  // const [profileData, setProfileData] = useState({});
+
   const [userData, setUserData] = useState({
+    _id: "",
+    url: "",
+    email: "",
     contact: {
       email: "",
       tel: "",
@@ -41,9 +45,6 @@ const ProfilePage = (props) => {
     basic: {
       name: "",
       category: "",
-      email: "",
-      shipping: false,
-      services: [],
       username: "",
     },
     times: {
@@ -58,6 +59,7 @@ const ProfilePage = (props) => {
     },
     info: {
       services: [],
+      shipping: false,
       bio: null,
       img_logo: null,
       img_user: null,
@@ -90,9 +92,11 @@ const ProfilePage = (props) => {
       if (response.ok) {
         const userData = await response.json();
         await setUserData(userData);
+        await dispatch({ type: "SET_USER_DATA", payload: userData });
+        // await dispatch({ type: "SET_LOADING", payload: !loading });
+        await console.log(user);
         setLoading(false);
-
-        console.log(userData);
+        // console.log(userData);
         props.routerProps.history.push("/business/login");
       } else {
         throw new Error("Could access data, but something went wrong");
@@ -157,7 +161,7 @@ const ProfilePage = (props) => {
                 </Col>
                 <Col>
                   <h1>
-                    {userData.basic.name}{" "}
+                    {userData?.basic.name}
                     <IoIosStarOutline className="icon star" />
                   </h1>
                   <span>
@@ -182,6 +186,7 @@ const ProfilePage = (props) => {
             <StockList promo={userData.info} />
             <Button>Create Shopping List</Button>
             <hr className="" id="location" />
+            {user.basic.name}
             <Image className="profile-map" src={MapImg} />
           </Container>
         </>

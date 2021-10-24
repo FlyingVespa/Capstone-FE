@@ -22,6 +22,8 @@ function NavBar() {
             <Nav.Link href={`/business/${select}`}>Technologies Used</Nav.Link>
             <Nav.Link href="/register">regsiter</Nav.Link>
           </Nav>
+
+          {}
           <Nav>
             <Button
               className="mx-2"
