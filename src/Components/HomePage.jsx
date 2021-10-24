@@ -4,7 +4,6 @@ import { Map, GoogleApiWrapper } from "google-maps-react";
 import NewStores from "./ClientHomePage/NewStores";
 import PopularStores from "./ClientHomePage/PopularStores";
 import SavedStores from "./ClientHomePage/SavedStores";
-import Map from "./ClientHomePage/Map";
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
 import SimpleMap from "./ProfilePage/SimpleMap";
@@ -62,7 +61,6 @@ function HomePage({ props }) {
           <Map
             google={this.props.google}
             zoom={8}
-            style={mapStyles}
             initialCenter={{ lat: 47.444, lng: -122.176 }}
           />
 
