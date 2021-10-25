@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   StepLabel,
@@ -10,35 +10,47 @@ import {
   Button,
 } from "@mui/material";
 import "./RegisterComponents/businessRegister.css";
-
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 import ContactDetails from "./RegisterComponents/ContactDetails";
 import ConfirmDetails from "./RegisterComponents/ConfirmDetails";
-import Success from "./RegisterComponents/Success";
 import LocationDetails from "./RegisterComponents/LocationDetails";
 import AccDetails from "./RegisterComponents/AccDetails";
 import TradingHoursDetails from "./RegisterComponents/TradingHoursDetails";
 
-function getSteps() {
+const getSteps = () => {
   return [
     "Account Details",
     "Contact Details",
-    "Location",
+    "Business Location",
     "Trading Hours",
     "Confirm Details",
   ];
-}
+};
 
-const RegBusiness = () => {
+const RegBusiness = (routerProps) => {
   const dispatch = useDispatch();
-  const form = useSelector((s) => s.formBusiness);
+  const URL = process.env.REACT_APP_API_URL;
+  // const state =
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState({});
+  const [loading, setLoading] = useState({});
+  const steps = getSteps();
   const [values, setValues] = useState({
-    amount: "",
-    password: "111",
-    weight: "",
-    weightRange: "",
     showPassword: false,
   });
   const [datas, setData] = useState({
+    password: "",
+    email: "",
+    basic: {
+      name: "",
+      category: "",
+      delivery: true,
+      username: "",
+      url: "",
+    },
     contact: {
       email: "s",
       tel: "",
@@ -47,27 +59,20 @@ const RegBusiness = () => {
       whatsapp: "",
       twitter: "",
     },
-    basic: {
-      name: "Fish Palace",
-      category: "Fishery",
-      email: "test@email.com",
-      delivery: true,
-      password: "1234",
-      username: "",
-      amount: "",
-      weight: "",
-      weightRange: "",
-      showPassword: false,
+    location: {
+      lat: null,
+      lng: null,
     },
+    address: "",
     times: {
       monday: { trading: true, open: "09:15", closed: "16:00" },
-      tuesday: { trading: true, open: "", closed: "" },
-      wednesday: { trading: true, open: "", closed: "" },
-      thursday: { trading: true, open: "", closed: "" },
+      tuesday: { trading: true, open: "09:15", closed: "16:00" },
+      wednesday: { trading: true, open: "09:15", closed: "16:00" },
+      thursday: { trading: true, open: "09:15", closed: "16:00" },
       friday: { trading: true, open: "09:00", closed: "17:00" },
-      saturday: { trading: true, open: "", closed: "" },
-      sunday: { trading: true, open: "", closed: "" },
-      public: { trading: true, open: "", closed: "" },
+      saturday: { trading: true, open: "09:15", closed: "16:00" },
+      sunday: { trading: true, open: "09:15", closed: "16:00" },
+      public: { trading: true, open: "09:15", closed: "16:00" },
     },
     info: {
       services: "",
@@ -78,32 +83,52 @@ const RegBusiness = () => {
     },
   });
 
-  const handlePasswordChange = ({ target }) => {
-    // setData({ ...datas, [target.id]: target.value });
-    // setData({
-    //   ...datas,
-    //   [target.id]: { ...datas[target.id], [target.name]: values.password },
-    // });
+  const sendReg = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`${URL}/business/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datas),
+      });
+      if (response.ok) {
+        setLoading(false);
+        console.log(datas);
+      } else {
+        throw new Error("Could send data, but something went wrong");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
 
-  const handleClickShowPassword = ({ target }) => {
-    setData({
-      ...datas,
-      [target.id]: { ...datas[target.id], showPassword: !values.showPassword },
-    });
+  const handleClickShowPassword = () => {
     setValues({
       ...values,
       showPassword: !values.showPassword,
     });
   };
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const days = Object.keys(datas.times);
+
   const handleOnChange = ({ target }) => {
     setData({
       ...datas,
-      [target.id]: { ...datas[target.id], [target.name]: target.value },
+      [target.name]: { ...datas[target.name], [target.id]: target.value },
+    });
+    dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
+  };
+  const handleOnChanges = ({ target }) => {
+    setData({
+      ...datas,
+      [target.id]: target.value,
     });
     dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
   };
@@ -118,47 +143,62 @@ const RegBusiness = () => {
         },
       },
     });
-
-    dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
   };
 
-  const [activeStep, setActiveStep] = useState(0);
-  const [typeAccReg, setTypeAccReg] = useState("business");
-  const steps = getSteps();
+  const handleLocationSelect = async (value) => {
+    const results = await geocodeByAddress(value);
+
+    setData({
+      ...datas,
+      address: value,
+      location: await getLatLng(results[0]),
+    });
+  };
+  const completedSteps = () => {
+    return Object.keys(completed).length;
+  };
 
   function getStepContent(step) {
-    if (typeAccReg === "business") {
-      switch (step) {
-        case 0:
-          return (
-            <AccDetails
-              handleMouseDownPassword={handleMouseDownPassword}
-              handlePasswordChange={handlePasswordChange}
-              handleClickShowPassword={handleClickShowPassword}
-              v={values}
-              f={handleOnChange}
-              d={datas.basic}
-            />
-          );
-        case 1:
-          return <ContactDetails f={handleOnChange} d={datas.contact} />;
-        case 2:
-          return <LocationDetails />;
-        case 3:
-          return (
-            <TradingHoursDetails
-              f={handleTimeChange}
-              d={datas.times}
-              days={days}
-            />
-          );
-        case 4:
-          return <ConfirmDetails d={datas} />;
-        default:
-          return "Unknown step";
-      }
+    switch (step) {
+      case 0:
+        return (
+          <AccDetails
+            handleMouseDownPassword={handleMouseDownPassword}
+            handlePasswordChange={handleOnChange}
+            handleClickShowPassword={handleClickShowPassword}
+            v={values}
+            p={datas}
+            ff={handleOnChanges}
+            f={handleOnChange}
+            d={datas.basic}
+            i={datas.info}
+          />
+        );
+      case 1:
+        return <ContactDetails f={handleOnChange} d={datas.contact} />;
+      case 2:
+        return (
+          <LocationDetails
+            f={handleLocationSelect}
+            a={datas.address}
+            c={datas.location}
+          />
+        );
+
+      case 3:
+        return (
+          <TradingHoursDetails
+            f={handleTimeChange}
+            d={datas.times}
+            days={days}
+          />
+        );
+      case 4:
+        return <ConfirmDetails d={datas} />;
+
+      default:
+        return "Unknown step";
     }
-    return <div></div>;
   }
 
   const handleNext = () => {
@@ -173,7 +213,6 @@ const RegBusiness = () => {
     setActiveStep(0);
   };
 
-  console.log(typeAccReg);
   return (
     <Container className="my-5">
       <h1>Regsiter Business Account</h1>
@@ -191,9 +230,12 @@ const RegBusiness = () => {
       <div>
         {activeStep === steps.length ? (
           <div>
-            <Button onClick={handleReset}>Reset</Button>
             <Typography>All steps completed - you&apos;re finished</Typography>
-            <Button className="mx-auto" variant="primary">
+            <Button
+              className="mx-auto"
+              variant="primary"
+              href="/business/login"
+            >
               Go To Login
             </Button>
           </div>
@@ -203,9 +245,19 @@ const RegBusiness = () => {
               <Button disabled={activeStep === 0} onClick={handleBack}>
                 Back
               </Button>
-              <Button variant="contained" color="primary" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Confirm" : "Next"}
-              </Button>
+              {completedSteps() === steps.length - 1 ? (
+                <Button variant="contained" color="primary" onClick={sendReg}>
+                  Confirm
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                >
+                  Next
+                </Button>
+              )}
               <Typography>{getStepContent(activeStep)}</Typography>
             </Container>
           </div>

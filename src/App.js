@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
-import configureStore from "./Redux/store";
+import store from "./Redux/store";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -12,11 +12,12 @@ import NavBar from "./Components/NavBar";
 import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
+import LoginPage from "./Components/LoginAndRegister/LoginPage";
 
 function App() {
   return (
     <>
-      <Provider store={configureStore}>
+      <Provider store={store}>
         <NavBar />
         <Router>
           <Route path="/" exact component={LandingPage} />
@@ -26,7 +27,12 @@ function App() {
             render={(routeProps) => <HomePage {...routeProps} />}
           ></Route>
           <Route
+            path="/login"
+            render={(routerProps) => <LoginPage routerProps={routerProps} />}
+          />
+          <Route
             path="/business/:userId"
+            exact
             render={(routeProps) => <ProfilePage {...routeProps} />}
           ></Route>
 

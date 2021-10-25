@@ -2,89 +2,78 @@ import { StayCurrentLandscape } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Row, Col } from "react-bootstrap";
 
 const ContactDetails = ({ d, f }) => {
-  const dispatch = useDispatch();
-  const form = useSelector((s) => s.formBusiness);
-
   return (
     <>
       <TextField
         placeholder="Enter email visible for customers"
-        id="contact"
-        name="email"
+        id="email"
+        name="contact"
         label="Email"
         variant="standard"
-        helperText="*Required - This email will be shared with customers"
+        helperText="This email will be shared with customers"
         onChange={f}
         value={d.email}
-        margin="normal"
         fullWidth
-      />
-      <TextField
-        placeholder="Enter email visible for customers"
-        id="contact"
-        name="cell"
-        label="MObile"
-        variant="standard"
-        helperText="*Required - This email will be shared with customers"
-        onChange={f}
-        value={d.cell}
-        margin="normal"
-        fullWidth
+        required
       />
 
-      {/* <Row>
+      <Row>
         <Col md={6}>
           <TextField
-            name="cell"
+            id="cell"
+            name="contact"
             placeholder="Enter mobile"
             label="Mobile number"
             variant="standard"
             helperText="Required"
-            onChange={handleChange}
-            value={contact.cell}
+            onChange={f}
+            value={d.cell}
             fullWidth
           />
         </Col>
         <Col md={6}>
           <TextField
-            name="tel"
+            id="tel"
+            name="contact"
             placeholder="Enter landline"
             label="Landline number"
             variant="standard"
             helperText="Optional"
-            onChange={handleChange}
-            value={contact.tel}
+            onChange={f}
+            value={d.tel}
             fullWidth
           />
         </Col>
         <Col md={6}>
           <TextField
-            name="insta"
+            id="insta"
+            name="contact"
             placeholder="Enter WhatsApp Number"
             label="Mobile number"
             variant="standard"
             helperText="Optional"
-            onChange={handleChange}
-            value={contact.insta}
+            onChange={f}
+            value={d.insta}
             fullWidth
           />
         </Col>
         <Col md={6}>
           <TextField
-            name="whatsapp"
+            id="whatsapp"
+            name="contact"
             placeholder="Enter whatsApp number"
             label="WhatsApp"
             variant="standard"
             helperText="Optional"
-            onChange={handleChange}
-            value={contact.whatsapp}
+            onChange={f}
+            value={d.whatsapp}
             fullWidth
           />
         </Col>
       </Row>
-      <Button onClick={handleChange}> store</Button> */}
     </>
   );
 };

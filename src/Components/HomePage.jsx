@@ -1,61 +1,59 @@
 import { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { Container, Jumbotron, Col, Spinner } from "react-bootstrap";
-import NewStores from "./ClientHomePage/NewStores";
-import PopularStores from "./ClientHomePage/PopularStores";
+import { Map, GoogleApiWrapper } from "google-maps-react";
 import SavedStores from "./ClientHomePage/SavedStores";
-import Map from "./ClientHomePage/Map";
-
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
-function HomePage({ props }) {
-  const URL = process.env.REACT_APP_API_URL;
-  const [usersData, setUsersData] = useState([]);
-  const [isMe, setIsMe] = useState(false);
-  const [loading, setLoading] = useState(false);
+import { fetchUsers } from "../Redux";
 
-  const getAllUsers = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${URL}/business`);
-      if (response.ok) {
-        const usersData = await response.json();
-        await setUsersData(usersData);
-        setLoading(false);
-        console.log(usersData);
-      } else {
-        throw new Error("Could access data, but something went wrong");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+function HomePage({ props, fetchUsers, usersData }) {
   useEffect(() => {
-    getAllUsers();
-  }, [usersData, loading]);
+    fetchUsers();
+  }, []);
 
-  const ss = Object.keys(usersData);
-  return (
+  return usersData.loading ? (
+    <Spinner animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
+  ) : usersData.error ? (
+    <h1>{usersData.error}</h1>
+  ) : (
     <Container className="homepage">
       <Jumbotron>
         <Col>
           <h1>Find & Buy Local</h1>
 
-          <SearchBar />
+          <SearchBar usersData={usersData} />
         </Col>
       </Jumbotron>
-      {usersData & loading ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      ) : (
-        <Container>
-          <Map />
-          <SavedStores user={usersData} />
-        </Container>
-      )}
+
+      <Container>
+        <div>
+          {usersData &&
+            usersData.users &&
+            usersData.users.map((user) => (
+              <Link to={`/business/${user._id}`}>
+                {" "}
+                <p>{user.email}</p>
+              </Link>
+            ))}
+        </div>
+        {/* <SavedStores user={usersData} /> */}
+      </Container>
     </Container>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    usersData: state.users,
+  };
+};
 
-export default HomePage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUsers: () => dispatch(fetchUsers()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

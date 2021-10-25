@@ -27,3 +27,14 @@
   align-items: center;
   justify-content: center;
 }
+/* CONTACT */
+.time-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#trading-day {
+  text-transform: capitalize;
+}

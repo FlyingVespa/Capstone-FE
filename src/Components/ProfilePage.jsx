@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, connect } from "react-redux";
 import {
   Jumbotron,
   Image,
@@ -17,19 +17,28 @@ import Services from "./ProfilePage/Services";
 import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
-import Map from "./ProfilePage/Map";
-
+// import Map from "./ProfilePage/Map";
+import setLoading from "../Redux/users/userAction.js";
 import MapImg from "../map.jpg";
+import { USER_LOGGEDIN } from "../Redux/users/userTypes";
+// import fetchLoggedInUser from "../Redux/users/userAction";
 // import {REACT_APP_API_URL, REACT_APP_MONGO_DB} from "../env"
 // import { getUserData } from "./crud.js";
 
 const ProfilePage = (props) => {
-  const select = useSelector((s) => s.selected);
+  const dispatch = useDispatch();
+  const user = useSelector((s) => s.formBusiness);
   const userId = props.match.params.userId;
   const [loading, setLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-  const [profileData, setProfileData] = useState({});
   const [userData, setUserData] = useState({
+    _id: "",
+    url: "",
+    email: "",
+    basic: {
+      name: "",
+      category: "",
+      username: "",
+    },
     contact: {
       email: "",
       tel: "",
@@ -37,14 +46,6 @@ const ProfilePage = (props) => {
       insta: "",
       whatsapp: "",
       twitter: "",
-    },
-    basic: {
-      name: "",
-      category: "",
-      email: "",
-      shipping: false,
-      services: [],
-      username: "",
     },
     times: {
       monday: { trading: true, open: "09:00", closed: "17:00" },
@@ -58,6 +59,7 @@ const ProfilePage = (props) => {
     },
     info: {
       services: [],
+      shipping: false,
       bio: null,
       img_logo: null,
       img_user: null,
@@ -78,10 +80,49 @@ const ProfilePage = (props) => {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${URL}/business/${userId}`);
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${URL}/business/me`, {
+        method: "GET",
+        headers: {
+          // get localstorage bearer and send in headers
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
         const userData = await response.json();
         await setUserData(userData);
+        await dispatch({ type: "SET_USER_DATA", payload: userData });
+        await dispatch({ type: USER_LOGGEDIN, payload: true });
+        await dispatch({ type: "SET_LOADING", payload: !loading });
+        await console.log(user);
+        setLoading(false);
+        // console.log(userData);
+        props.routerProps.history.push("/business/login");
+      } else {
+        throw new Error("Could access data, but something went wrong");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const LogoutUser = async () => {
+    setLoading(true);
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${URL}/business/logout`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        await setUserData(userData);
+      
         setLoading(false);
 
         console.log(userData);
@@ -121,7 +162,7 @@ const ProfilePage = (props) => {
                 </Col>
                 <Col>
                   <h1>
-                    {userData.basic.name}{" "}
+                    {userData.basic.name}
                     <IoIosStarOutline className="icon star" />
                   </h1>
                   <span>
@@ -134,6 +175,7 @@ const ProfilePage = (props) => {
                 </Col>
               </Row>
             </Container>
+            <Button onClick={LogoutUser}> logout</Button>
             <About about={userData.info.bio} />
             <hr className="" />
             <Services services={userData.info.services} />
@@ -145,6 +187,7 @@ const ProfilePage = (props) => {
             <StockList promo={userData.info} />
             <Button>Create Shopping List</Button>
             <hr className="" id="location" />
+            {userData.basic.name}
             <Image className="profile-map" src={MapImg} />
           </Container>
         </>
@@ -152,5 +195,15 @@ const ProfilePage = (props) => {
     </div>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    loggedin: state.users.loggedin,
+  };
+};
 
-export default ProfilePage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // users: () => dispatch(fetchLoggedInUser()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

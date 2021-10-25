@@ -8,10 +8,9 @@ import reg from "../../Reg.png";
 
 import RegBusiness from "./RegBusiness";
 
-function RegsiterPage({ routerProps }) {
-  const { match, location, history } = routerProps;
-  let urlPath = location.pathname;
-  const [typeAccReg, setTypeAccReg] = useState("business");
+function RegsiterPage(routerProps) {
+  let urlPath = routerProps.location.pathname;
+  const [typeAccReg, setTypeAccReg] = useState("");
 
   return (
     <div>
@@ -21,20 +20,9 @@ function RegsiterPage({ routerProps }) {
             <Image src={reg} style={{ width: "100%" }} />
           </Col>
           <Col md={7}>
-            <h1>Regsiter</h1>
             <div>You are now at {urlPath}</div>
-            <Button>
-              <Link to="/register/business" exact replace>
-                Register Business
-              </Link>
-            </Button>
-            <Button>
-              <Link to="/register/user" exact replace>
-                Register UserAcc
-              </Link>
-            </Button>
 
-            <RegBusiness />
+            <RegBusiness prop={routerProps} />
           </Col>
         </Row>
       </Container>
