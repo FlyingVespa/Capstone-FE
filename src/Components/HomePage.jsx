@@ -7,6 +7,7 @@ import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
 import { fetchUsersReq } from "../Redux/";
 import axios from "axios";
+
 function HomePage({ props }) {
   const URL = process.env.REACT_APP_API_URL;
   const API_KEY = process.env.REACT_APP_API_KEY;
@@ -14,7 +15,9 @@ function HomePage({ props }) {
   const [isMe, setIsMe] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const getAllBusinessUsers = async () => {};
+  const getAllBusinessUsers = async () => {
+    axios()
+  };
 
   const getAllUsers = async () => {
     try {
