@@ -11,6 +11,7 @@ function SavedStores({ user }) {
   // const { pathname } = useLocation();
   const [carouselIndex, setIndex] = useState(0);
 
+  const users = Object.keys(user);
   const handleCarouselSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
   };
@@ -30,51 +31,35 @@ function SavedStores({ user }) {
   return (
     <Container className="savedStores">
       <p>Saved Stores</p>
-      <Carousel
-        touch="true"
-        variant="dark"
-        interval={15000}
-        activeIndex={carouselIndex}
-        onSelect={handleCarouselSelect}
-      >
-        <Carousel.Item>
-          <Row>
-            {user.slice(0, 6).map((u) => (
-              <Col>
-                <Link to={`/business/${u._id}`}>
-                  <Image
-                    sx={{ width: 80, height: 80 }}
-                    alt="Local_Business"
-                    src={u.info.img_user}
-                    name={u._id}
-                    onClick={handleSelect}
-                  />
-                </Link>
-                <p>{u.basic.name}</p>
-                {/* <p>{u.location?.city}</p> */}
-              </Col>
-            ))}
-          </Row>
-        </Carousel.Item>
-        <Carousel.Item>
-          <Row>
-            {user.slice(4, 10).map((u) => (
-              <Col>
-                <Link to={`/business/${u._id}`}>
-                  <Image
-                    alt="Local_Business"
-                    src={u.info.img_user}
-                    name={u._id}
-                    onClick={handleSelect}
-                  />
-                </Link>
-                <p>{u.basic.name}</p>
-                {/* <p>{u.location?.city}</p> */}
-              </Col>
-            ))}
-          </Row>
-        </Carousel.Item>
-      </Carousel>
+      {user && (
+        <Carousel
+          touch="true"
+          variant="dark"
+          interval={15000}
+          activeIndex={carouselIndex}
+          onSelect={handleCarouselSelect}
+        >
+          <Carousel.Item>
+            <Row>
+              {users.map((u) => (
+                <Col>
+                  <Link to={`/business/${u._id}`}>
+                    {/* <Image
+                      sx={{ width: 80, height: 80 }}
+                      alt="Local_Business"
+                      src={u.info.img_user}
+                      name={u._id}
+                      onClick={handleSelect}
+                    /> */}
+                  </Link>
+                  <p>{u.email}</p>
+                  {/* <p>{u.location?.city}</p> */}
+                </Col>
+              ))}
+            </Row>
+          </Carousel.Item>
+        </Carousel>
+      )}
       {/* <Row>
         {user.map((a) => (
           <Col>

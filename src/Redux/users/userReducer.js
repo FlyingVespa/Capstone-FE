@@ -1,26 +1,58 @@
 import { fetchUsersReq, fetchLoggedInUser, setLoading } from "./userAction";
 import {
+  FETCH_LOGGED_USER_FAILURE,
   FETCH_LOGGED_USER_REQUEST,
+  FETCH_LOGGED_USER_SUCCESS,
+  FETCH_USERS_FAILURE,
   FETCH_USERS_REQUEST,
-  SET_LOADING_STATUS,
+  FETCH_USERS_SUCCESS,
+  USER_LOGGEDIN,
 } from "./userTypes";
 
 const intitialState = {
-  allBusinesses: null,
+  users: [],
+  loggedin: false,
   loggedUser: null,
   loading: false,
-  selected: null,
-  showPassword: false,
+  loadingSingle: false,
+  error: "",
 };
 
 const userReducer = (state = intitialState, action) => {
   switch (action.type) {
     case FETCH_USERS_REQUEST:
-      return { ...state, allBusinesses: action.payload };
+      return { ...state, loading: true };
+
+    case FETCH_USERS_SUCCESS:
+      return {
+        loading: false,
+        users: action.payload,
+        error: "",
+      };
+    case FETCH_USERS_FAILURE:
+      return {
+        loading: false,
+        users: [],
+        error: action.payload,
+      };
+
     case FETCH_LOGGED_USER_REQUEST:
-      return { ...state, loggedUser: action.payload };
-    case SET_LOADING_STATUS:
-      return { ...state, users: action.payload };
+      return { ...state, loadingSingle: true };
+    case FETCH_LOGGED_USER_SUCCESS: {
+      return {
+        loadingSingle: false,
+        loggedUser: action.payload,
+        error: "",
+      };
+    }
+    case FETCH_LOGGED_USER_FAILURE:
+      return {
+        loadingSingle: false,
+        loggedUser: "",
+        error: action.payload,
+      };
+    case USER_LOGGEDIN:
+      return { ...state, loggedin: action.payload };
     default:
       return state;
   }

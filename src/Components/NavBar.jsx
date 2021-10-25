@@ -6,9 +6,7 @@ import { Button, Avatar } from "@mui/material";
 import logo from "../shop.png";
 
 function NavBar() {
-  const select = useSelector((s) => s.selected);
-
-  // 6164515b5ab82a5ed833de3a
+  const loggedin = useSelector((s) => s.users.loggedin);
   return (
     <Navbar className="navbar-top" expand="lg">
       <Container>
@@ -19,32 +17,44 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href={`/business/${select}`}>Technologies Used</Nav.Link>
             <Nav.Link href="/register">regsiter</Nav.Link>
           </Nav>
 
-          {}
           <Nav>
-            <Button
-              className="mx-2"
-              variant="contained"
-              color="success"
-              variant="outlined"
-              size="medium"
-              href="/login"
-              exact
-            >
-              Login
-            </Button>
-            <Button
-              href="/register"
-              className="mx-2"
-              variant="contained"
-              color="success"
-              size="medium"
-            >
-              Sign Up Free
-            </Button>
+            {!loggedin ? (
+              <>
+                <Button
+                  className="mx-2"
+                  variant="contained"
+                  color="success"
+                  variant="outlined"
+                  size="medium"
+                  href="/login"
+                  exact
+                >
+                  Login
+                </Button>
+                <Button
+                  href="/register"
+                  className="mx-2"
+                  variant="contained"
+                  color="success"
+                  size="medium"
+                >
+                  Sign Up Free
+                </Button>
+              </>
+            ) : (
+              <Button
+                href="/logout"
+                className="mx-2"
+                variant="contained"
+                color="success"
+                size="medium"
+              >
+                Logout
+              </Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

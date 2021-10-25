@@ -46,7 +46,6 @@ const LoginPage = ({ routerProps }) => {
         const json = await res.json();
         console.log(json);
         localStorage.setItem("accessToken", json.accessToken);
-
         routerProps.history.push("/business/me");
       } else {
       }
@@ -62,6 +61,7 @@ const LoginPage = ({ routerProps }) => {
           <Col></Col>
           <Col>
             <TextField
+              required
               id="email"
               name="basic"
               className="my-1"
@@ -69,6 +69,7 @@ const LoginPage = ({ routerProps }) => {
               placeholder="Enter Your email used for login"
               label="Account Email"
               value={userEmail}
+              placeholder="test@test.com"
               helperText="*Required - not shared with public"
               fullWidth
               onChange={(e) => setUserEmail(e.target.value)}
@@ -77,10 +78,12 @@ const LoginPage = ({ routerProps }) => {
               Password
             </InputLabel>
             <Input
+              required
               fullWidth
               label="password"
               name="basic"
               id="password"
+              placeholder="1234"
               type={values.showPassword ? "text" : "password"}
               value={userPassword.password}
               onChange={(e) => setUserPassword(e.target.value)}
