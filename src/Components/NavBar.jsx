@@ -1,8 +1,8 @@
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
-// import { animated, useTransition } from "react-spring";
+import {Link} from "react-router-dom";
 import { Button, Avatar } from "@mui/material";
-// import { useState } from "react";
+
 import logo from "../shop.png";
 
 function NavBar() {
@@ -45,12 +45,13 @@ function NavBar() {
                 </Button>
               </>
             ) : (
-              <Button
-                href="/logout"
+              <Button 
+                to="/logout"
                 className="mx-2"
                 variant="contained"
                 color="success"
                 size="medium"
+            
               >
                 Logout
               </Button>

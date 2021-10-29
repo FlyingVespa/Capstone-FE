@@ -178,11 +178,12 @@ const RegBusiness = (routerProps) => {
         return <ContactDetails f={handleOnChange} d={datas.contact} />;
       case 2:
         return (
-          <LocationDetails
-            f={handleLocationSelect}
-            a={datas.address}
-            c={datas.location}
-          />
+          // <LocationDetails
+          //   f={handleLocationSelect}
+          //   a={datas.address}
+          //   c={datas.location}
+          // />
+          <h1>hello</h1>
         );
 
       case 3:
