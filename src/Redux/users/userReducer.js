@@ -5,6 +5,7 @@ import {
   FETCH_USERS_FAILURE,
   FETCH_USERS_REQUEST,
   FETCH_USERS_SUCCESS,
+  REGISTER_BUSINESS_USER,
   USER_LOGGEDIN,
 } from "./userTypes";
 
@@ -15,6 +16,7 @@ const intitialState = {
   loading: false,
   loadingSingle: false,
   error: "",
+  registerBusiness:"",
 };
 
 const userReducer = (state = intitialState, action) => {
@@ -50,6 +52,8 @@ const userReducer = (state = intitialState, action) => {
         loggedUser: "",
         error: action.payload,
       };
+    case REGISTER_BUSINESS_USER:
+      return { ...state, registerBusiness: action.payload };
     case USER_LOGGEDIN:
       return { ...state, loggedin: action.payload };
     default:

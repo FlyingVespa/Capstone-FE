@@ -9,13 +9,13 @@ const ContactDetails = ({ d, f }) => {
     <>
       <TextField
         placeholder="Enter email visible for customers"
-        id="email"
+        id="pub_email"
         name="contact"
         label="Email"
         variant="standard"
         helperText="This email will be shared with customers"
         onChange={f}
-        value={d.email}
+        value={d.pub_email}
         fullWidth
         required
       />

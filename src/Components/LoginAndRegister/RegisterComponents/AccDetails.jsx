@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 
 const AccDetails = ({
-  values,
   datas,
   handleChange,
   handleMouseDownPassword,

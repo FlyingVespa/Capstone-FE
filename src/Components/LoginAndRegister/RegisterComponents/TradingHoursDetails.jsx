@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 
-const TradingHoursDetails = ({ d, f, days, key, c }) => {
+const TradingHoursDetails = ({ d, f, days}) => {
   const inputLProps = { shrink: true };
   const inputProps = { step: 300 };
+  // const days = Object.keys(d.times);
+
   return (
     <div className="tradinghours-details">
       <FormControl component="fieldset" variant="standard">

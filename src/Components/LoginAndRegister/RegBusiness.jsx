@@ -32,42 +32,41 @@ const getSteps = () => {
 
 const RegBusiness = (routerProps) => {
   const dispatch = useDispatch();
-  const URL = process.env.REACT_APP_API_URL;
-  // const state =
-  const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState({});
-  const [loading, setLoading] = useState({});
-  const steps = getSteps();
-  const [values, setValues] = useState({
-    showPassword: false,
+  const dispatchData = () =>   dispatch({
+    type: "REGISTER_BUSINESS_USER",
+    payload: datas,
   });
+  const URL = process.env.REACT_APP_API_URL;
+  const helper = useSelector((s) => s.helper.activeStep);
+    const [loading, setLoading] = useState({});
+  const steps = getSteps();
   const [datas, setData] = useState({
-    password: "",
-    email: "",
-    businessname: "",
-    category: "",
+    password: "1234",
+    email: "default@test.com",
+    businessname: "Default",
+    category: "Default",
     shipping: false,
-    username: "",
-    url: "",
-    services: "",
-    bio: "",
+    username: "Default",
+    url: "Default",
+    services: "Default",
+    bio: "Default Default Default Default",
     img_log: "",
     img_banner: "",
     img_user: "",
-    address: "",
+    address: "Default",
     location: {
       lat: null,
       lng: null,
     },
-      contact: {
-      email: "",
-      tel: "",
-      cell: "",
-      insta: "",
-      whatsapp: "",
-      twitter: "",
+    contact: {
+      pub_email: "Default@test.com",
+      tel: "12325435",
+      cell: "154351343",
+      insta: "125334252",
+      whatsapp: "1534543",
+      twitter: "12543@gs",
     },
-     times: {
+    times: {
       monday: { trading: true, open: "09:15", closed: "16:00" },
       tuesday: { trading: true, open: "09:15", closed: "16:00" },
       wednesday: { trading: true, open: "09:15", closed: "16:00" },
@@ -77,56 +76,24 @@ const RegBusiness = (routerProps) => {
       sunday: { trading: true, open: "09:15", closed: "16:00" },
       public: { trading: true, open: "09:15", closed: "16:00" },
     },
-    });
-
-  const sendReg = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(`${URL}/business/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datas),
-      });
-      if (response.ok) {
-        setLoading(false);
-        console.log(datas);
-      } else {
-        throw new Error("Could send data, but something went wrong");
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
+  });
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const days = Object.keys(datas.times);
 
-  const handleOnChange = ({ target }) => {
+  const handleContactChange = ({ target }) => {
     setData({
       ...datas,
       [target.name]: { ...datas[target.name], [target.id]: target.value },
     });
-    dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
+    dispatchData();
   };
   const handleChange = ({ target }) => {
     setData({
       ...datas,
       [target.id]: target.value,
     });
-    dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
+    dispatchData();
   };
   const handleTimeChange = ({ target }) => {
     setData({
@@ -139,6 +106,7 @@ const RegBusiness = (routerProps) => {
         },
       },
     });
+    dispatchData();
   };
 
   const handleLocationSelect = async (value) => {
@@ -149,26 +117,32 @@ const RegBusiness = (routerProps) => {
       address: value,
       location: await getLatLng(results[0]),
     });
-  };
-  const completedSteps = () => {
-    return Object.keys(completed).length;
+    dispatch({
+      type: "REG_BUSINESS_CONTACT",
+      payload: datas,
+    });
   };
 
-  function getStepContent(step) {
+
+  const handleNext = () => {
+    dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
+  };
+
+  const handlePrev = () => {
+    dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
+  };
+  const getStepContent = (step) => {
     switch (step) {
       case 0:
         return (
           <AccDetails
             handleMouseDownPassword={handleMouseDownPassword} // to add to redux
-            handleClickShowPassword={handleClickShowPassword} // to add to redux
-            values={values}
             datas={datas}
             handleChange={handleChange}
-          
           />
         );
       case 1:
-        return <ContactDetails f={handleOnChange} d={datas.contact} />;
+        return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
         return (
           // <LocationDetails
@@ -184,33 +158,41 @@ const RegBusiness = (routerProps) => {
           <TradingHoursDetails
             f={handleTimeChange}
             d={datas.times}
-            days={days}
+            days={Object.keys(datas.times)}
           />
         );
       case 4:
-        return <ConfirmDetails d={datas} />;
+        return <ConfirmDetails details= {datas}/>;
 
       default:
         return "Unknown step";
     }
-  }
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const sendReg = async () => {
+    try {
+      const response = await fetch(`${URL}/business`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datas),
+      });
+      if (response.ok) {
+        setLoading(false);
+        console.log("Success, REgsitered");
+      } else {
+        throw new Error("Could send data, but something went wrong");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
   return (
+    
     <Container className="my-5">
       <h1>Regsiter Business Account</h1>
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={helper}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
@@ -222,25 +204,25 @@ const RegBusiness = (routerProps) => {
         })}
       </Stepper>
       <div>
-        {activeStep === steps.length ? (
+        {helper === steps.length ? (
           <div>
-            <Typography>All steps completed - you&apos;re finished</Typography>
+            <Typography>All steps completed - ready to finalize registration</Typography>
             <Button
               className="mx-auto"
               variant="primary"
-              href="/business/login"
+               onClick={sendReg}
             >
-              Go To Login
+            REGISTER
             </Button>
           </div>
         ) : (
           <div>
             <Container className="float-right my-4">
-              <Button disabled={activeStep === 0} onClick={handleBack}>
+              <Button disabled={helper === 0} onClick={handlePrev}>
                 Back
               </Button>
-              {completedSteps() === steps.length - 1 ? (
-                <Button variant="contained" color="primary" onClick={sendReg}>
+              { helper  === 4 ? (
+                <Button variant="contained" color="primary" onClick={() => {if(window.confirm("Sure everything is correct?, Operation hours, location can be changed later details can be changed later.")){handleNext()}}}>
                   Confirm
                 </Button>
               ) : (
@@ -252,7 +234,7 @@ const RegBusiness = (routerProps) => {
                   Next
                 </Button>
               )}
-              <Typography>{getStepContent(activeStep)}</Typography>
+              <Typography>{getStepContent(helper)}</Typography>
             </Container>
           </div>
         )}
