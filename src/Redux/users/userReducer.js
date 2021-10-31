@@ -1,4 +1,3 @@
-import { fetchUsersReq, fetchLoggedInUser, setLoading } from "./userAction";
 import {
   FETCH_LOGGED_USER_FAILURE,
   FETCH_LOGGED_USER_REQUEST,

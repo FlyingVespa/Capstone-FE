@@ -6,18 +6,7 @@ const ConfirmDetails = ({ d }) => {
   const basic = useSelector((s) => s.basic);
   const location = useSelector((s) => s.location);
   const contact = useSelector((s) => s.contact);
-  // const times = useSelector((s) => s.times);
 
-  // const continues = (e) => {
-  //   e.preventDefault();
-  //   // PROCESS FORM //
-  //   props.nextStep();
-  // };
-
-  // const back = (e) => {
-  //   e.preventDefault();
-  //   props.prevStep();
-  // };
   const times = Object.keys(d.times);
   const data = Object.keys(d.basic);
 

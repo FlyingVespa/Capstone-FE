@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
   TextField,
-  Autocomplete,
-  FormControl,
   InputAdornment,
   Input,
   IconButton,
@@ -15,15 +13,17 @@ import { Row, Col } from "react-bootstrap";
 const AccDetails = ({
   values,
   datas,
-  handleOnChange,
   handleChange,
-  handleClickShowPassword,
   handleMouseDownPassword,
-  handlePasswordChange,
 }) => {
-  // const dispatch = useDispatch();
-  // const form = useSelector((s) => s.formBusiness);
-  const {bio, category,businessname, email, username, url, password} = datas
+  const dispatch = useDispatch();
+  const vpassword = useSelector((s) => s.helper.password_visible);
+const handleClickShowPassword = () => {
+  dispatch({type: "SHOW_PASSWORD", payload: !vpassword})
+}
+
+
+  const { bio, category, businessname, email, username, url, password } = datas;
   return (
     <div className="my-5">
       <TextField
@@ -68,7 +68,7 @@ const AccDetails = ({
             label="password"
             name="pasword"
             id="password"
-            type={values.showPassword ? "text" : "password"}
+            type={vpassword ? "text" : "password"}
             value={password}
             onChange={handleChange}
             endAdornment={
@@ -78,7 +78,7 @@ const AccDetails = ({
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                 >
-                  {datas.showPassword ? <VisibilityOff /> : <Visibility />}
+                  {vpassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             }
@@ -87,7 +87,6 @@ const AccDetails = ({
       </Row>
       <Row>
         <Col>
-  
           <TextField
             name="basic"
             id="url"

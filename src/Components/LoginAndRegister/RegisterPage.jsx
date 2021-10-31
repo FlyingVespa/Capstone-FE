@@ -1,8 +1,6 @@
 import React from "react";
-import { useState } from "react";
-import { Container, Button } from "@mui/material";
-import { Link, withRouter } from "react-router-dom";
-import { Col, Row, Image } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
+import { Col, Row, Image, Container } from "react-bootstrap";
 
 import reg from "../../Reg.png";
 
@@ -10,7 +8,7 @@ import RegBusiness from "./RegBusiness";
 
 function RegsiterPage(routerProps) {
   let urlPath = routerProps.location.pathname;
-  const [typeAccReg, setTypeAccReg] = useState("");
+
 
   return (
     <div>

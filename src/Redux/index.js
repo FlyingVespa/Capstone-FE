@@ -1,2 +1,3 @@
 export * from "./users/userAction.js";
-export { fetchAllProducts } from "./products/productsAction.js";
+export * from "./products/productsAction.js";
+export * from "./helpers/helpersAction.js";

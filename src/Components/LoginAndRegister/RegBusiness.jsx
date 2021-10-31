@@ -160,7 +160,6 @@ const RegBusiness = (routerProps) => {
         return (
           <AccDetails
             handleMouseDownPassword={handleMouseDownPassword} // to add to redux
- 
             handleClickShowPassword={handleClickShowPassword} // to add to redux
             values={values}
             datas={datas}
