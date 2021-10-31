@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState,  } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   StepLabel,
@@ -19,6 +19,7 @@ import ConfirmDetails from "./RegisterComponents/ConfirmDetails";
 import LocationDetails from "./RegisterComponents/LocationDetails";
 import AccDetails from "./RegisterComponents/AccDetails";
 import TradingHoursDetails from "./RegisterComponents/TradingHoursDetails";
+import axios from "axios";
 
 const getSteps = () => {
   return [
@@ -32,13 +33,14 @@ const getSteps = () => {
 
 const RegBusiness = (routerProps) => {
   const dispatch = useDispatch();
-  const dispatchData = () =>   dispatch({
-    type: "REGISTER_BUSINESS_USER",
-    payload: datas,
-  });
+  const dispatchData = () =>
+    dispatch({
+      type: "REGISTER_BUSINESS_USER",
+      payload: datas,
+    });
   const URL = process.env.REACT_APP_API_URL;
   const helper = useSelector((s) => s.helper.activeStep);
-    const [loading, setLoading] = useState({});
+  const [loading, setLoading] = useState({});
   const steps = getSteps();
   const [datas, setData] = useState({
     password: "1234",
@@ -77,9 +79,6 @@ const RegBusiness = (routerProps) => {
       public: { trading: true, open: "09:15", closed: "16:00" },
     },
   });
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
   const handleContactChange = ({ target }) => {
     setData({
@@ -122,25 +121,35 @@ const RegBusiness = (routerProps) => {
       payload: datas,
     });
   };
-
-
   const handleNext = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
   };
-
   const handlePrev = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
   };
+
+  const config = {
+    method: "post",
+    url: `${URL}/business`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: datas,
+  };
+
+  const regsiterBusiness = () => {
+    axios(config)
+      .then((res) => {
+        JSON.stringify(res.data);
+        console.log("Success, Regsitered", res);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return (
-          <AccDetails
-            handleMouseDownPassword={handleMouseDownPassword} // to add to redux
-            datas={datas}
-            handleChange={handleChange}
-          />
-        );
+        return <AccDetails datas={datas} handleChange={handleChange} />;
       case 1:
         return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
@@ -162,34 +171,14 @@ const RegBusiness = (routerProps) => {
           />
         );
       case 4:
-        return <ConfirmDetails details= {datas}/>;
+        return <ConfirmDetails details={datas} />;
 
       default:
         return "Unknown step";
     }
   };
-  const sendReg = async () => {
-    try {
-      const response = await fetch(`${URL}/business`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datas),
-      });
-      if (response.ok) {
-        setLoading(false);
-        console.log("Success, REgsitered");
-      } else {
-        throw new Error("Could send data, but something went wrong");
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
+
   return (
-    
     <Container className="my-5">
       <h1>Regsiter Business Account</h1>
       <Stepper activeStep={helper}>
@@ -206,13 +195,18 @@ const RegBusiness = (routerProps) => {
       <div>
         {helper === steps.length ? (
           <div>
-            <Typography>All steps completed - ready to finalize registration</Typography>
+            <Typography>
+              All steps completed - ready to finalize registration
+            </Typography>
             <Button
               className="mx-auto"
               variant="primary"
-               onClick={sendReg}
+              onClick={regsiterBusiness}
             >
-            REGISTER
+              REGISTER
+            </Button>
+            <Button className="mx-auto" variant="danger">
+              Cancel
             </Button>
           </div>
         ) : (
@@ -221,8 +215,20 @@ const RegBusiness = (routerProps) => {
               <Button disabled={helper === 0} onClick={handlePrev}>
                 Back
               </Button>
-              { helper  === 4 ? (
-                <Button variant="contained" color="primary" onClick={() => {if(window.confirm("Sure everything is correct?, Operation hours, location can be changed later details can be changed later.")){handleNext()}}}>
+              {helper === 4 ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        "Sure everything is correct?, Operation hours, location can be changed later details can be changed later."
+                      )
+                    ) {
+                      handleNext();
+                    }
+                  }}
+                >
                   Confirm
                 </Button>
               ) : (
