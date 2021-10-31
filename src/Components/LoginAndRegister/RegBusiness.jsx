@@ -44,27 +44,30 @@ const RegBusiness = (routerProps) => {
   const [datas, setData] = useState({
     password: "",
     email: "",
-    basic: {
-      name: "",
-      category: "",
-      delivery: true,
-      username: "",
-      url: "",
+    businessname: "",
+    category: "",
+    shipping: false,
+    username: "",
+    url: "",
+    services: "",
+    bio: "",
+    img_log: "",
+    img_banner: "",
+    img_user: "",
+    address: "",
+    location: {
+      lat: null,
+      lng: null,
     },
-    contact: {
-      email: "s",
+      contact: {
+      email: "",
       tel: "",
       cell: "",
       insta: "",
       whatsapp: "",
       twitter: "",
     },
-    location: {
-      lat: null,
-      lng: null,
-    },
-    address: "",
-    times: {
+     times: {
       monday: { trading: true, open: "09:15", closed: "16:00" },
       tuesday: { trading: true, open: "09:15", closed: "16:00" },
       wednesday: { trading: true, open: "09:15", closed: "16:00" },
@@ -74,14 +77,7 @@ const RegBusiness = (routerProps) => {
       sunday: { trading: true, open: "09:15", closed: "16:00" },
       public: { trading: true, open: "09:15", closed: "16:00" },
     },
-    info: {
-      services: "",
-      bio: "",
-      img_log: "",
-      img_banner: "",
-      img_user: "",
-    },
-  });
+    });
 
   const sendReg = async (e) => {
     e.preventDefault();
@@ -125,7 +121,7 @@ const RegBusiness = (routerProps) => {
     });
     dispatch({ type: "REG_BUSINESS_CONTACT", payload: datas });
   };
-  const handleOnChanges = ({ target }) => {
+  const handleChange = ({ target }) => {
     setData({
       ...datas,
       [target.id]: target.value,
@@ -163,15 +159,13 @@ const RegBusiness = (routerProps) => {
       case 0:
         return (
           <AccDetails
-            handleMouseDownPassword={handleMouseDownPassword}
-            handlePasswordChange={handleOnChange}
-            handleClickShowPassword={handleClickShowPassword}
-            v={values}
-            p={datas}
-            ff={handleOnChanges}
-            f={handleOnChange}
-            d={datas.basic}
-            i={datas.info}
+            handleMouseDownPassword={handleMouseDownPassword} // to add to redux
+ 
+            handleClickShowPassword={handleClickShowPassword} // to add to redux
+            values={values}
+            datas={datas}
+            handleChange={handleChange}
+          
           />
         );
       case 1:

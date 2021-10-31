@@ -13,30 +13,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 
 const AccDetails = ({
-  v,
-  f,
-  d,
-  i,
-  p,
-  ff,
+  values,
+  datas,
+  handleOnChange,
+  handleChange,
   handleClickShowPassword,
   handleMouseDownPassword,
   handlePasswordChange,
 }) => {
   // const dispatch = useDispatch();
   // const form = useSelector((s) => s.formBusiness);
-
+  const {bio, category,businessname, email, username, url, password} = datas
   return (
     <div className="my-5">
       <TextField
-        id="name"
-        name="basic"
+        id="businessname"
         className="my-1"
         variant="standard"
         placeholder="Enter Your Business Name"
         label="Business Name"
-        value={p.basic.name}
-        onChange={f}
+        value={businessname}
+        onChange={handleChange}
         fullWidth
       />
 
@@ -46,22 +43,21 @@ const AccDetails = ({
         variant="standard"
         placeholder="Enter Your email used for login"
         label="Account Email"
-        value={p.email}
-        onChange={ff}
+        value={email}
+        onChange={handleChange}
         fullWidth
         helperText="*Required - not shared with public"
       />
       <Row>
         <Col>
           <TextField
-            name="basic"
             id="username"
             className="my-1"
             variant="standard"
             placeholder="Your preffered nickname?"
             label="Username"
-            value={p.basic.username}
-            onChange={f}
+            value={username}
+            onChange={handleChange}
           />
         </Col>
         <Col>
@@ -72,9 +68,9 @@ const AccDetails = ({
             label="password"
             name="pasword"
             id="password"
-            type={v.showPassword ? "text" : "password"}
-            value={p.password}
-            onChange={ff}
+            type={values.showPassword ? "text" : "password"}
+            value={password}
+            onChange={handleChange}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -82,7 +78,7 @@ const AccDetails = ({
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                 >
-                  {p.showPassword ? <VisibilityOff /> : <Visibility />}
+                  {datas.showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             }
@@ -91,7 +87,7 @@ const AccDetails = ({
       </Row>
       <Row>
         <Col>
-          {" "}
+  
           <TextField
             name="basic"
             id="url"
@@ -99,8 +95,8 @@ const AccDetails = ({
             variant="standard"
             placeholder="Enter Your preffered"
             label="Choose Custom Url"
-            value={d.url}
-            onChange={f}
+            value={url}
+            onChange={handleChange}
             fullWidth
             helperText="*Required - an address online where customers can find your business"
           />
@@ -112,8 +108,8 @@ const AccDetails = ({
             label="Bussines Category"
             variant="standard"
             placeholder="Tell us about you business"
-            value={d.category}
-            onChange={f}
+            value={category}
+            onChange={handleChange}
             multiline
             fullWidth
           />
@@ -125,8 +121,8 @@ const AccDetails = ({
         label="Describe the business"
         variant="standard"
         placeholder="Tell us about you business"
-        value={i.bio}
-        onChange={f}
+        value={bio}
+        onChange={handleChange}
         multiline
         fullWidth
       />

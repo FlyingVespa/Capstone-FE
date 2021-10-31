@@ -46,7 +46,7 @@ function NavBar() {
               </>
             ) : (
               <Button 
-                to="/logout"
+                href="/logout"
                 className="mx-2"
                 variant="contained"
                 color="success"
