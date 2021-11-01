@@ -1,98 +1,102 @@
+/*global google */
+
 import React from 'react'
-/*global google*/
 
+class LocationDetails extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = this.initialState()
+    this.handlePlaceSelect = this.handlePlaceSelect.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.autocomplete = null
+  }
 
-function LocationDetails() {
-  function initMap() {
-    const componentForm = [
-      'location',
-      'locality',
-      'administrative_area_level_1',
-      'country',
-      'postal_code',
-    ];
-    const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 11,
-      center: { lat: 37.4221, lng: -122.0841 },
-      mapTypeControl: false,
-      fullscreenControl: true,
-      zoomControl: true,
-      streetViewControl: true
-    });
-    const marker = new google.maps.Marker({map: map, draggable: false});
-    const autocompleteInput = document.getElementById('location');
-    const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
-      fields: ["address_components", "geometry", "name"],
-      types: ["address"],
-    });
-    autocomplete.addListener('place_changed', function () {
-      marker.setVisible(false);
-      const place = autocomplete.getPlace();
-      if (!place.geometry) {
-        // User entered the name of a Place that was not suggested and
-        // pressed the Enter key, or the Place Details request failed.
-        window.alert('No details available for input: \'' + place.name + '\'');
-        return;
-      }
-      renderAddress(place);
-      fillInAddress(place);
-    });
+  componentDidMount() {
+    this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), {})
 
-    function fillInAddress(place) {  // optional parameter
-      const addressNameFormat = {
-        'street_number': 'short_name',
-        'route': 'long_name',
-        'locality': 'long_name',
-        'administrative_area_level_1': 'short_name',
-        'country': 'long_name',
-        'postal_code': 'short_name',
-      };
-      const getAddressComp = function (type) {
-        for (const component of place.address_components) {
-          if (component.types[0] === type) {
-            return component[addressNameFormat[type]];
-          }
-        }
-        return '';
-      };
-      document.getElementById('location').value = getAddressComp('street_number') + ' '
-                + getAddressComp('route');
-      for (const component of componentForm) {
-        // Location field is handled separately above as it has different logic.
-        if (component !== 'location') {
-          document.getElementById(component).value = getAddressComp(component);
-        }
-      }
-    }
+    this.autocomplete.addListener("place_changed", this.handlePlaceSelect)
+  }
 
-    function renderAddress(place) {
-      map.setCenter(place.geometry.location);
-      marker.setPosition(place.geometry.location);
-      marker.setVisible(true);
+  initialState() {
+    return {
+      name: '',
+      street_address: '',
+      city: '',
+      state: '',
+      zip_code: '',
+      googleMapLink: ''
     }
   }
-  return (
-    <div>
-      <div class="card-container">
-      <div class="panel">
-        <div>
-          <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt=""/>
-          <span class="sb-title">Address Selection</span>
-        </div>
-        <input type="text" placeholder="Address" id="location"/>
-        <input type="text" placeholder="Apt, Suite, etc (optional)"/>
-        <input type="text" placeholder="City" id="locality"/>
-        <div class="half-input-container">
-          <input type="text" class="half-input" placeholder="State/Province" id="administrative_area_level_1"/>
-          <input type="text" class="half-input" placeholder="Zip/Postal code" id="postal_code"/>
-        </div>
-        <input type="text" placeholder="Country" id="country"/>
-        <button class="button-cta">Checkout</button>
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value})
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    // this.props.dispatch(addParlor(this.state))
+    this.clearForm()
+  }
+
+  handlePlaceSelect() {
+    let addressObject = this.autocomplete.getPlace()
+    let address = addressObject.address_components
+    this.setState({
+      name: addressObject.name,
+      street_address: `${address[0].long_name} ${address[1].long_name}`,
+      city: address[4].long_name,
+      state: address[6].short_name,
+      zip_code: address[8].short_name,
+      googleMapLink: addressObject.url
+    })
+  }
+
+  render() {
+    return(
+      <div>
+        <h1>Add New Parlor</h1>
+        <form onSubmit={this.handleSubmit}>
+          <input id="autocomplete"
+            className="input-field"
+            ref="input"
+            type="text"/>
+            <input 
+              name={"name"}
+              value={this.state.name}
+              placeholder={"Name"}
+              onChange={this.handleChange}
+            />
+            <input 
+              name={"street_address"}
+              value={this.state.street_address}
+              placeholder={"Street Address"}
+              onChange={this.handleChange}
+            />
+            <input 
+              name={"city"}
+              value={this.state.city}
+              placeholder={"City"}
+              onChange={this.handleChange}
+            />
+            <input
+              name={"state"}
+              value={this.state.state}
+              placeholder={"State"}
+              onChange={this.handleChange}
+            />
+            <input 
+              name={"zip_code"}
+              value={this.state.zip_code}
+              placeholder={"Zipcode"}
+              onChange={this.handleChange}
+            />
+            <button onSubmit={this.handleSubmit}>Submit</button>
+        </form>
       </div>
-      <div class="map" id="map"></div>
-    </div>
-    </div>
-  )
+    )
+  }
+
 }
 
 export default LocationDetails
