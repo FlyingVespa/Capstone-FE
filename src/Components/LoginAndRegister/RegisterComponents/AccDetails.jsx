@@ -75,7 +75,7 @@ const handleClickShowPassword = () => {
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
+                  onMouseDown={ e => { e.preventDefault()}}
                 >
                   {vpassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>

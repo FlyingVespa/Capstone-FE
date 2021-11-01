@@ -1,5 +1,5 @@
 import React from "react";
-import { useState,  } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   StepLabel,
@@ -10,10 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import "./RegisterComponents/businessRegister.css";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+
 import ContactDetails from "./RegisterComponents/ContactDetails";
 import ConfirmDetails from "./RegisterComponents/ConfirmDetails";
 import LocationDetails from "./RegisterComponents/LocationDetails";
@@ -108,19 +105,7 @@ const RegBusiness = (routerProps) => {
     dispatchData();
   };
 
-  const handleLocationSelect = async (value) => {
-    const results = await geocodeByAddress(value);
 
-    setData({
-      ...datas,
-      address: value,
-      location: await getLatLng(results[0]),
-    });
-    dispatch({
-      type: "REG_BUSINESS_CONTACT",
-      payload: datas,
-    });
-  };
   const handleNext = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
   };
@@ -153,14 +138,7 @@ const RegBusiness = (routerProps) => {
       case 1:
         return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
-        return (
-          // <LocationDetails
-          //   f={handleLocationSelect}
-          //   a={datas.address}
-          //   c={datas.location}
-          // />
-          <h1>hello</h1>
-        );
+        return <LocationDetails />;
 
       case 3:
         return (

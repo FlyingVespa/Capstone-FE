@@ -1,78 +1,98 @@
-import { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React from 'react'
+/*global google*/
 
-import countrylist from "../../../json/countries.json";
 
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import MapTest from "../../MapTest";
-import { useTheme } from "@mui/material/styles";
+function LocationDetails() {
+  function initMap() {
+    const componentForm = [
+      'location',
+      'locality',
+      'administrative_area_level_1',
+      'country',
+      'postal_code',
+    ];
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 11,
+      center: { lat: 37.4221, lng: -122.0841 },
+      mapTypeControl: false,
+      fullscreenControl: true,
+      zoomControl: true,
+      streetViewControl: true
+    });
+    const marker = new google.maps.Marker({map: map, draggable: false});
+    const autocompleteInput = document.getElementById('location');
+    const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+      fields: ["address_components", "geometry", "name"],
+      types: ["address"],
+    });
+    autocomplete.addListener('place_changed', function () {
+      marker.setVisible(false);
+      const place = autocomplete.getPlace();
+      if (!place.geometry) {
+        // User entered the name of a Place that was not suggested and
+        // pressed the Enter key, or the Place Details request failed.
+        window.alert('No details available for input: \'' + place.name + '\'');
+        return;
+      }
+      renderAddress(place);
+      fillInAddress(place);
+    });
 
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+    function fillInAddress(place) {  // optional parameter
+      const addressNameFormat = {
+        'street_number': 'short_name',
+        'route': 'long_name',
+        'locality': 'long_name',
+        'administrative_area_level_1': 'short_name',
+        'country': 'long_name',
+        'postal_code': 'short_name',
+      };
+      const getAddressComp = function (type) {
+        for (const component of place.address_components) {
+          if (component.types[0] === type) {
+            return component[addressNameFormat[type]];
+          }
+        }
+        return '';
+      };
+      document.getElementById('location').value = getAddressComp('street_number') + ' '
+                + getAddressComp('route');
+      for (const component of componentForm) {
+        // Location field is handled separately above as it has different logic.
+        if (component !== 'location') {
+          document.getElementById(component).value = getAddressComp(component);
+        }
+      }
+    }
 
-const LocationDetails = () => {
-  const [address, setAddress] = useState("");
-  const [addresss, setAddresss] = useState("");
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
-
-  const handleSelect = async (value) => {
-    const results = await geocodeByAddress(value);
-    const latLng = await getLatLng(results[0]);
-    setAddress(value);
-    setCoordinates(latLng);
-    const nameList = value.split(",");
-
-    setAddresss(nameList);
-  };
-  const handlechange = () => {};
+    function renderAddress(place) {
+      map.setCenter(place.geometry.location);
+      marker.setPosition(place.geometry.location);
+      marker.setVisible(true);
+    }
+  }
   return (
     <div>
-      <PlacesAutocomplete
-        value={address}
-        onChange={setAddress}
-        onSelect={handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <Row className="mt-3">
-              <Col>
-                <input {...getInputProps({ placeholder: "Type address" })} />
-                <div>
-                  {loading ? <div>...loading</div> : null}
-
-                  {suggestions.map((suggestion) => {
-                    const style = {
-                      backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
-                    };
-
-                    return (
-                      <div {...getSuggestionItemProps(suggestion, { style })}>
-                        {suggestion.description}
-                      </div>
-                    );
-                  })}
-                </div>
-              </Col>
-              <Col>
-                <p>Latitude: {coordinates.lat}</p>
-                <p>Longitude: {coordinates.lng}</p>
-                <p>Street: {addresss[0]}</p>
-                <p>City: {addresss[1]}</p>
-                <p>State: {addresss[2]}</p>
-                <p>Country: {addresss[3]}</p>
-              </Col>
-            </Row>
-          </div>
-        )}
-      </PlacesAutocomplete>
+      <div class="card-container">
+      <div class="panel">
+        <div>
+          <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt=""/>
+          <span class="sb-title">Address Selection</span>
+        </div>
+        <input type="text" placeholder="Address" id="location"/>
+        <input type="text" placeholder="Apt, Suite, etc (optional)"/>
+        <input type="text" placeholder="City" id="locality"/>
+        <div class="half-input-container">
+          <input type="text" class="half-input" placeholder="State/Province" id="administrative_area_level_1"/>
+          <input type="text" class="half-input" placeholder="Zip/Postal code" id="postal_code"/>
+        </div>
+        <input type="text" placeholder="Country" id="country"/>
+        <button class="button-cta">Checkout</button>
+      </div>
+      <div class="map" id="map"></div>
     </div>
-  );
-};
+    </div>
+  )
+}
 
-export default LocationDetails;
+export default LocationDetails
