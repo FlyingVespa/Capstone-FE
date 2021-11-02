@@ -1,4 +1,4 @@
-/*global google */
+/*global google*/
 
 import React from 'react'
 
@@ -41,15 +41,16 @@ class LocationDetails extends React.Component {
 
   handlePlaceSelect() {
     let addressObject = this.autocomplete.getPlace()
-    let address = addressObject.address_components
-    this.setState({
-      name: addressObject.name,
-      street_address: `${address[0].long_name} ${address[1].long_name}`,
-      city: address[4].long_name,
-      state: address[6].short_name,
-      zip_code: address[8].short_name,
-      googleMapLink: addressObject.url
-    })
+    // let address = addressObject.address_components
+    console.log(addressObject)
+    // this.setState({
+    //   name: addressObject.name,
+    //   street_address: `${address[0].long_name} ${address[1].long_name}`,
+    //   city: address[4].long_name,
+    //   state: address[6].short_name,
+    //   zip_code: address[8].short_name,
+    //   googleMapLink: addressObject.url
+    // })
   }
 
   render() {
