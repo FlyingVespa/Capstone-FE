@@ -1,5 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 import { useSelector, useDispatch } from "react-redux";
 import {
   StepLabel,
@@ -52,12 +56,8 @@ const RegBusiness = (routerProps) => {
     img_log: "",
     img_banner: "",
     img_user: "",
-    address: "Default",
-    location: {
-      lat: null,
-      lng: null,
-    },
-    contact: {
+    address: {},
+      contact: {
       pub_email: "Default@test.com",
       tel: "12325435",
       cell: "154351343",
@@ -130,6 +130,12 @@ const RegBusiness = (routerProps) => {
       })
       .catch((err) => console.log(err));
   };
+  // ****************************************************************//
+ 
+  const handleAddressChange = ({ target }) => {
+    setData({...datas, address:{ [target.name]: target.value} });
+  };
+ 
 
   const getStepContent = (step) => {
     switch (step) {
@@ -138,7 +144,7 @@ const RegBusiness = (routerProps) => {
       case 1:
         return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
-        return <LocationDetails />;
+        return <LocationDetails handleAddressChange={handleAddressChange} />;
 
       case 3:
         return (
