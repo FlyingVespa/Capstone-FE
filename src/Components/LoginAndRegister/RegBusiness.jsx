@@ -117,21 +117,18 @@ const RegBusiness = (routerProps) => {
     });
     dispatchData();
   };
-// a new function that i have created since we already did the api call in LocationDetails
   const handleAddressSelect = (addressData) => {
       setData({
         ...datas,
         address: addressData,
       });
   };
-  // effect function to avoid the state delay because useState is asynchronous so it could 
-  // send the data with dispatchData before the state finishes updating , so i used this with 
-  // the dependency of the address
+
   useEffect(()=>{    
     dispatchData();
     console.log(datas)
   },[datas.address])
-// so this one is no more used u can delete it
+
 
   const handleNext = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });

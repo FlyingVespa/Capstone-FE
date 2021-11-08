@@ -14,13 +14,9 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 
 const LocationDetails = ({f}) => {
-  //added this hook only for the form to not get the split u had when typing 
   const [input, setInput] = useState("");
-  //had to add this state because it was showing a single letter on city and state when typing , so it will only shows things after selecting
   const [selected,setSelected] = useState(false) 
-  //got a type error in the addresse state because u gave a string initial type and then became array , so gave an array from the beginning
   const [addresss, setAddresss] = useState(null);
-  // this new state here where i put the object formatted data information
   const [addressData,setAddressData] = useState(null)
   
   const [coordinates, setCoordinates] = useState({
@@ -41,7 +37,6 @@ const LocationDetails = ({f}) => {
       
   }
 
-  // new function to make the data formatted as an object ready to get into the big datas part
   const putAddressData = async (addresss , coordinates) =>{
     
     try{
@@ -66,9 +61,7 @@ const LocationDetails = ({f}) => {
      getAddress(latLng.lat , latLng.lng)
      
   };
-  const handlechange = () => {};
 
-  // same thing here for the effect , to avoid the delay between executions
 useEffect(()=>{
    if (addresss){
      putAddressData(addresss , coordinates)
@@ -88,7 +81,6 @@ return (
         onChange={(value)=>{
           setInput(value)
           setSelected(false)
-          //added the select false value so when changing the input the details will wipe out , u can remove if you want
         } }
         onSelect={ (value) => {
           setInput(value)
@@ -109,7 +101,6 @@ return (
                     };
 
                     return (
-                      // added this key to overcome an error appearing in the console
                       <div key = {sugIndex} {...getSuggestionItemProps(suggestion, { style })}>
                         {suggestion.description}
                       </div>
@@ -120,7 +111,6 @@ return (
               <Col>
               {
                 addresss && <>
-                {/* added this condition so it will stay empty before selecting */}
                 <p>Latitude: { selected && coordinates.lat}</p>
                 <p>Longitude: {selected && coordinates.lng}</p>
                 <p>Street: {selected && addresss.filter(e => e.types[0]==='route'||e.types[0]==='neighborhood').map(e => {return e.long_name})}</p>
