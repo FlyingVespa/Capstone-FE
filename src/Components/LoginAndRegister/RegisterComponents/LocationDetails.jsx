@@ -1,147 +1,141 @@
-import { useState, useEffect } from "react";
+import { useState , useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { TextField, List, ListItemText, Skeleton } from "@mui/material";
 
-import axios from "axios";
+import countrylist from "../../../json/countries.json";
+
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import MapTest from "../../MapTest";
+import { useTheme } from "@mui/material/styles";
+import axios from 'axios'
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
 
-const LocationDetails = (handleAddressChange) => {
+const LocationDetails = ({f}) => {
+  //added this hook only for the form to not get the split u had when typing 
   const [input, setInput] = useState("");
-  const [selected, setSelected] = useState(false);
-  // const [addresss, setAddresss] = useState(null);
-  const [address, setAddress] = useState(null);
+  //had to add this state because it was showing a single letter on city and state when typing , so it will only shows things after selecting
+  const [selected,setSelected] = useState(false) 
+  //got a type error in the addresse state because u gave a string initial type and then became array , so gave an array from the beginning
+  const [addresss, setAddresss] = useState(null);
+  // this new state here where i put the object formatted data information
+  const [addressData,setAddressData] = useState(null)
+  
   const [coordinates, setCoordinates] = useState({
     lat: null,
     lng: null,
   });
-  const getAddress = async (lat, lng) => {
-    try {
-      const res = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyCDOhn5o12S698dbZ8eQkI7X9nj6XQQUjk`
-      );
-      const Data = res.data;
-      console.log(Data.results[0]);
-      handleAddressChange({     street_number: Data.results[0].address_components[0].long_name,
-        street_name: Data.results[0].address_components[1].long_name,
-        city: Data.results[0].address_components[3].long_name,
-        state: Data.results[0].address_components[4].long_name,
-        country: Data.results[0].address_components[5].long_name,
-        zip: Data.results[0].address_components[7].long_name
-         })
-      await setAddress({
-        street_number: Data.results[0].address_components[0].long_name,
-        street_name: Data.results[0].address_components[1].long_name,
-        city: Data.results[0].address_components[3].long_name,
-        state: Data.results[0].address_components[4].long_name,
-        country: Data.results[0].address_components[5].long_name,
-        zip: Data.results[0].address_components[7].long_name
+  const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+  const getAddress = async ( lat,lng ) =>{
+      try{
+        // add your api key here and in the html script tag in /public/index.html
+        const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`)
+          const Data = res.data
          
-      });
-     
-    } catch (error) {
-      console.log(error);
-    }
-  };
+          return setAddresss(Data.results[0].address_components)
+      }catch(error){
+        console.log(error)
+      }
+      
+  }
+
+  // new function to make the data formatted as an object ready to get into the big datas part
+  const putAddressData = async (addresss , coordinates) =>{
+    
+    try{
+       setAddressData({
+        street_number:`${addresss.filter(e => e.types[0]==='street_number').map(e => e.long_name)}`,
+        street_name:`${addresss.filter(e => e.types[0]==='route'||e.types[0]==='neighborhood').map(e =>  e.long_name)}`,
+        city: `${addresss.filter(e => e.types[0]==='locality').map(e =>  e.long_name)}`,
+        state: `${addresss.filter(e => e.types[0]==='administrative_area_level_1').map(e =>  e.long_name)}`,
+        country: `${addresss.filter(e => e.types[0]==='country').map(e =>  e.long_name)}`,
+        lat: coordinates.lat,
+        lng:coordinates.lng,
+      },)
+    }catch(err){} 
+  }
+
+
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
     setSelected(true);
     setCoordinates(latLng);
-    await getAddress(latLng.lat, latLng.lng);
+     getAddress(latLng.lat , latLng.lng)
+     
   };
+  const handlechange = () => {};
 
-  //  const handleAddressValue = (value) => {
-  //    addresss.filter(e => e.types[0]=== value).map(e => {return e.long_name})}
+  // same thing here for the effect , to avoid the delay between executions
+useEffect(()=>{
+   if (addresss){
+     putAddressData(addresss , coordinates)
+   }
+   console.log(addresss)
+},[addresss])
 
-
-  return (
-    <>
+useEffect(()=>{
+  console.log(addressData)  
+    f(addressData)  
+},[addressData])
+ 
+return (
+    <div>
       <PlacesAutocomplete
         value={input}
-        onChange={(value) => {
-          setInput(value);
-          setSelected(false);
-          setAddress(null);
-        }}
-        onSelect={(value) => {
-          setInput(value);
-          handleSelect(value);
-          console.log(address);
+        onChange={(value)=>{
+          setInput(value)
+          setSelected(false)
+          //added the select false value so when changing the input the details will wipe out , u can remove if you want
+        } }
+        onSelect={ (value) => {
+          setInput(value)
+          handleSelect(value)
         }}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <>
+          <div>
             <Row className="mt-3">
               <Col>
-                <TextField
-                  variant="standard"
-                  {...getInputProps({ placeholder: "Type Address" })}
-                />
-                <>
-                  {loading ? (
-                    <div>
-                      {" "}
-                      <Skeleton sx={{ width: 200 }} />
-                      <Skeleton animation="wave" sx={{ width: 200 }} />
-                    </div>
-                  ) : null}
-                  {suggestions.map((suggestion, sugIndex) => {
-                    return (
-                      <>
-                        <List
-                          component="nav"
-                          aria-label="secondary mailbox folder"
-                        >
-                          <ListItemText
-                            key={sugIndex}
-                            {...getSuggestionItemProps(suggestion)}
-                            primary={suggestion.description}
-                          />
-                        </List>
-                        {/* <div key = {sugIndex} {...getSuggestionItemProps(suggestion, { style })}>
-                        {suggestion.description}
+                <input {...getInputProps({ placeholder: "Type address" })} />
+                <div>
+                  {loading ? <div>...loading</div> : null}
+                          
+                  {suggestions.map((suggestion , sugIndex) => {
+                    const style = {
+                      backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                    };
 
-                      </div> */}
-                      </>
+                    return (
+                      // added this key to overcome an error appearing in the console
+                      <div key = {sugIndex} {...getSuggestionItemProps(suggestion, { style })}>
+                        {suggestion.description}
+                      </div>
                     );
                   })}
-                </>
+                </div>
               </Col>
               <Col>
-               
-                <TextField
-                  name="street_number"
-                  variant="standard"
-                  placeholder="street number"
-                  value={address?.street_number}
-                  onChange={handleAddressChange}
-                />
-                {/* <TextField name="lat" variant="standard"placeholder="Lat" value={address?.geometry.location.lat}/>
-                  <TextField name="lon" variant="standard"placeholder="Lon" value={address?.geometry.location.lng}/>
-                  <TextField name="street_number" variant="standard"placeholder="street number" value={address?.address_components.filter(e => e.types[0]==='street_number').map(e => {return e.long_name})} />       
-                  <TextField name="street_name" variant="standard"placeholder="street" value={address?.address_components.filter(e => e.types[0]==='route'||e.types[0]==='neighborhood').map(e => {return e.long_name})}  />       
-                  <TextField name="city" variant="standard"placeholder="city" value={address?.address_components.filter(e => e.types[0]==='locality').map(e => {return e.long_name})} />       
-                  <TextField name="state" variant="standard"placeholder="state" value={address?.address_components.filter(e => e.types[0]==='administrative_area_level_1').map(e => {return e.short_name})} />       
-                  <TextField name="country" variant="standard"placeholder="country" value={address?.address_components.filter(e => e.types[0]==='country').map(e => {return e.long_name})} /> */}
-                {/* {
+              {
                 addresss && <>
-                <p id="lat">Latitude: { selected && coordinates.lat}</p>
-                <p id="lon">Longitude: {selected && coordinates.lng}</p>
-                <p id="street_name">Street: {selected && addresss.filter(e => e.types[0]==='route'||e.types[0]==='neighborhood').map(e => {return e.long_name})}</p>
-                <p id="city">City: {selected && addresss.filter(e => e.types[0]==='locality').map(e => {return e.long_name})}</p>
-                <p id="state">State: {selected && addresss.filter(e => e.types[0]==='administrative_area_level_1').map(e => {return e.long_name})}</p>
-                <p id="country"> Country: {selected && addresss.filter(e => e.types[0]==='country').map(e => {return e.long_name})}</p>
+                {/* added this condition so it will stay empty before selecting */}
+                <p>Latitude: { selected && coordinates.lat}</p>
+                <p>Longitude: {selected && coordinates.lng}</p>
+                <p>Street: {selected && addresss.filter(e => e.types[0]==='route'||e.types[0]==='neighborhood').map(e => {return e.long_name})}</p>
+                <p>City: {selected && addresss.filter(e => e.types[0]==='locality').map(e => {return e.long_name})}</p>
+                <p>State: {selected && addresss.filter(e => e.types[0]==='administrative_area_level_1').map(e => {return e.long_name})}</p>
+                <p>Country: {selected && addresss.filter(e => e.types[0]==='country').map(e => {return e.long_name})}</p>
+                 
                 </>
-              } */}
+              }
               </Col>
             </Row>
-          </>
+          </div>
         )}
       </PlacesAutocomplete>
-    </>
+    </div>
   );
 };
 
