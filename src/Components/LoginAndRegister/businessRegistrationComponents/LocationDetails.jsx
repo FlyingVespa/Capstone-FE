@@ -5,7 +5,6 @@ import countrylist from "../../../json/countries.json";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import MapTest from "../../MapTest";
 import { useTheme } from "@mui/material/styles";
 import axios from 'axios'
 import PlacesAutocomplete, {
@@ -29,8 +28,7 @@ const LocationDetails = ({f}) => {
         // add your api key here and in the html script tag in /public/index.html
         const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`)
           const Data = res.data
-         
-          return setAddresss(Data.results[0].address_components)
+                 return setAddresss(Data.results[0].address_components)
       }catch(error){
         console.log(error)
       }
@@ -111,7 +109,7 @@ return (
               <Col>
               {
                 addresss && <>
-                <p>Latitude: { selected && coordinates.lat}</p>
+                <p name>Latitude: { selected && coordinates.lat}</p>
                 <p>Longitude: {selected && coordinates.lng}</p>
                 <p>Street: {selected && addresss.filter(e => e.types[0]==='route'||e.types[0]==='neighborhood').map(e => {return e.long_name})}</p>
                 <p>City: {selected && addresss.filter(e => e.types[0]==='locality').map(e => {return e.long_name})}</p>

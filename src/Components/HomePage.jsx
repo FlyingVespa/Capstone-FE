@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Container, Jumbotron, Col, Spinner } from "react-bootstrap";
+import { Container,  Col, Spinner } from "react-bootstrap";
 
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
@@ -22,13 +22,13 @@ function HomePage({ props, fetchUsers, usersData }) {
     <h1>{usersData.error}</h1>
   ) : (
     <Container className="homepage">
-      <Jumbotron>
+      <Container>
         <Col>
           <h1>Find & Buy Local</h1>
 
           <SearchBar usersData={usersData} />
         </Col>
-      </Jumbotron>
+      </Container>
 
       <Container>
         <div>

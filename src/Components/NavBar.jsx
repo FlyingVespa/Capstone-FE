@@ -1,13 +1,19 @@
+import React, {useState} from 'react'
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import {Link} from "react-router-dom";
 import { Button, Avatar } from "@mui/material";
 
 import logo from "../shop.png";
+import LoginModal from "./LoginAndRegister/LoginModal";
 
-function NavBar() {
+const NavBar =() => {
   const loggedin = useSelector((s) => s.users.loggedin);
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
   return (
+    <>
     <Navbar className="navbar-top" expand="lg">
       <Container>
         <Navbar.Brand href="/" style={{ fontWeight: "700" }}>
@@ -19,7 +25,6 @@ function NavBar() {
           <Nav className="me-auto">
             <Nav.Link href="/register">regsiter</Nav.Link>
           </Nav>
-
           <Nav>
             {!loggedin ? (
               <>
@@ -29,7 +34,7 @@ function NavBar() {
                   color="success"
                   variant="outlined"
                   size="medium"
-                  href="/login"
+                 onClick={handleShow}
                   exact
                 >
                   Login
@@ -60,6 +65,9 @@ function NavBar() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+    <LoginModal show={show} handleClose={handleClose} handleShow={handleShow} />
+    </>
+
   );
 }
 

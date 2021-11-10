@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import {
   Container,
-  Jumbotron,
+
   Col,
-  FormControl,
+  
   Button,
   Row,
   Image,
 } from "react-bootstrap";
-import NewStores from "./ClientHomePage/NewStores";
-import PopularStores from "./ClientHomePage/PopularStores";
-import SavedStores from "./ClientHomePage/SavedStores";
-import Map from "./ClientHomePage/Map";
-import local from "../local.png";
+
 import shopping from "../shopping.png";
 import landingpage from "../landingpage.jpeg";
 import "./ClientHomePage/clienthomepage.css";
