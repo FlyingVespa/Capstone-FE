@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Container, Jumbotron, Col, Spinner } from "react-bootstrap";
-import { Map, GoogleApiWrapper } from "google-maps-react";
-import SavedStores from "./ClientHomePage/SavedStores";
+import { Container,  Col, Spinner } from "react-bootstrap";
+
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
 import { fetchUsers } from "../Redux";
 
 function HomePage({ props, fetchUsers, usersData }) {
+
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -21,16 +22,17 @@ function HomePage({ props, fetchUsers, usersData }) {
     <h1>{usersData.error}</h1>
   ) : (
     <Container className="homepage">
-      <Jumbotron>
+      <Container>
         <Col>
           <h1>Find & Buy Local</h1>
 
           <SearchBar usersData={usersData} />
         </Col>
-      </Jumbotron>
+      </Container>
 
       <Container>
         <div>
+
           {usersData &&
             usersData.users &&
             usersData.users.map((user) => (

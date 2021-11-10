@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector, connect } from "react-redux";
-import {
-  Jumbotron,
-  Image,
-  Container,
-  Spinner,
-  Row,
-  Col,
-  Button,
-} from "react-bootstrap";
+import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
 import fishshop from "../fishshop.jpg";
 import { IoIosStarOutline, IoMdAlarm } from "react-icons/io";
 import Logo from "./ProfilePage/logo";
@@ -122,7 +114,7 @@ const ProfilePage = (props) => {
       if (response.ok) {
         const userData = await response.json();
         await setUserData(userData);
-      
+
         setLoading(false);
 
         console.log(userData);
@@ -147,9 +139,9 @@ const ProfilePage = (props) => {
         </Spinner>
       ) : (
         <>
-          <Jumbotron className="profile_page">
+          <Container className="profile_page">
             <Image src={userData.info.img_logo || fishshop} id="banner" />
-          </Jumbotron>
+          </Container>
           <Container className="main mb-5">
             <Container
               className="header mb-5 p-5"

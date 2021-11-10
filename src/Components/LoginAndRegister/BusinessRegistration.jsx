@@ -1,5 +1,5 @@
 import React from "react";
-import { useState,  } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   StepLabel,
@@ -9,16 +9,13 @@ import {
   Container,
   Button,
 } from "@mui/material";
-import "./RegisterComponents/businessRegister.css";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
-import ContactDetails from "./RegisterComponents/ContactDetails";
-import ConfirmDetails from "./RegisterComponents/ConfirmDetails";
-import LocationDetails from "./RegisterComponents/LocationDetails";
-import AccDetails from "./RegisterComponents/AccDetails";
-import TradingHoursDetails from "./RegisterComponents/TradingHoursDetails";
+import "./LoginRegistration.css";
+import ContactDetails from "./businessRegistrationComponents/ContactDetails";
+import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
+import LocationDetails from "./businessRegistrationComponents/LocationDetails";
+import AccDetails from "./businessRegistrationComponents/AccDetails";
+import TradingHoursDetails from "./businessRegistrationComponents/TradingHoursDetails";
+
 import axios from "axios";
 
 const getSteps = () => {
@@ -31,7 +28,7 @@ const getSteps = () => {
   ];
 };
 
-const RegBusiness = (routerProps) => {
+const BusinessRegistration = () => {
   const dispatch = useDispatch();
   const dispatchData = () =>
     dispatch({
@@ -40,7 +37,6 @@ const RegBusiness = (routerProps) => {
     });
   const URL = process.env.REACT_APP_API_URL;
   const helper = useSelector((s) => s.helper.activeStep);
-  const [loading, setLoading] = useState({});
   const steps = getSteps();
   const [datas, setData] = useState({
     password: "1234",
@@ -55,7 +51,15 @@ const RegBusiness = (routerProps) => {
     img_log: "",
     img_banner: "",
     img_user: "",
-    address: "Default",
+    address: {
+      street_number: "",
+      street_name: "",
+      city: "",
+      state: "",
+      country: "",
+      lat: "",
+      lng: "",
+    },
     location: {
       lat: null,
       lng: null,
@@ -87,6 +91,7 @@ const RegBusiness = (routerProps) => {
     });
     dispatchData();
   };
+// To change target.id to target.name
   const handleChange = ({ target }) => {
     setData({
       ...datas,
@@ -107,20 +112,18 @@ const RegBusiness = (routerProps) => {
     });
     dispatchData();
   };
-
-  const handleLocationSelect = async (value) => {
-    const results = await geocodeByAddress(value);
-
+  const handleAddressSelect = (addressData) => {
     setData({
       ...datas,
-      address: value,
-      location: await getLatLng(results[0]),
-    });
-    dispatch({
-      type: "REG_BUSINESS_CONTACT",
-      payload: datas,
+      address: addressData,
     });
   };
+
+  useEffect(() => {
+    dispatchData();
+    console.log(datas);
+  }, [datas.address]);
+
   const handleNext = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
   };
@@ -153,14 +156,7 @@ const RegBusiness = (routerProps) => {
       case 1:
         return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
-        return (
-          // <LocationDetails
-          //   f={handleLocationSelect}
-          //   a={datas.address}
-          //   c={datas.location}
-          // />
-          <h1>hello</h1>
-        );
+        return <LocationDetails f={handleAddressSelect} />;
 
       case 3:
         return (
@@ -249,4 +245,4 @@ const RegBusiness = (routerProps) => {
   );
 };
 
-export default RegBusiness;
+export default BusinessRegistration;
