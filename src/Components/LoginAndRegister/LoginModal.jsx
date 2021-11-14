@@ -37,7 +37,7 @@ const LoginModal = ({ handleShow, handleClose, show }) => {
     console.log("login");
     e.preventDefault();
     axios
-      .post(`${URL}/business/login`, loginDetails)
+      .post(`${URL}/login`, loginDetails)
       .then((response) => {
         JSON.stringify(response.loginDetails);
         console.log(response);
@@ -50,6 +50,7 @@ const LoginModal = ({ handleShow, handleClose, show }) => {
         }
       })
       .catch((err) => {
+        // add status code responses
         if (err.response) {
           Swal.fire(
             "Oops!",

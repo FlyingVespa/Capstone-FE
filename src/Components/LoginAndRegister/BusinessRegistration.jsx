@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -16,7 +17,6 @@ import LocationDetails from "./businessRegistrationComponents/LocationDetails";
 import AccDetails from "./businessRegistrationComponents/AccDetails";
 import TradingHoursDetails from "./businessRegistrationComponents/TradingHoursDetails";
 
-import axios from "axios";
 
 const getSteps = () => {
   return [
@@ -131,20 +131,12 @@ const BusinessRegistration = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
   };
 
-  const config = {
-    method: "post",
-    url: `${URL}/business`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: datas,
-  };
 
   const regsiterBusiness = () => {
-    axios(config)
+    axios.post(`${URL}/register/business`, datas)
       .then((res) => {
         JSON.stringify(res.data);
-        console.log("Success, Regsitered", res);
+        console.log("Success, Regsitered Business Account", res);
       })
       .catch((err) => console.log(err));
   };

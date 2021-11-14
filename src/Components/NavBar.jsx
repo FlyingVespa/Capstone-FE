@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import { Button, Avatar } from "@mui/material";
 
 import logo from "../shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
 
 const NavBar =() => {
+  let history = useHistory()
   const loggedin = useSelector((s) => s.users.loggedin);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -23,7 +24,6 @@ const NavBar =() => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/register">regsiter</Nav.Link>
           </Nav>
           <Nav>
             {!loggedin ? (
@@ -45,6 +45,7 @@ const NavBar =() => {
                   variant="contained"
                   color="success"
                   size="medium"
+                 
                 >
                   Sign Up Free
                 </Button>
