@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -17,7 +18,6 @@ import LocationDetails from "./businessRegistrationComponents/LocationDetails";
 import AccDetails from "./businessRegistrationComponents/AccDetails";
 import TradingHoursDetails from "./businessRegistrationComponents/TradingHoursDetails";
 
-
 const getSteps = () => {
   return [
     "Account Details",
@@ -30,6 +30,7 @@ const getSteps = () => {
 
 const BusinessRegistration = () => {
   const dispatch = useDispatch();
+  let history = useHistory();
   const dispatchData = () =>
     dispatch({
       type: "REGISTER_BUSINESS_USER",
@@ -91,7 +92,7 @@ const BusinessRegistration = () => {
     });
     dispatchData();
   };
-// To change target.id to target.name
+  // To change target.id to target.name
   const handleChange = ({ target }) => {
     setData({
       ...datas,
@@ -122,8 +123,8 @@ const BusinessRegistration = () => {
   useEffect(() => {
     dispatchData();
     console.log(datas);
-  }, [datas.address]);
-
+  }, []);
+  // datas.address in []
   const handleNext = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
   };
@@ -131,9 +132,9 @@ const BusinessRegistration = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
   };
 
-
   const regsiterBusiness = () => {
-    axios.post(`${URL}/register/business`, datas)
+    axios
+      .post(`${URL}/register/business`, datas)
       .then((res) => {
         JSON.stringify(res.data);
         console.log("Success, Regsitered Business Account", res);
@@ -173,6 +174,16 @@ const BusinessRegistration = () => {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
+          // add validity check if form is missing something to indicate where
+          // if (isStepFailed(index)) {
+          //   labelProps.optional = (
+          //     <Typography variant="caption" color="error">
+          //       Alert message
+          //     </Typography>
+          //   );
+          //   labelProps.error = true;
+          // }
+
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -193,7 +204,13 @@ const BusinessRegistration = () => {
             >
               REGISTER
             </Button>
-            <Button className="mx-auto" variant="danger">
+            <Button
+              className="mx-auto"
+              variant="danger"
+              onClick={() => {
+                history.push("/");
+              }}
+            >
               Cancel
             </Button>
           </div>

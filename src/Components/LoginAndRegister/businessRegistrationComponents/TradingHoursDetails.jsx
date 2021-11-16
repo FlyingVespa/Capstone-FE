@@ -1,4 +1,4 @@
-import { useState, Component } from "react";
+// Styling
 import {
   FormControl,
   Checkbox,
@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 
-const TradingHoursDetails = ({ d, f, days}) => {
+const TradingHoursDetails = ({ d, f, days }) => {
   const inputLProps = { shrink: true };
   const inputProps = { step: 300 };
 

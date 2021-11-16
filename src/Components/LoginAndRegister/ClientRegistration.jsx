@@ -1,26 +1,24 @@
-import { useState, useEfect } from "react";
+// Libraries
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+
+// Styling
 import {
   Button,
-  TextField,
-  InputAdornment,
-  Input,
-  IconButton,
-  InputLabel,
   StepLabel,
   Step,
   Typography,
   Stepper,
   Container,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Row, Col } from "react-bootstrap";
+
+// Componets
 import LocationDetails from "./clientRegistrationComponents/LocationDetails.jsx";
 import AccDetails from "./clientRegistrationComponents/AccDetails.jsx";
-import ConfirmDetails from "./clientRegistrationComponents/ConfirmDetails.jsx"
+import ConfirmDetails from "./clientRegistrationComponents/ConfirmDetails.jsx";
 
 const getSteps = () => {
   return ["Account Details", "Location Details", "Confirm Details"];
@@ -103,13 +101,12 @@ const ClientRegistration = (props) => {
 
   const getStepContent = (step) => {
     switch (step) {
-      
       case 0:
         return <AccDetails d={data} f={handleChange} />;
       case 1:
         return <LocationDetails f={handleAddressSelect} d={data.contact} />;
       case 2:
-return <ConfirmDetails/>
+        return <ConfirmDetails />;
       default:
         return "STEPS COMPLETED";
     }
@@ -141,7 +138,13 @@ return <ConfirmDetails/>
             >
               REGISTER
             </Button>
-            <Button className="mx-auto" variant="danger">
+            <Button
+              className="mx-auto"
+              variant="danger"
+              onClick={() => {
+                history.push("/");
+              }}
+            >
               Cancel
             </Button>
           </div>
@@ -181,9 +184,6 @@ return <ConfirmDetails/>
           </div>
         )}
       </div>
-
-     
-
     </>
   );
 };

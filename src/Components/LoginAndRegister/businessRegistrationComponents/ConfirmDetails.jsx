@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
@@ -12,10 +11,7 @@ const ConfirmDetails = ({ details }) => {
     password,
     businessname,
     category,
-    location,
-    address,
     contact,
-    times,
   } = regBusiness;
   return (
     <>

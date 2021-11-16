@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   TextField,
   InputAdornment,
@@ -10,17 +9,12 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 
-const AccDetails = ({
-  datas,
-  handleChange,
-  handleMouseDownPassword,
-}) => {
+const AccDetails = ({ datas, handleChange }) => {
   const dispatch = useDispatch();
   const vpassword = useSelector((s) => s.helper.password_visible);
-const handleClickShowPassword = () => {
-  dispatch({type: "SHOW_PASSWORD", payload: !vpassword})
-}
-
+  const handleClickShowPassword = () => {
+    dispatch({ type: "SHOW_PASSWORD", payload: !vpassword });
+  };
 
   const { bio, category, businessname, email, username, url, password } = datas;
   return (
@@ -75,7 +69,6 @@ const handleClickShowPassword = () => {
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
-                  onMouseDown={ e => { e.preventDefault()}}
                 >
                   {vpassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>

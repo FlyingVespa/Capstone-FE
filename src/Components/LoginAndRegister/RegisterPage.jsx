@@ -1,10 +1,10 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Col, Row, Image, Container } from "react-bootstrap";
-import {TabList, TabContext, TabPanel} from "@mui/lab"
-import {Tab, Box} from "@mui/material";
+import { TabList, TabContext, TabPanel } from "@mui/lab";
+import { Tab, Box } from "@mui/material";
 
-import reg from "../../Reg.png";
+import reg from "../../assets/images/Reg.png";
 
 import BusinessRegistration from "./BusinessRegistration";
 import ClientRegistration from "./ClientRegistration";
@@ -26,7 +26,7 @@ function RegsiterPage(routerProps) {
           </Col>
           <Col md={7}>
             <div>You are now at {urlPath}</div>
-               <TabContext value={value}>
+            <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <TabList
                   onChange={handleChange}
@@ -34,12 +34,13 @@ function RegsiterPage(routerProps) {
                 >
                   <Tab label="Standard Account" value="1" />
                   <Tab label="Business Account" value="2" />
-         
                 </TabList>
               </Box>
-              <TabPanel value="1"><ClientRegistration /></TabPanel>
+              <TabPanel value="1">
+                <ClientRegistration />
+              </TabPanel>
               <TabPanel value="2">
-                      <BusinessRegistration prop={routerProps} />
+                <BusinessRegistration prop={routerProps} />
               </TabPanel>
             </TabContext>
           </Col>
