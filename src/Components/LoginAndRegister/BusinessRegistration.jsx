@@ -11,6 +11,7 @@ import {
   Container,
   Button,
 } from "@mui/material";
+import Swal from "sweetalert2";
 import "./LoginRegistration.css";
 import ContactDetails from "./businessRegistrationComponents/ContactDetails";
 import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
@@ -29,6 +30,14 @@ const getSteps = () => {
 };
 
 const BusinessRegistration = () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger",
+    },
+    buttonsStyling: false,
+  });
+
   const dispatch = useDispatch();
   let history = useHistory();
   const dispatchData = () =>
@@ -134,11 +143,40 @@ const BusinessRegistration = () => {
 
   const regsiterBusiness = () => {
     axios
-      .post(`${URL}/register/business`, datas)
-      .then((res) => {
-        JSON.stringify(res.data);
-        console.log("Success, Regsitered Business Account", res);
-      })
+      .post(`${URL}/register`, datas)
+
+      .then(
+        swalWithBootstrapButtons
+          .fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Register Me!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true,
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              swalWithBootstrapButtons
+                .fire("Registered!", "Your file has been deleted.", "success")
+                .then((res) => JSON.stringify(res.datas));
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                "Cancelled",
+                "Your imaginary file is safe :)",
+                "error"
+              );
+            }
+          })
+      )
+      // .then((res) => {
+      //   JSON.stringify(res.data);
+      //   console.log("Success, Regsitered Business Account", res);
+      // })
       .catch((err) => console.log(err));
   };
 

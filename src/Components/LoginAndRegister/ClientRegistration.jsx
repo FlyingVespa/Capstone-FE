@@ -69,7 +69,7 @@ const ClientRegistration = (props) => {
 
   const registerClient = () => {
     axios
-      .post(`${URL}/register/client`, data)
+      .post(`${URL}/register`, data)
       .then((response) => {
         JSON.stringify(response.data);
         console.log(response);

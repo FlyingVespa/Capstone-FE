@@ -32,20 +32,51 @@ const LoginModal = ({ handleClose, show }) => {
     setLoginDetails({ ...loginDetails, [target.name]: target.value });
   };
 
+  const loginUser = async (event) => {
+    event.preventDefault();
+
+    try {
+      const res = await fetch(`${URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginDetails),
+      });
+
+      if (res.ok) {
+        // setValidation(true);
+        const json = await res.json();
+        console.log(json);
+        localStorage.setItem("accessToken", json.accessToken);
+        // localStorage.setItem("refreshToken", json.refreshToken);
+        // localStorage.setItem("username", json.username);
+      } else {
+        // setValidation(false);
+        // alert("Credentials are incorrect");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const tryLogin = () => {
-    // console.log("login");
     axios
-      .post(`${URL}/login`, loginDetails)
+      .post(`http://localhost:4546/login`, loginDetails, {
+        withCredentials: true,
+      })
       .then((response) => {
         JSON.stringify(response.loginDetails);
         console.log(response);
-        if (response.ok) {
-          Swal.fire(
-            "Regsitered Sucessfully!",
-            "You will be able to login in a few moments",
-            "success"
-          ).then(history.push("/"));
-        }
+        // if (response.ok) {
+        //   Swal.fire({
+        //     position: "top-end",
+        //     icon: "success",
+        //     title: "Loggedin successfully",
+        //     showConfirmButton: false,
+        //     timer: 1500,
+        //   }).then(history.push("/"));
+        // }
       })
       .catch((err) => {
         if (err.response) {
