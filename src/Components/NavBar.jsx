@@ -9,6 +9,7 @@ import LoginModal from "./LoginAndRegister/LoginModal";
 
 const NavBar = () => {
   // let history = useHistory();
+
   const loggedin = useSelector((s) => s.users.loggedin);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);

@@ -32,61 +32,48 @@ const LoginModal = ({ handleClose, show }) => {
     setLoginDetails({ ...loginDetails, [target.name]: target.value });
   };
 
-  const loginUser = async (event) => {
-    event.preventDefault();
-
+  const tryLogin = async () => {
     try {
-      const res = await fetch(`${URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginDetails),
-      });
-
-      if (res.ok) {
-        // setValidation(true);
-        const json = await res.json();
-        console.log(json);
-        localStorage.setItem("accessToken", json.accessToken);
-        // localStorage.setItem("refreshToken", json.refreshToken);
-        // localStorage.setItem("username", json.username);
-      } else {
-        // setValidation(false);
-        // alert("Credentials are incorrect");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const tryLogin = () => {
-    axios
-      .post(`http://localhost:4546/login`, loginDetails, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        JSON.stringify(response.loginDetails);
-        console.log(response);
-        // if (response.ok) {
-        //   Swal.fire({
-        //     position: "top-end",
-        //     icon: "success",
-        //     title: "Loggedin successfully",
-        //     showConfirmButton: false,
-        //     timer: 1500,
-        //   }).then(history.push("/"));
-        // }
-      })
-      .catch((err) => {
-        if (err.response) {
-          Swal.fire(
-            "Oops!",
-            "Login failed, either email doesn't exist or details incorrect, please try again.",
-            "error"
-          );
+      const response = await axios.post(
+        `${URL}/auth/login`,
+        { email: loginDetails.email, password: loginDetails.password },
+        {
+          withCredentials: true,
         }
-      });
+      );
+      if (response.ok) {
+        const data = response.data;
+        console.log(data);
+      }
+    } catch (error) {}
+
+    // .then((response) => {
+    //   JSON.stringify(response.loginDetails);
+    //   console.log(response);
+    // })
+    // .then(
+    //   Swal.fire({
+    //     position: "top-end",
+    //     icon: "success",
+    //     title: "Loggedin successfully",
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    //   })
+    // )
+    // .then(handleClose())
+    // .then(
+    //   if ( response === "client"){
+    //     history.push("/profile/me")
+    //   })
+    // .catch((err) => {
+    //   if (err.response) {
+    //     Swal.fire(
+    //       "Oops!",
+    //       "Login failed, either email doesn't exist or details incorrect, please try again.",
+    //       "error"
+    //     );
+    //   }
+    // });
   };
 
   return (

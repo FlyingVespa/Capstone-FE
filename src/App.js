@@ -18,8 +18,8 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <NavBar />
         <Router>
+          <NavBar />
           <Route
             path="/business/:userId/dashboard"
             exact
