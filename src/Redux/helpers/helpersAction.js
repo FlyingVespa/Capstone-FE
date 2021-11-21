@@ -1,4 +1,4 @@
-import { SHOW_PASSWORD } from "./helpersTypes";
+import { SHOW_PASSWORD, SET_LOADING } from "./helpersTypes";
 
 export const showPassword = (password) => {
     return {

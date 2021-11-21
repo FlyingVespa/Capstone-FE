@@ -24,10 +24,10 @@ const getSteps = () => {
   return ["Account Details", "Location Details", "Confirm Details"];
 };
 
-const ClientRegistration = (props) => {
+const ClientRegistration = ({URL}) => {
   let history = useHistory();
   const dispatch = useDispatch();
-  const URL = process.env.REACT_APP_API_URL;
+
 
   const helper = useSelector((s) => s.helper.activeStep);
   const steps = getSteps();

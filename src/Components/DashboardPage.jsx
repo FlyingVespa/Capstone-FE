@@ -9,7 +9,7 @@ import { FcAlarmClock } from "react-icons/fc";
 // Components
 import GeneralData from "./Dashboard/GeneralData";
 import ProductList from "./Dashboard/ProductList";
-const DashboardPage = () => {
+const DashboardPage = ({URL}) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -67,7 +67,7 @@ const DashboardPage = () => {
           A
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <GeneralData />
+          <GeneralData URL={URL} />
         </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three

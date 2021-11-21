@@ -7,8 +7,16 @@ import {
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAILURE,
 } from "./userTypes";
+import { SET_LOADING } from "../helpers/helpersTypes";
 
 const URL = process.env.REACT_APP_API_URL;
+
+export const setLoading = ( payload)=>{
+  return {
+      type: SET_LOADING,
+      payload: payload
+  }
+}
 
 //ALL USERS *********************************//
 export const fetchUsersReq = () => {
@@ -51,12 +59,14 @@ export const fetchLoggedUserFailure = (error) => {
 export const fetchUsers = () => {
   return (dispatch) => {
     dispatch(fetchUsersReq);
+    dispatch(setLoading(true));
     axios
       .get(`${URL}/business`)
       .then((res) => {
         const usersData = res.data;
         dispatch(fetchUsersSuccess(usersData));
       })
+      .then(setLoading(false))
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(fetchUsersFailure(errorMsg));
@@ -64,25 +74,25 @@ export const fetchUsers = () => {
   };
 };
 
-export const fetchLoggedInUser = () => {
-  return (dispatch) => {
-    dispatch(fetchLoggedUser);
-    const accessToken = localStorage.getItem("accessToken");
-    axios({
-      method: "GET",
-      url: `${URL}/business/me`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        Accept: "application/json",
-      },
-    })
-      .then((res) => {
-        const userData = res.data;
-        dispatch(fetchLoggedUserSuccess(userData));
-      })
-      .catch((error) => {
-        const errorMsg = error.message;
-        dispatch(fetchLoggedUserFailure(errorMsg));
-      });
-  };
-};
+// export const fetchLoggedInUser = () => {
+//   return (dispatch) => {
+//     dispatch(fetchLoggedUser);
+//     const accessToken = localStorage.getItem("accessToken");
+//     axios({
+//       method: "GET",
+//       url: `${URL}/business/me`,
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//         Accept: "application/json",
+//       },
+//     })
+//       .then((res) => {
+//         const userData = res.data;
+//         dispatch(fetchLoggedUserSuccess(userData));
+//       })
+//       .catch((error) => {
+//         const errorMsg = error.message;
+//         dispatch(fetchLoggedUserFailure(errorMsg));
+//       });
+//   };
+// };

@@ -33,13 +33,12 @@ function HomePage({ props, fetchUsers, usersData }) {
           {usersData &&
             usersData.users &&
             usersData.users.map((user) => (
-              <Link to={`/business/${user._id}`}>
+              <Link to={`/business/${user.url}`}>
                 {" "}
                 <p>{user.email}</p>
               </Link>
             ))}
         </div>
-        {/* <SavedStores user={usersData} /> */}
       </Container>
     </Container>
   );
@@ -53,6 +52,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUsers: () => dispatch(fetchUsers()),
+   
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

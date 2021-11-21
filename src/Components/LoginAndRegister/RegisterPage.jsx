@@ -8,7 +8,7 @@ import reg from "../../assets/images/Reg.png";
 
 import BusinessRegistration from "./BusinessRegistration";
 import ClientRegistration from "./ClientRegistration";
-function RegsiterPage(routerProps) {
+function RegsiterPage({routerProps, URL}) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
@@ -37,7 +37,7 @@ function RegsiterPage(routerProps) {
                 </TabList>
               </Box>
               <TabPanel value="1">
-                <ClientRegistration />
+                <ClientRegistration URL={URL}/>
               </TabPanel>
               <TabPanel value="2">
                 <BusinessRegistration prop={routerProps} />
