@@ -1,4 +1,6 @@
 import React from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -9,14 +11,13 @@ import {
   Container,
   Button,
 } from "@mui/material";
+import Swal from "sweetalert2";
 import "./LoginRegistration.css";
 import ContactDetails from "./businessRegistrationComponents/ContactDetails";
 import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
 import LocationDetails from "./businessRegistrationComponents/LocationDetails";
 import AccDetails from "./businessRegistrationComponents/AccDetails";
 import TradingHoursDetails from "./businessRegistrationComponents/TradingHoursDetails";
-
-import axios from "axios";
 
 const getSteps = () => {
   return [
@@ -29,7 +30,16 @@ const getSteps = () => {
 };
 
 const BusinessRegistration = () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger",
+    },
+    buttonsStyling: false,
+  });
+
   const dispatch = useDispatch();
+  let history = useHistory();
   const dispatchData = () =>
     dispatch({
       type: "REGISTER_BUSINESS_USER",
@@ -91,7 +101,7 @@ const BusinessRegistration = () => {
     });
     dispatchData();
   };
-// To change target.id to target.name
+  // To change target.id to target.name
   const handleChange = ({ target }) => {
     setData({
       ...datas,
@@ -122,8 +132,8 @@ const BusinessRegistration = () => {
   useEffect(() => {
     dispatchData();
     console.log(datas);
-  }, [datas.address]);
-
+  }, []);
+  // datas.address in []
   const handleNext = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
   };
@@ -131,21 +141,42 @@ const BusinessRegistration = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
   };
 
-  const config = {
-    method: "post",
-    url: `${URL}/business`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: datas,
-  };
-
   const regsiterBusiness = () => {
-    axios(config)
-      .then((res) => {
-        JSON.stringify(res.data);
-        console.log("Success, Regsitered", res);
-      })
+    axios
+      .post(`${URL}/register`, datas)
+
+      .then(
+        swalWithBootstrapButtons
+          .fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Register Me!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true,
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              swalWithBootstrapButtons
+                .fire("Registered!", "Your file has been deleted.", "success")
+                .then((res) => JSON.stringify(res.datas));
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                "Cancelled",
+                "Your imaginary file is safe :)",
+                "error"
+              );
+            }
+          })
+      )
+      // .then((res) => {
+      //   JSON.stringify(res.data);
+      //   console.log("Success, Regsitered Business Account", res);
+      // })
       .catch((err) => console.log(err));
   };
 
@@ -181,6 +212,16 @@ const BusinessRegistration = () => {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
+          // add validity check if form is missing something to indicate where
+          // if (isStepFailed(index)) {
+          //   labelProps.optional = (
+          //     <Typography variant="caption" color="error">
+          //       Alert message
+          //     </Typography>
+          //   );
+          //   labelProps.error = true;
+          // }
+
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -201,7 +242,13 @@ const BusinessRegistration = () => {
             >
               REGISTER
             </Button>
-            <Button className="mx-auto" variant="danger">
+            <Button
+              className="mx-auto"
+              variant="danger"
+              onClick={() => {
+                history.push("/");
+              }}
+            >
               Cancel
             </Button>
           </div>

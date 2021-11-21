@@ -1,26 +1,26 @@
+// Libraries
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector, connect } from "react-redux";
+
+// Styling
 import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
-import fishshop from "../fishshop.jpg";
+import fishshop from "../assets/images/fishshop.jpg";
 import { IoIosStarOutline, IoMdAlarm } from "react-icons/io";
+
+// Components
 import Logo from "./ProfilePage/logo";
 import About from "./ProfilePage/About";
 import Services from "./ProfilePage/Services";
 import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
-// import Map from "./ProfilePage/Map";
-import setLoading from "../Redux/users/userAction.js";
-import MapImg from "../map.jpg";
-import { USER_LOGGEDIN } from "../Redux/users/userTypes";
-// import fetchLoggedInUser from "../Redux/users/userAction";
-// import {REACT_APP_API_URL, REACT_APP_MONGO_DB} from "../env"
-// import { getUserData } from "./crud.js";
+
+import { USER_LOGGEDIN } from "../redux/users/userTypes";
 
 const ProfilePage = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((s) => s.formBusiness);
-  const userId = props.match.params.userId;
+  // const userId = props.match.params.userId;
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({
     _id: "",
@@ -180,7 +180,7 @@ const ProfilePage = (props) => {
             <Button>Create Shopping List</Button>
             <hr className="" id="location" />
             {userData.basic.name}
-            <Image className="profile-map" src={MapImg} />
+            <Image className="profile-map" />
           </Container>
         </>
       )}

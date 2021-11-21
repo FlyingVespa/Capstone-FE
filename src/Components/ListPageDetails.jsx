@@ -1,17 +1,13 @@
 import React from "react";
 import { Row, Col, Image } from "react-bootstrap";
-import p0 from "../p2.png";
-import p1 from "../p1.png";
-import p2 from "../p3.png";
-import p3 from "../p4.png";
-// import p4 from "../pngegg(4).png";
+
 function ListPageDetails() {
   return (
     <div>
       <Row>
         <Col>
           <Row>
-            <Image scr={p0} />
+            <Image />
           </Row>
           <Row>
             <p>
@@ -24,7 +20,7 @@ function ListPageDetails() {
         </Col>
         <Col>
           <Row>
-            <Image scr={p1} />
+            <Image />
           </Row>
           <Row>
             <p>
@@ -37,7 +33,7 @@ function ListPageDetails() {
         </Col>
         <Col>
           <Row>
-            <Image scr={p2} />
+            <Image />
           </Row>
           <Row>
             <p>
@@ -50,7 +46,7 @@ function ListPageDetails() {
         </Col>
         <Col>
           <Row>
-            <Image scr={p3} />
+            <Image />
           </Row>
           <Row>
             <p>

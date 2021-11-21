@@ -1,21 +1,18 @@
+// Libraries
 import { useState, useEffect, Fragment } from "react";
-import { Form, Container, Row, Col } from "react-bootstrap";
-import { IoSearch } from "react-icons/io5";
-import { Link, withRouter } from "react-router-dom";
-import SearchOutput from "./SearchOutput";
+import { withRouter } from "react-router-dom";
+
+// Styling
+import { Container, Row, Col } from "react-bootstrap";
 import {
   TextField,
   Autocomplete,
   CircularProgress,
-  FormControl,
-  InputLabel,
   Select,
   MenuItem,
-  Box,
 } from "@mui/material";
 
 function SearchBar({ usersData, routerProps }) {
-  const [query, setQuery] = useState({});
   const [criteria, setCriteria] = useState("");
   const [openCity, setOpenCity] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
@@ -28,7 +25,6 @@ function SearchBar({ usersData, routerProps }) {
       setTimeout(resolve, delay);
     });
   }
-  const URL = process.env.REACT_APP_API_URL;
   const filteredCity = [
     { city: "Messina", country: "italy" },
     { city: "Parlemo", country: "italy" },
@@ -52,7 +48,7 @@ function SearchBar({ usersData, routerProps }) {
     return () => {
       active = false;
     };
-  }, [loadingCity]);
+  }, []);
   useEffect(() => {
     if (!openSearch) {
       setOptions([]);

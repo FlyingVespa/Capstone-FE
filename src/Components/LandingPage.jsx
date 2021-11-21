@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react";
-import {
-  Container,
+// Libraries
+import { Container, Col, Button, Row, Image } from "react-bootstrap";
 
-  Col,
-  
-  Button,
-  Row,
-  Image,
-} from "react-bootstrap";
-
-import shopping from "../shopping.png";
-import landingpage from "../landingpage.jpeg";
+// styling
+import shopping from "../assets/images/shopping.png";
 import "./ClientHomePage/clienthomepage.css";
-import SearchBar from "./ClientHomePage/SearchBar";
-import ListPageDetails from "./ListPageDetails";
-function LandingPage({ props }) {
-  const URL = process.env.REACT_APP_API_URL;
-  const [usersData, setUsersData] = useState([]);
-  const [isMe, setIsMe] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const ss = Object.keys(usersData);
+// Components
+import ListPageDetails from "./ListPageDetails";
+
+const LandingPage = () => {
+  // const [isMe, setIsMe] = useState(false);
+
   return (
     <>
-      <div className="" style={{ backgroundColor: "#94ce89" }}>
+      <div className="landing_page">
         <Container className="landing_page" id="landing_page">
           <Image src={shopping} id="landing_background" />
 
@@ -43,7 +33,7 @@ function LandingPage({ props }) {
                   List Your Business For Free
                 </Button>
               </div>
-              <p>Start exploring listed businesses >> </p>
+              <p>Start exploring listed businesses </p>
             </Col>
             <Col className="m-2"></Col>
           </Row>
@@ -52,6 +42,6 @@ function LandingPage({ props }) {
       <ListPageDetails />
     </>
   );
-}
+};
 
 export default LandingPage;

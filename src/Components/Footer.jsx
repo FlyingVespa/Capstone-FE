@@ -22,10 +22,10 @@ function Footer() {
                 <h6>Abouts us</h6>
                 <ul>
                   <li>
-                    <a href="">Businesses</a>
+                    <p>Businesses</p>
                   </li>
                   <li>
-                    <a href="">Consumeres</a>
+                    <p>Consumeres</p>
                   </li>
                 </ul>
               </div>
@@ -33,10 +33,7 @@ function Footer() {
                 <h6>Be more Visible Solutions</h6>
                 <ul>
                   <li>
-                    <a href="">Getting Started</a>
-                  </li>
-                  <li>
-                    <a href="">Services</a>
+                    <p>Getting Started</p>
                   </li>
                 </ul>
               </div>
@@ -44,10 +41,10 @@ function Footer() {
                 <h6>FAQ</h6>
                 <ul>
                   <li>
-                    <a href="">Business</a>
+                    <p>Businesses</p>
                   </li>
                   <li>
-                    <a href="">Consumers</a>
+                    <p>Consumeres</p>
                   </li>
                 </ul>
               </div>

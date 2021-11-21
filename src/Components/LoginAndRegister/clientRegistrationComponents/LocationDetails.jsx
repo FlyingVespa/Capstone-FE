@@ -1,18 +1,21 @@
+// Libraries
 import { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
-
 import axios from "axios";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
 
+// Styling
+import { Row, Col } from "react-bootstrap";
+
+// Components
+
 const LocationDetails = ({ f }) => {
   const [input, setInput] = useState("");
   const [selected, setSelected] = useState(false);
   const [addresss, setAddresss] = useState(null);
   const [addressData, setAddressData] = useState(null);
-
   const [coordinates, setCoordinates] = useState({
     lat: null,
     lng: null,

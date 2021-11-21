@@ -125,8 +125,12 @@ footer a {
 .enjoy {
   font-size: 50px;
 }
-
+/* LANDING PAGE */
 .landing_page {
+  background-color: #94ce89;
+}
+
+.landing_page .container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,15 +142,10 @@ footer a {
   margin: 150px !important;
 }
 
-.landing_page > div:first-of-type {
-  /* border: red solid 4px; */
-}
 .landing_page h1 {
   font-family: "Work Sans", sans-serif;
   color: #fff;
   font-size: 100px;
-  /* position: relative; */
-  /* margin-bottom: 30px; */
 }
 
 .landing_page > .row > .col p:nth-child(1) {
@@ -274,4 +273,14 @@ footer a {
 
 .searchCard:hover {
   background-color: rgba(0, 0, 0, 0.08);
+}
+
+.product_list_grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid green;
+  padding: 10px;
+  width: 90vh;
+  height: 50vh;
 }

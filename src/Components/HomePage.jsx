@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Container,  Col, Spinner } from "react-bootstrap";
+import { Container, Col, Spinner } from "react-bootstrap";
 
 import "./ClientHomePage/clienthomepage.css";
 import SearchBar from "./ClientHomePage/SearchBar";
-import { fetchUsers } from "../Redux";
+import { fetchUsers } from "../redux";
 
 function HomePage({ props, fetchUsers, usersData }) {
-
-
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -32,17 +30,15 @@ function HomePage({ props, fetchUsers, usersData }) {
 
       <Container>
         <div>
-
           {usersData &&
             usersData.users &&
             usersData.users.map((user) => (
-              <Link to={`/business/${user._id}`}>
+              <Link to={`/business/${user.url}`}>
                 {" "}
                 <p>{user.email}</p>
               </Link>
             ))}
         </div>
-        {/* <SavedStores user={usersData} /> */}
       </Container>
     </Container>
   );
@@ -56,6 +52,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUsers: () => dispatch(fetchUsers()),
+   
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

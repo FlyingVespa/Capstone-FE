@@ -1,10 +1,10 @@
-import logo from "./logo.svg";
+import { useState } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
-import store from "./Redux/store";
+import store from "./redux/store";
 
-import { BrowserRouter as Router,  Route,  } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import ProfilePage from "./Components/ProfilePage";
 import LandingPage from "./Components/LandingPage";
@@ -12,21 +12,29 @@ import NavBar from "./Components/NavBar";
 import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
-import LoginPage from "./Components/LoginAndRegister/LoginModal";
+import DashboardPage from "./Components/DashboardPage";
+import FullFeaturedCrudGrid from "./Components/GridData";
 
 function App() {
+  const URL = process.env.REACT_APP_API_URL
   return (
     <>
       <Provider store={store}>
-        <NavBar />
         <Router>
+          <NavBar />
+          <Route path="/testgrid" exact render={<FullFeaturedCrudGrid/>}/>
+          <Route
+            path="/business/:userId/dashboard"
+            exact
+            render={(routeProps) => <DashboardPage {...routeProps} URL={URL} />}
+          ></Route>
           <Route path="/" exact component={LandingPage} />
           <Route
             path="/business"
             exact
-            render={(routeProps) => <HomePage {...routeProps} />}
+            render={(routeProps) => <HomePage {...routeProps} URL={URL} />}
           ></Route>
-      
+
           <Route
             path="/business/:userId"
             exact
@@ -35,7 +43,7 @@ function App() {
 
           <Route
             path="/register"
-            render={(routerProps) => <RegisterPage routerProps={routerProps} />}
+            render={(routerProps) => <RegisterPage routerProps={routerProps} URL={URL} />}
           />
         </Router>
         <Footer />
@@ -45,10 +53,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <img src="https://www.clipartmax.com/png/small/252-2520950_shop-local-icon.png" alt="Shop Local - Icon @clipartmax.com"></img> */
-}
-{
-  /* <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> */
-}

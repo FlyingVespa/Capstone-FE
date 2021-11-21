@@ -14,6 +14,7 @@ const helperReducer = (state = initialState, action) => {
       return { ...state, loading: action.payload };
     case SET_ACTIVE_STEP:
       return { ...state, activeStep: action.payload };
+   
     default:
       return state;
   }
