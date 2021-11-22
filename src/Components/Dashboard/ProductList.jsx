@@ -7,13 +7,13 @@ const ProductList = ({ URL }) => {
   const [tableData, setTableData] = useState({});
   const columns = [
     { field: "id", headerName: "ID", width: 140 },
-    { field: "businessid", headerName: "business", width: 40 },
+    { field: "businessId", headerName: "business", width: 40 },
     { field: "product", headerName: "Product", width: 130, editable: true },
     { field: "price", headerName: "Price", width: 80, editable: true },
     { field: "units", headerName: "Units", width: 130, editable: true },
     { field: "status", headerName: "Status", width: 130, editable: true },
-    { field: "image", headerName: "Image", width: 130, editable: true },
- 
+    { field: "createdAt", headerName: "Image", width: 130, editable: true },
+    { field: "updatedAt", headerName: "Image", width: 130, editable: true },
   ];
   const getData = async () => {
     console.log("click");
@@ -33,26 +33,34 @@ const ProductList = ({ URL }) => {
     }
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+  const dd = Object.keys(tableData);
   return (
-    <div className="product_list_grid">
-      <Button onClick={getData}>fetch</Button>
-      <DataGrid
-        checkboxSelection
-        pageSize={10}
-        rows={tableData}
-        columns={columns}
-        localeText={{
-          toolbarDensity: "Size",
-          toolbarDensityLabel: "Size",
-          toolbarDensityCompact: "Small",
-          toolbarDensityStandard: "Medium",
-          toolbarDensityComfortable: "Large",
-        }}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-      />
-    </div>
+    <table>
+      <thead>
+        <tr>
+          {columns.map((col) => (
+            <th>{col.headerName}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {tableData &&
+          dd.map((data) => (
+            <tr>
+              <td>{data.id}</td>
+              <td>{data.product}</td>
+              <td>{data.status}</td>
+              <td>{data.price}</td>
+              <td>{data.untis}</td>
+              <td>{data.image}</td>
+              <td>{data.businessId}</td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
   );
 };
 export default ProductList;
