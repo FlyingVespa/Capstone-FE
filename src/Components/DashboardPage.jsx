@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import * as React from "react";
 import PropTypes from "prop-types";
 import { Tabs, Tab, Typography, Box, TabPanel } from "@mui/material/";
-
+import GridData from "./Dashboard/GridData";
 import { FcAlarmClock } from "react-icons/fc";
 // Components
 import GeneralData from "./Dashboard/GeneralData";
@@ -64,7 +64,7 @@ const DashboardPage = ({URL}) => {
           <Tab label="" {...a11yProps(6)} />
         </Tabs>
         <TabPanel value={value} index={0}>
-          A
+         <GridData/>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <GeneralData URL={URL} />

@@ -13,7 +13,7 @@ import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
 import DashboardPage from "./Components/DashboardPage";
-import FullFeaturedCrudGrid from "./Components/GridData";
+
 
 function App() {
   const URL = process.env.REACT_APP_API_URL
@@ -22,7 +22,7 @@ function App() {
       <Provider store={store}>
         <Router>
           <NavBar />
-          <Route path="/testgrid" exact render={<FullFeaturedCrudGrid/>}/>
+       
           <Route
             path="/business/:userId/dashboard"
             exact
