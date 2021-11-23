@@ -1,16 +1,34 @@
 // Libraries
-// Styling
-import { Container, Row, Col } from "react-bootstrap";
-import * as React from "react";
+import { useState } from "react";
+import { useHistory, useParams } from "react-router";
 import PropTypes from "prop-types";
-import { Tabs, Tab, Typography, Box, TabPanel } from "@mui/material/";
-import GridData from "./Dashboard/GridData";
-import { FcAlarmClock } from "react-icons/fc";
+import axios from "axios";
+// Styling
+import { Tabs, Tab, Typography, Box } from "@mui/material/";
+import "./Dashboard/dashboard.css";
 // Components
+import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
 import ProductList from "./Dashboard/ProductList";
+
+////////////////////////////////////////////////////////////////////////////////
+
 const DashboardPage = ({ URL }) => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [currentUser, setCurrentUser] = useState(0);
+
+  const userId = useParams.userId;
+  const getCurrentUser = async () => {
+    try {
+      const response = await axios.get(`${URL}/business/${userId}`);
+      if (response.ok) {
+        const userData = await response.json();
+        await setCurrentUser(userData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

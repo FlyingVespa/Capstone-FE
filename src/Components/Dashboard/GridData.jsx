@@ -1,32 +1,15 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Avatar } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import { Row, Col } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { Button } from "@mui/material";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
+
 import NameFieldComponent from "./NameFieldComponene";
-
-// MODEL
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Paper,
-  TextField,
-  Autocomplete,
-} from "@mui/material";
-
-import Draggable from "react-draggable";
-
-// MODEL END
-
+import AddProduct from "./AddProduct";
+const URL = process.env.REACT_APP_API_URL;
 const GridData = () => {
-  //
   const [open, setOpen] = useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -34,36 +17,26 @@ const GridData = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  function PaperComponent(props) {
-    return (
-      <Draggable
-        handle="#draggable-dialog-title"
-        cancel={'[class*="MuiDialogContent-root"]'}
-      >
-        <Paper {...props} />
-      </Draggable>
-    );
-  }
 
-  //
+  const convertDate = (data) => {
+    return data.value ? new Date(data.value).toLocaleDateString() : "";
+  };
+
   console.log("AgGridWithUseState Render");
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
   const [visibilityColumn, setVisibilityColumn] = useState(false);
-  const [frameworkComponents, setFrameworkComponents] = useState({
-    nameFieldComponent: NameFieldComponent,
-  });
 
   let imagesource = ({ value }) =>
-    `<div style="height: 50px; width: 50px;  border: black solid 2px; border-radius: 15px; overflow: hidden ; display: block; margin-left: auto; margin-right: auto;">
-        <img alt="product" className="grid-product-image" src=${value} style="  max-width: 100%; max-height: 100%;  display: block; margin-left: auto; margin-right: auto;" />
+    `<div id="grid-ag-image">
+        <img alt="product" id="grid-product-image" src=${value} style="" />
     </div>`;
   const [colDefs, setColDefs] = useState([
     {
       field: "drag",
-      headerName: ".",
-      lockPosition: true,
+      headerName: "",
+      width: 30,
       rowDrag: true,
     },
     {
@@ -98,18 +71,14 @@ const GridData = () => {
     {
       field: "createdAt",
       headerName: "Date Added",
-
-      cellRenderer: (data) => {
-        return data.value ? new Date(data.value).toLocaleDateString() : "";
-      },
+      cellRenderer: convertDate,
     },
     {
       field: "updatedAt",
       headerName: "Last Updated",
-      cellRenderer: (data) => {
-        return data.value ? new Date(data.value).toLocaleDateString() : "";
-      },
+      cellRenderer: convertDate,
     },
+
     {
       field: "delete",
       headerName: "Del",
@@ -117,14 +86,11 @@ const GridData = () => {
     },
   ]);
 
-  const converted = new Date().toLocaleDateString();
-
   const getProductData = async (params) => {
     console.log("click");
+    const userId = useParams.userId;
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/business/override/dashboard`
-      );
+      const response = await fetch(`${URL}/business/override/products`);
       if (response.ok) {
         const productData = await response.json();
         setRowData(productData);
@@ -136,14 +102,6 @@ const GridData = () => {
       console.log(error);
     }
   };
-  var gridOptions = {
-    colDefs: colDefs,
-    rowData: null,
-    enableColResize: true,
-    onColumnResized: function (params) {
-      console.log(params);
-    },
-  };
 
   useEffect(() => getProductData(), []);
 
@@ -152,8 +110,6 @@ const GridData = () => {
     editable: true,
     filter: true,
     resizable: true,
-
-    animateRows: true,
   };
 
   const onGridReady = async (params) => {
@@ -166,117 +122,24 @@ const GridData = () => {
     };
   };
 
-  const onNuttin = () => {
-    gridApi.showLoadingOverlay();
-    // const selectedNodes = gridApi.getSelectedNodes();
-    // const selectedData = selectedNodes.map((node) => node.data);
-    // const selectedDataString = selectedData
-    //   .map(
-    //     (node) => `${node.product} ${node.price} ${node.status} ${node.units} `
-    //   )
-    //   .join(", ");
-    // alert(`Selected Nodes: ${selectedDataString}`);
-  };
+  // const toggleColumn = () => {
+  //   gridColumnApi.setColumnsVisible(["product", "price"], visibilityColumn);
+  //   setVisibilityColumn(!visibilityColumn);
+  // };
 
-  const toggleColumn = () => {
-    gridColumnApi.setColumnsVisible(["product", "price"], visibilityColumn);
-    setVisibilityColumn(!visibilityColumn);
-  };
+  // const onRemoveSelected = () => {
+  //   const selectedData = gridApi.getSelectedRows();
+  //   const res = gridApi.applyTransaction({ remove: selectedData });
+  //   console.log(res);
+  // };
 
-  const onRemoveSelected = () => {
-    const selectedData = gridApi.getSelectedRows();
-    const res = gridApi.applyTransaction({ remove: selectedData });
-    console.log(res);
-  };
-  const addProduct = () => {};
   return (
     <div className="ag-theme-material" style={{ height: 400 }}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Add New Product
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-          Add New Product
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            A product can only have one unique name, if product already exists
-            update existing product
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="product"
-            label="Product Name"
-            fullWidth
-            variant="standard"
-          />
-          <Row>
-            <Col>
-              <TextField
-                autoFocus
-                margin="dense"
-                name="price"
-                label="Price"
-                variant="standard"
-              />
-            </Col>
-            <Col>
-              <Autocomplete
-                autoFocus
-                margin="dense"
-                variant="standard"
-                options={units}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Units"
-                    variant="standard"
-                    margin="dense"
-                  />
-                )}
-              />
-            </Col>
-          </Row>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="image"
-            label="Image"
-            variant="standard"
-          />
-          <Autocomplete
-            autoFocus
-            margin="dense"
-            variant="standard"
-            options={status}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Status"
-                variant="standard"
-                margin="dense"
-              />
-            )}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleClose}>Subscribe</Button>
-        </DialogActions>
-      </Dialog>
+      <AddProduct handleClose={handleClose} open={open} />
 
-      <button onClick={() => onRemoveSelected()}>Remove Selected</button>
-      <Button onClick={onNuttin}>SlectedRows</Button>
-      <Button onClick={toggleColumn}>Toggle Column</Button>
-      <Button onClick={addProduct}>Add Product</Button>
       <AgGridReact
         rowSelection="multiple"
         rowData={rowData}
@@ -287,8 +150,6 @@ const GridData = () => {
         columnDefs={colDefs}
         defaultColDef={defaultColumnDef}
         onGridReady={onGridReady}
-
-        // frameworkComponents={frameworkComponents}
       >
         <AgGridColumn field="drag"></AgGridColumn>
         <AgGridColumn field="number"></AgGridColumn>
@@ -301,26 +162,8 @@ const GridData = () => {
         <AgGridColumn field="updatedAt"></AgGridColumn>
         <AgGridColumn field="delete"></AgGridColumn>
       </AgGridReact>
-      <p>{converted}</p>
     </div>
   );
 };
 
-const units = [
-  { label: "kg" },
-  { label: "each" },
-  { label: "g" },
-  { label: "l" },
-  { label: "ml" },
-  { label: "mm" },
-  { label: "cm" },
-  { label: "m" },
-];
-
-const status = [
-  { label: "High" },
-  { label: "Low" },
-  { label: "Out of Stock" },
-  { label: "Medium" },
-];
 export default GridData;
