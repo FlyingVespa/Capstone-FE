@@ -1,15 +1,59 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Avatar } from "@mui/material";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import { Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
+import NameFieldComponent from "./NameFieldComponene";
+
+// MODEL
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Paper,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
+
+import Draggable from "react-draggable";
+
+// MODEL END
+
 const GridData = () => {
+  //
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  function PaperComponent(props) {
+    return (
+      <Draggable
+        handle="#draggable-dialog-title"
+        cancel={'[class*="MuiDialogContent-root"]'}
+      >
+        <Paper {...props} />
+      </Draggable>
+    );
+  }
+
+  //
   console.log("AgGridWithUseState Render");
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
   const [visibilityColumn, setVisibilityColumn] = useState(false);
+  const [frameworkComponents, setFrameworkComponents] = useState({
+    nameFieldComponent: NameFieldComponent,
+  });
 
   let imagesource = ({ value }) =>
     `<div style="height: 50px; width: 50px;  border: black solid 2px; border-radius: 15px; overflow: hidden ; display: block; margin-left: auto; margin-right: auto;">
@@ -17,16 +61,22 @@ const GridData = () => {
     </div>`;
   const [colDefs, setColDefs] = useState([
     {
+      field: "drag",
+      headerName: ".",
+      lockPosition: true,
+      rowDrag: true,
+    },
+    {
       field: "number",
       headerName: "No.",
-      width: 30,
+
       checkboxSelection: true,
+      rowDrag: true,
     },
     {
       field: "image",
       headerName: "Image",
       cellRenderer: imagesource,
-
     },
     {
       field: "product",
@@ -35,7 +85,6 @@ const GridData = () => {
     {
       field: "price",
       headerName: "Price",
- 
     },
     {
       field: "units",
@@ -44,6 +93,7 @@ const GridData = () => {
     {
       field: "status",
       headerName: "Status",
+      cellRenderer: "nameFieldComponent",
     },
     {
       field: "createdAt",
@@ -59,17 +109,15 @@ const GridData = () => {
       cellRenderer: (data) => {
         return data.value ? new Date(data.value).toLocaleDateString() : "";
       },
-    
     },
     {
-      field:"delete",
-      headerName:"Del",
-      cellRenderer:`<button ty>Delete</button>`
-
-    }
+      field: "delete",
+      headerName: "Del",
+      cellRenderer: "nameFieldComponent",
+    },
   ]);
-  const getDate = new Date();
-  const converted = getDate.toLocaleDateString();
+
+  const converted = new Date().toLocaleDateString();
 
   const getProductData = async (params) => {
     console.log("click");
@@ -103,8 +151,9 @@ const GridData = () => {
     sortable: true,
     editable: true,
     filter: true,
-    suppressVerticalScroll: true,
-    enableColResize: true,
+    resizable: true,
+
+    animateRows: true,
   };
 
   const onGridReady = async (params) => {
@@ -118,7 +167,7 @@ const GridData = () => {
   };
 
   const onNuttin = () => {
-    gridApi.sizeColumnsToFit();
+    gridApi.showLoadingOverlay();
     // const selectedNodes = gridApi.getSelectedNodes();
     // const selectedData = selectedNodes.map((node) => node.data);
     // const selectedDataString = selectedData
@@ -134,19 +183,114 @@ const GridData = () => {
     setVisibilityColumn(!visibilityColumn);
   };
 
+  const onRemoveSelected = () => {
+    const selectedData = gridApi.getSelectedRows();
+    const res = gridApi.applyTransaction({ remove: selectedData });
+    console.log(res);
+  };
+  const addProduct = () => {};
   return (
     <div className="ag-theme-material" style={{ height: 400 }}>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add New Product
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+          Add New Product
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            A product can only have one unique name, if product already exists
+            update existing product
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="product"
+            label="Product Name"
+            fullWidth
+            variant="standard"
+          />
+          <Row>
+            <Col>
+              <TextField
+                autoFocus
+                margin="dense"
+                name="price"
+                label="Price"
+                variant="standard"
+              />
+            </Col>
+            <Col>
+              <Autocomplete
+                autoFocus
+                margin="dense"
+                variant="standard"
+                options={units}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Units"
+                    variant="standard"
+                    margin="dense"
+                  />
+                )}
+              />
+            </Col>
+          </Row>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="image"
+            label="Image"
+            variant="standard"
+          />
+          <Autocomplete
+            autoFocus
+            margin="dense"
+            variant="standard"
+            options={status}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Status"
+                variant="standard"
+                margin="dense"
+              />
+            )}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleClose}>Subscribe</Button>
+        </DialogActions>
+      </Dialog>
+
+      <button onClick={() => onRemoveSelected()}>Remove Selected</button>
       <Button onClick={onNuttin}>SlectedRows</Button>
       <Button onClick={toggleColumn}>Toggle Column</Button>
+      <Button onClick={addProduct}>Add Product</Button>
       <AgGridReact
         rowSelection="multiple"
         rowData={rowData}
         pagination={true}
+        rowDragManaged={true}
+        animateRows={true}
         paginationAutoPageSize={25}
         columnDefs={colDefs}
         defaultColDef={defaultColumnDef}
         onGridReady={onGridReady}
+
+        // frameworkComponents={frameworkComponents}
       >
+        <AgGridColumn field="drag"></AgGridColumn>
         <AgGridColumn field="number"></AgGridColumn>
         <AgGridColumn field="image"></AgGridColumn>
         <AgGridColumn field="product"></AgGridColumn>
@@ -161,4 +305,22 @@ const GridData = () => {
     </div>
   );
 };
+
+const units = [
+  { label: "kg" },
+  { label: "each" },
+  { label: "g" },
+  { label: "l" },
+  { label: "ml" },
+  { label: "mm" },
+  { label: "cm" },
+  { label: "m" },
+];
+
+const status = [
+  { label: "High" },
+  { label: "Low" },
+  { label: "Out of Stock" },
+  { label: "Medium" },
+];
 export default GridData;
