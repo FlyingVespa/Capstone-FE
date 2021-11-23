@@ -88,13 +88,15 @@ const GridData = () => {
 
   const getProductData = async (params) => {
     console.log("click");
-    const userId = useParams.userId;
+    const { userId } = useParams;
+
     try {
       const response = await fetch(`${URL}/business/override/products`);
       if (response.ok) {
         const productData = await response.json();
         setRowData(productData);
         console.log(productData);
+        console.log(userId);
       } else {
         throw new Error("Could access data, but something went wrong");
       }
