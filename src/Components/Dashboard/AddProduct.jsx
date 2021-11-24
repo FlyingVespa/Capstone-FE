@@ -38,8 +38,16 @@ const URL = process.env.REACT_APP_API_URL;
 const AddProduct = ({ open, handleClose }) => {
   let history = useHistory();
 
-  const [product, setProduct] = useState({});
   const currentUser = useParams.userId;
+  const [product, setProduct] = useState({
+    businessId: currentUser,
+    businessId: "619784b3b990ee614a4e469c",
+    product: "Ball",
+    price: "1.99",
+    units: "kg",
+    status: "low",
+    image: "http://placeimg.com/640/480/fashion",
+  });
 
   const handleProductDetails = ({ target }) => {
     setProduct({ ...product, [target.name]: target.value });

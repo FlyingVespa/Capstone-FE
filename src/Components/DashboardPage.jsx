@@ -20,7 +20,7 @@ const DashboardPage = ({ URL }) => {
   const userId = useParams.userId;
   const getCurrentUser = async () => {
     try {
-      const response = await axios.get(`${URL}/business/${userId}`);
+      const response = await axios.get(`${URL}/business/${userId}/dashboard`);
       if (response.ok) {
         const userData = await response.json();
         await setCurrentUser(userData);

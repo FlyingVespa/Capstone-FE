@@ -47,6 +47,28 @@ const LoginModal = ({ handleClose, show }) => {
       }
     } catch (error) {}
 
+    const loginUser = async () => {
+      try {
+        const resp = await fetch(`${URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginDetails),
+        });
+        const data = await resp.json();
+        if (resp.ok) {
+          console.log(data.accessToken);
+          localStorage.setItem("accessToken", data.accessToken);
+          return true;
+        } else {
+          return data.message;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     // .then((response) => {
     //   JSON.stringify(response.loginDetails);
     //   console.log(response);
@@ -120,7 +142,7 @@ const LoginModal = ({ handleClose, show }) => {
           <Button variant="outline-danger" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={tryLogin} className="mt-5" variant="success">
+          <Button onClick={loginUser} className="mt-5" variant="success">
             Submit
           </Button>
         </Modal.Footer>
