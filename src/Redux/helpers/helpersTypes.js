@@ -1,3 +1,4 @@
 export const SHOW_PASSWORD = "SHOW_PASSWORD";
 export const SET_LOADING = "SET_LOADING";
 export const SET_ACTIVE_STEP = "SET_ACTIVE_STEP";
+export const SET_LOGGEDIN_STATUS = "SET_LOGGEDIN_STATUS";

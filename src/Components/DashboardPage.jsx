@@ -1,6 +1,7 @@
 // Libraries
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
 // Styling
@@ -11,25 +12,34 @@ import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
 import ProductList from "./Dashboard/ProductList";
 
+import { currentUserDetails } from "../redux/users/userAction";
 ////////////////////////////////////////////////////////////////////////////////
 
 const DashboardPage = ({ URL }) => {
+  let params = useParams();
+  let history = useHistory();
+  const dispatch = useDispatch();
+  const loggedin = useSelector((s) => s.helper.loggedin);
   const [value, setValue] = useState(0);
-  const [currentUser, setCurrentUser] = useState(0);
+  const [currentUser, setCurrentUser] = useState({});
 
-  const userId = useParams.userId;
-  const getCurrentUser = async () => {
-    try {
-      const response = await axios.get(`${URL}/business/${userId}/dashboard`);
-      if (response.ok) {
-        const userData = await response.json();
-        await setCurrentUser(userData);
-      }
-    } catch (error) {
-      console.log(error);
+  const userId = params.userId;
+  const getCurrentUser = () => {
+    if (loggedin === true) {
+      axios
+        .get(`${URL}/business/me`, { withCredentials: true })
+        .then((res) => JSON.stringify(res))
+        .then((res) => setCurrentUser(res))
+        .then(() => console.log("CURRENTUSER", currentUser))
+        .then(dispatch(currentUserDetails(currentUser)));
+    } else {
+      alert("Please login before accessing dashboard");
+      history.push("/");
     }
   };
-
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

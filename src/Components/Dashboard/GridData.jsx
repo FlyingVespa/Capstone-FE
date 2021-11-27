@@ -1,14 +1,25 @@
+// libraries
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+// styling
 import { Button } from "@mui/material";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
-
+// components
 import NameFieldComponent from "./NameFieldComponene";
 import AddProduct from "./AddProduct";
 const URL = process.env.REACT_APP_API_URL;
+
+////////////////////////////////////////////////////////////////////////////////////
+
 const GridData = () => {
+  let history = useHistory();
+  let params = useParams();
+  let dispatch = useState();
+
+  const user = useSelector((s) => s.users.user);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -86,17 +97,16 @@ const GridData = () => {
     },
   ]);
 
-  const getProductData = async (params) => {
-    console.log("click");
-    const { userId } = useParams;
+  const getProductData = async () => {
+    let userId = user.data._id;
 
     try {
-      const response = await fetch(`${URL}/business/override/products`);
+      const response = await fetch(`${URL}/business/${userId}/products`);
       if (response.ok) {
         const productData = await response.json();
         setRowData(productData);
         console.log(productData);
-        console.log(userId);
+        console.log("üser", userId);
       } else {
         throw new Error("Could access data, but something went wrong");
       }

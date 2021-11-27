@@ -12,8 +12,13 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Swal from "sweetalert2";
+import { fetchLoggedInUser } from "../../redux/users/userAction";
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 const LoginModal = ({ handleClose, show }) => {
+  const logged_status = useSelector((s) => s.helper.logged_status);
+  const dispatch = useDispatch();
   let history = useHistory();
   const URL = process.env.REACT_APP_API_URL;
 
@@ -22,7 +27,6 @@ const LoginModal = ({ handleClose, show }) => {
     password: "1234",
   });
 
-  const dispatch = useDispatch();
   const vpassword = useSelector((s) => s.helper.password_visible);
   const handleClickShowPassword = () => {
     dispatch({ type: "SHOW_PASSWORD", payload: !vpassword });
@@ -31,71 +35,35 @@ const LoginModal = ({ handleClose, show }) => {
   const handleChange = ({ target }) => {
     setLoginDetails({ ...loginDetails, [target.name]: target.value });
   };
-
-  const tryLogin = async () => {
-    try {
-      const response = await axios.post(
-        `${URL}/auth/login`,
-        { email: loginDetails.email, password: loginDetails.password },
-        {
-          withCredentials: true,
-        }
+  const details = {
+    email: loginDetails.email,
+    password: loginDetails.password,
+  };
+  const loginClient = () => {
+    axios
+      .post(`${URL}/auth/login`, details, { withCredentials: true })
+      .then((res) => JSON.stringify(res))
+      .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
+      .then(handleClose())
+      .then(history.push("/profile/me"))
+      .catch(
+        (error) =>
+          console.log(error) &&
+          dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
       );
-      if (response.ok) {
-        const data = response.data;
-        console.log(data);
-      }
-    } catch (error) {}
-
-    const loginUser = async () => {
-      try {
-        const resp = await fetch(`${URL}/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginDetails),
-        });
-        const data = await resp.json();
-        if (resp.ok) {
-          console.log(data.accessToken);
-          localStorage.setItem("accessToken", data.accessToken);
-          return true;
-        } else {
-          return data.message;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    // .then((response) => {
-    //   JSON.stringify(response.loginDetails);
-    //   console.log(response);
-    // })
-    // .then(
-    //   Swal.fire({
-    //     position: "top-end",
-    //     icon: "success",
-    //     title: "Loggedin successfully",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   })
-    // )
-    // .then(handleClose())
-    // .then(
-    //   if ( response === "client"){
-    //     history.push("/profile/me")
-    //   })
-    // .catch((err) => {
-    //   if (err.response) {
-    //     Swal.fire(
-    //       "Oops!",
-    //       "Login failed, either email doesn't exist or details incorrect, please try again.",
-    //       "error"
-    //     );
-    //   }
-    // });
+  };
+  const loginUser = () => {
+    axios
+      .post(`${URL}/auth/login`, details, { withCredentials: true })
+      .then((res) => JSON.stringify(res))
+      .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
+      .then(handleClose())
+      .then(history.push("/business/me/dashboard"))
+      .catch(
+        (error) =>
+          console.log(error) &&
+          dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
+      );
   };
 
   return (
@@ -112,7 +80,6 @@ const LoginModal = ({ handleClose, show }) => {
               placeholder="Enter Your email used for login"
               label="Account Email"
               value={loginDetails.email}
-              fullWidth
               onChange={handleChange}
             />
             <InputLabel htmlFor="standard-adornment-password">
@@ -142,8 +109,21 @@ const LoginModal = ({ handleClose, show }) => {
           <Button variant="outline-danger" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={loginUser} className="mt-5" variant="success">
-            Submit
+          <Button
+            onClick={loginUser}
+            type="submit"
+            className="mt-5"
+            variant="success"
+          >
+            Login As Bussines
+          </Button>
+          <Button
+            onClick={loginClient}
+            type="submit"
+            className="mt-5"
+            variant="success"
+          >
+            Login
           </Button>
         </Modal.Footer>
       </Modal>

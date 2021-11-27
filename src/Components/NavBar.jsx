@@ -1,16 +1,21 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
-// import { useHistory } from "react-router-dom";
-import { Button, Avatar } from "@mui/material";
+import { useHistory } from "react-router-dom";
+import { Button, Avatar, Chip } from "@mui/material";
 
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
 
-const NavBar = () => {
-  // let history = useHistory();
+const NavBar = ({ URL }) => {
+  const loggedin = useSelector((s) => s.helper.loggedin);
+  const loggedinUser = useSelector((s) => s.users.user);
+  const avatar = loggedinUser
+    ? loggedinUser.img_logo
+    : "https://source.unsplash.com/user/erondu";
 
-  const loggedin = useSelector((s) => s.users.loggedin);
+  let history = useHistory();
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -49,15 +54,24 @@ const NavBar = () => {
                   </Button>
                 </>
               ) : (
-                <Button
-                  href="/logout"
-                  className="mx-2"
-                  variant="contained"
-                  color="success"
-                  size="medium"
-                >
-                  Logout
-                </Button>
+                <>
+                  <Chip
+                    variant="outlined"
+                    avatar={<Avatar alt="Remy Sharp" src={avatar} />}
+                  />
+
+                  <Button
+                    className="mx-2"
+                    variant="contained"
+                    color="success"
+                    size="medium"
+                    onClick={() =>
+                      axios.get(`${URL}/auth/logout`).then(history.push("/"))
+                    }
+                  >
+                    Logout
+                  </Button>
+                </>
               )}
             </Nav>
           </Navbar.Collapse>

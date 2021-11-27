@@ -13,21 +13,28 @@ import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
 import DashboardPage from "./Components/DashboardPage";
-
+import ClientHomePage from "./Components/ClientHomePage";
 
 function App() {
-  const URL = process.env.REACT_APP_API_URL
+  const URL = process.env.REACT_APP_API_URL;
   return (
     <>
       <Provider store={store}>
         <Router>
-          <NavBar />
-       
+          <NavBar URL={URL} />
+          <Route
+            path="/profile/:userId"
+            exact
+            render={(routeProps) => (
+              <ClientHomePage {...routeProps} URL={URL} />
+            )}
+          ></Route>
           <Route
             path="/business/:userId/dashboard"
             exact
             render={(routeProps) => <DashboardPage {...routeProps} URL={URL} />}
           ></Route>
+
           <Route path="/" exact component={LandingPage} />
           <Route
             path="/business"
@@ -43,7 +50,9 @@ function App() {
 
           <Route
             path="/register"
-            render={(routerProps) => <RegisterPage routerProps={routerProps} URL={URL} />}
+            render={(routerProps) => (
+              <RegisterPage routerProps={routerProps} URL={URL} />
+            )}
           />
         </Router>
         <Footer />

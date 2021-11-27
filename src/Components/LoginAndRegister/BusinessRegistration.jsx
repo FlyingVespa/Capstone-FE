@@ -105,10 +105,11 @@ const BusinessRegistration = () => {
   const handleChange = ({ target }) => {
     setData({
       ...datas,
-      [target.id]: target.value,
+      [target.name]: target.value,
     });
     dispatchData();
   };
+
   const handleTimeChange = ({ target }) => {
     setData({
       ...datas,
