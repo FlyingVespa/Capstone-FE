@@ -74,16 +74,16 @@ export const fetchUsers = () => {
   };
 };
 
-export const fetchLoggedInUser = (payload) => {
+export const fetchLoggedInUser = () => {
   return (dispatch) => {
     dispatch(fetchLoggedUser);
     axios
-      .post(`${URL}/auth/login`, payload, { withCredentials: true })
+      .get(`${URL}/business/me`, { withCredentials: true })
       .then((res) => {
-        const userData = JSON.stringify(res);
+        const userData = res.data;
         dispatch(fetchLoggedUserSuccess(userData));
       })
-      .then(window.location.href("/business/me/dashboard"))
+      
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(fetchLoggedUserFailure(errorMsg));

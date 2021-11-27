@@ -18,8 +18,8 @@ const GridData = () => {
   let history = useHistory();
   let params = useParams();
   let dispatch = useState();
-
-  const user = useSelector((s) => s.users.user);
+  const loggedUser = useSelector((s) => s.users.loggedUser);
+  // const user = useSelector((s) => s.users.loggedUser);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -98,7 +98,7 @@ const GridData = () => {
   ]);
 
   const getProductData = async () => {
-    let userId = user.data._id;
+    let userId = loggedUser._id;
 
     try {
       const response = await fetch(`${URL}/business/${userId}/products`);
@@ -116,6 +116,9 @@ const GridData = () => {
   };
 
   useEffect(() => getProductData(), []);
+  // useEffect(() => {
+  //   console.log(loggedUser)
+  // }, [])
 
   const defaultColumnDef = {
     sortable: true,

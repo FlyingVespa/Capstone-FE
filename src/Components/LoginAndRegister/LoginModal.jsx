@@ -23,7 +23,7 @@ const LoginModal = ({ handleClose, show }) => {
   const URL = process.env.REACT_APP_API_URL;
 
   const [loginDetails, setLoginDetails] = useState({
-    email: "default@test.com",
+    email: "test@business.com",
     password: "1234",
   });
 
@@ -39,31 +39,57 @@ const LoginModal = ({ handleClose, show }) => {
     email: loginDetails.email,
     password: loginDetails.password,
   };
-  const loginClient = () => {
-    axios
-      .post(`${URL}/auth/login`, details, { withCredentials: true })
-      .then((res) => JSON.stringify(res))
-      .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
-      .then(handleClose())
-      .then(history.push("/profile/me"))
-      .catch(
-        (error) =>
-          console.log(error) &&
-          dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
-      );
-  };
-  const loginUser = () => {
-    axios
-      .post(`${URL}/auth/login`, details, { withCredentials: true })
-      .then((res) => JSON.stringify(res))
-      .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
-      .then(handleClose())
-      .then(history.push("/business/me/dashboard"))
-      .catch(
-        (error) =>
-          console.log(error) &&
-          dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
-      );
+
+  // const loginClient = () => {
+  //   axios
+  //     .post(`${URL}/auth/login`, details, { withCredentials: true })
+  //     .then((res) => JSON.stringify(res))
+  //     .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
+  //     .then(handleClose())
+  //     // .then(history.push("/profile/me"))
+  //     .catch(
+  //       (error) =>
+  //         console.log(error) &&
+  //         dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
+  //     );
+  // };
+  // const loginUser = () => {
+  //   axios
+  //     .post(`${URL}/auth/login`, details, { withCredentials: true })
+  //     .then((res) => JSON.stringify(res.data))
+  //     // .then(res=> console.log(res))
+  //     .then(res => res == "user" ? console.log("YES") : console.log("NO"))
+  //     .then(history.push("/business/me/dashboard"))
+  //     .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
+  //     .then(handleClose())
+  //     .catch(
+  //       (error) =>
+  //         console.log(error) &&
+  //         dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
+  //     );
+  // };
+
+  const loginUser = async () => {
+    try {
+      const resp = await axios.post(`${URL}/auth/login`, details, {
+        withCredentials: true,
+      });
+      let data = await JSON.stringify(resp.data);
+      await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true})
+      if (data.includes("client")) {
+       await history.push("profile/me")
+      handleClose()
+      } else if (data.includes("user")){
+        history.push("/business/me/dashboard")
+        handleClose()
+      } else {
+        console.log("no role has been assigned to account");
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+ 
   };
 
   return (
@@ -115,16 +141,9 @@ const LoginModal = ({ handleClose, show }) => {
             className="mt-5"
             variant="success"
           >
-            Login As Bussines
-          </Button>
-          <Button
-            onClick={loginClient}
-            type="submit"
-            className="mt-5"
-            variant="success"
-          >
             Login
           </Button>
+      
         </Modal.Footer>
       </Modal>
     </>

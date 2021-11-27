@@ -41,9 +41,9 @@ const AddProduct = ({ handleClose, open }) => {
   let location = useLocation();
   let params = useParams();
 
-  const user = useSelector((state) => state.users.user);
+  const user = useSelector((state) => state.users.loggedUser);
   const [product, setProduct] = useState({
-    businessId: user._id,
+    
     product: "Ball",
     price: "1.99",
     units: "kg",
@@ -105,7 +105,7 @@ const AddProduct = ({ handleClose, open }) => {
 
     try {
       const response = await axios.post(
-        `${URL}/business/${user.data._id}/products`,
+        `${URL}/business/${user._id}/products`,
         product,
         { withCredentials: true }
       );

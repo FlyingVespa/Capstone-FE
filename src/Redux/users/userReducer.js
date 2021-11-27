@@ -13,12 +13,12 @@ import {
 const intitialState = {
   users: [],
   loggedin: false,
-  loggedUser: null,
+  loggedUser: {},
   loading: false,
   loadingSingle: false,
   error: "",
   registerBusiness: "",
-  user: null,
+  user: {},
 };
 
 const userReducer = (state = intitialState, action) => {
@@ -51,7 +51,7 @@ const userReducer = (state = intitialState, action) => {
     case FETCH_LOGGED_USER_FAILURE:
       return {
         loadingSingle: false,
-        loggedUser: "",
+        loggedUser: {},
         error: action.payload,
       };
     case REGISTER_BUSINESS_USER:

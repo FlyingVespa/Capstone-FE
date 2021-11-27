@@ -1,11 +1,12 @@
-import { useState } from "react";
+// libraries
+import { PersistGate } from 'redux-persist/integration/react'
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+// Styling
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Provider } from "react-redux";
+// components
 import store from "./redux/store";
-
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
 import ProfilePage from "./Components/ProfilePage";
 import LandingPage from "./Components/LandingPage";
 import NavBar from "./Components/NavBar";
@@ -14,8 +15,8 @@ import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
 import DashboardPage from "./Components/DashboardPage";
 import ClientHomePage from "./Components/ClientHomePage";
-
-function App() {
+///////////////////////////////////////////////////////////////////////////////////////
+const App =()=> {
   const URL = process.env.REACT_APP_API_URL;
   return (
     <>

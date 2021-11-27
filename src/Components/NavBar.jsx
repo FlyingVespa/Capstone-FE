@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Container, Navbar, Nav } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Container, Navbar, Nav, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Avatar, Chip } from "@mui/material";
 
@@ -9,16 +9,26 @@ import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
 
 const NavBar = ({ URL }) => {
+  const dispatch = useDispatch();
   const loggedin = useSelector((s) => s.helper.loggedin);
-  const loggedinUser = useSelector((s) => s.users.user);
-  const avatar = loggedinUser
-    ? loggedinUser.img_logo
+  const currentUser = useSelector((s) => s.users.user);
+  const avatar = currentUser
+    ? currentUser.img_logo
     : "https://source.unsplash.com/user/erondu";
 
   let history = useHistory();
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  const logoutUser = () => {
+    axios
+      .get("http://localhost:4545/auth/logout", { withCredentials: true })
+      .then((response) => JSON.stringify(response))
+     .then( dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false}))
+      .then(history.push("/"))
+      .catch((error) => console.log("error", error));
+  };
   return (
     <>
       <Navbar className="navbar-top" expand="lg">
@@ -53,21 +63,24 @@ const NavBar = ({ URL }) => {
                     Sign Up Free
                   </Button>
                 </>
+              ) : !currentUser ? (
+                <div className="d-flex justify-content-center mt-5">
+                  <Spinner animation="border" />
+                </div>
               ) : (
                 <>
                   <Chip
+                    label={currentUser.email}
                     variant="outlined"
                     avatar={<Avatar alt="Remy Sharp" src={avatar} />}
                   />
-
+                  <h1>{currentUser.email}</h1>
                   <Button
                     className="mx-2"
                     variant="contained"
                     color="success"
                     size="medium"
-                    onClick={() =>
-                      axios.get(`${URL}/auth/logout`).then(history.push("/"))
-                    }
+                    onClick={logoutUser}
                   >
                     Logout
                   </Button>

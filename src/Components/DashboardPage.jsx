@@ -1,47 +1,53 @@
 // Libraries
 import { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams  } from "react-router";
+import { useDispatch,  connect } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
 // Styling
 import { Tabs, Tab, Typography, Box } from "@mui/material/";
+import { Spinner } from "react-bootstrap";
 import "./Dashboard/dashboard.css";
 // Components
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
 import ProductList from "./Dashboard/ProductList";
+import {fetchLoggedInUser} from "../redux";
 
-import { currentUserDetails } from "../redux/users/userAction";
 ////////////////////////////////////////////////////////////////////////////////
 
-const DashboardPage = ({ URL }) => {
+function DashboardPage ({ URL, fetchLoggedInUser, userData }) {
+
+  useEffect(() => {
+    fetchLoggedInUser();
+    }, []);
   let params = useParams();
   let history = useHistory();
   const dispatch = useDispatch();
-  const loggedin = useSelector((s) => s.helper.loggedin);
+ 
   const [value, setValue] = useState(0);
   const [currentUser, setCurrentUser] = useState({});
 
   const userId = params.userId;
-  const getCurrentUser = () => {
-    if (loggedin === true) {
-      axios
-        .get(`${URL}/business/me`, { withCredentials: true })
-        .then((res) => JSON.stringify(res))
-        .then((res) => setCurrentUser(res))
-        .then(() => console.log("CURRENTUSER", currentUser))
-        .then(dispatch(currentUserDetails(currentUser)));
-    } else {
-      alert("Please login before accessing dashboard");
-      history.push("/");
-    }
-  };
-  useEffect(() => {
-    getCurrentUser();
-  }, []);
+  // const getCurrentUser = () => {
+  //   if (loggedin === true) {
+  //     axios
+  //       .get(`${URL}/business/me`, { withCredentials: true })
+  //       .then((res) => JSON.stringify(res))
+  //       .then((res) => setCurrentUser(res))
+  //       .then(() => console.log("CURRENTUSER", currentUser))
+  //       .then(dispatch(currentUserDetails(currentUser)));
+  //   } else {
+  //     alert("Please login before accessing dashboard");
+  //     history.push("/");
+  //   }
+  // };
+ 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+
+
+
   };
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -63,7 +69,19 @@ const DashboardPage = ({ URL }) => {
     );
   }
 
-  return (
+  function a11yProps(index) {
+    return {
+      id: `vertical-tab-${index}`,
+      "aria-controls": `vertical-tabpanel-${index}`,
+    };
+  }
+  return userData.loadingSingle ? (
+    <Spinner animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
+  ) : userData.error ? (
+    <h1>{userData.error}</h1>
+  ) : (
     <>
       <Box
         sx={{
@@ -100,7 +118,7 @@ const DashboardPage = ({ URL }) => {
           <GeneralData URL={URL} />
         </TabPanel>
         <TabPanel value={value} index={2} style={{ flexGrow: 1 }}>
-          <GridData />
+          <GridData user={userData} />
         </TabPanel>
         <TabPanel value={value} index={3}>
           Trading Hours
@@ -118,18 +136,23 @@ const DashboardPage = ({ URL }) => {
     </>
   );
 
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
+  // TabPanel.propTypes = {
+  //   children: PropTypes.node,
+  //   index: PropTypes.number.isRequired,
+  //   value: PropTypes.number.isRequired,
+  // };
 
-  function a11yProps(index) {
-    return {
-      id: `vertical-tab-${index}`,
-      "aria-controls": `vertical-tabpanel-${index}`,
-    };
-  }
+};
+const mapStateToProps = (state) => {
+  return {
+    userData: state.users,
+  };
 };
 
-export default DashboardPage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchLoggedInUser: () => dispatch(fetchLoggedInUser()),
+   
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
