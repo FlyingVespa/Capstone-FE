@@ -1,105 +1,197 @@
 // libraries
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { handleFormSubmit } from "../../network/fetch.js";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { useParams, useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 // styling
-import { Button } from "@mui/material";
+import { Avatar, Button, IconButton } from "@mui/material";
+import { DeleteForever, Edit } from "@mui/icons-material";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
+
 // components
-import NameFieldComponent from "./NameFieldComponene";
-import AddProduct from "./AddProduct";
+import AddUpdateProductModal from "./AddUpdateProductModal";
+import { defaultColumnDef } from "./agGridOptions,";
 const URL = process.env.REACT_APP_API_URL;
 
 ////////////////////////////////////////////////////////////////////////////////////
-
+const initialValue = {
+  product: "",
+  price: "",
+  amount: "",
+  units: "",
+  status: "",
+  image: "",
+};
 const GridData = () => {
-  let history = useHistory();
-  let params = useParams();
-  let dispatch = useState();
   const loggedUser = useSelector((s) => s.users.loggedUser);
-  // const user = useSelector((s) => s.users.loggedUser);
+  const userId = loggedUser._id;
   const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState(initialValue);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setFormData(initialValue);
+  };
+  const onChange = ({ target }) => {
+    const { value, name } = target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleUpdate = (oldData) => {
+    setFormData(oldData);
+    handleClickOpen();
   };
 
   const convertDate = (data) => {
     return data.value ? new Date(data.value).toLocaleDateString() : "";
   };
 
-  console.log("AgGridWithUseState Render");
+  // const handleFormSubmit = () => {
+  //   if (formData.id) {
+  //     axios
+  //       .put(`${URL}/business/${userId}/products/${formData.id}`, formData)
+  //       .then((res) => {
+  //         console.log(JSON.stringify(res.data));
+  //         getProductData();
+  //         handleClose();
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //   } else {
+  //     axios
+  //       .post(`${URL}/business/${userId}/products`, formData)
+  //       .then((res) => {
+  //         console.log(JSON.stringify(res.data));
+  //         getProductData();
+  //         handleClose();
+  //       })
+
+  //       .then(
+  //         Swal.fire({
+  //           position: "top-end",
+  //           icon: "success",
+  //           title: "Product Successfully Added",
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         })
+  //       )
+  //       .catch(
+  //         (error) =>
+  //           Swal.fire({
+  //             position: "top-end",
+  //             icon: "error",
+  //             title: "Could not add product, please try again",
+  //             showConfirmButton: false,
+  //             timer: 3500,
+  //           }) && handleClose()
+  //       );
+  //   }
+  // };
+
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
-  const [visibilityColumn, setVisibilityColumn] = useState(false);
-
-  let imagesource = ({ value }) =>
-    `<div id="grid-ag-image">
-        <img alt="product" id="grid-product-image" src=${value} style="" />
-    </div>`;
   const [colDefs, setColDefs] = useState([
     {
-      field: "drag",
-      headerName: "",
-      width: 30,
+      field: "#",
+      headerName: "#",
+      minWidth: 30,
+      valueGetter: "node.rowIndex + 1",
+      // checkboxSelection: true,
       rowDrag: true,
-    },
-    {
-      field: "number",
-      headerName: "No.",
-
-      checkboxSelection: true,
-      rowDrag: true,
+      sortable: false,
+      filter: false,
     },
     {
       field: "image",
       headerName: "Image",
-      cellRenderer: imagesource,
+      minWidth: 30,
+      cellRendererFramework: ({ value }) => (
+        <div>
+          <Avatar src={value} />
+        </div>
+      ),
     },
     {
       field: "product",
       headerName: "Product",
+      minWidth: 40,
     },
     {
       field: "price",
       headerName: "Price",
+      minWidth: 20,
     },
     {
       field: "units",
       headerName: "Units",
+      minWidth: 20,
     },
     {
+      field: "amount",
+      headerName: "amount",
+      minWidth: 20,
+    },
+    {
+      minWidth: 30,
       field: "status",
       headerName: "Status",
       cellRenderer: "nameFieldComponent",
     },
     {
       field: "createdAt",
+      minWidth: 40,
       headerName: "Date Added",
       cellRenderer: convertDate,
     },
     {
       field: "updatedAt",
+      minWidth: 40,
       headerName: "Last Updated",
       cellRenderer: convertDate,
     },
 
     {
-      field: "delete",
-      headerName: "Del",
-      cellRenderer: "nameFieldComponent",
+      field: "actions",
+      headerName: "Actions",
+      cellRendererFramework: ({ data }) => (
+        <div>
+          <IconButton color="primary">
+            <Edit onClick={() => handleUpdate(data)} />
+          </IconButton>
+          <IconButton
+            color="error"
+            onClick={() => handleProductDelete(data.id)}
+          >
+            <DeleteForever />
+          </IconButton>
+        </div>
+      ),
     },
   ]);
 
-  const getProductData = async () => {
-    let userId = loggedUser._id;
+  const handleProductDelete = (productId) => {
+    axios
+      .delete(`${URL}/business/${userId}/products/${productId}`)
+      .then((res) => {
+        console.log(JSON.stringify(res.data));
+        getProductData();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
+  const getProductData = async () => {
     try {
       const response = await fetch(`${URL}/business/${userId}/products`);
       if (response.ok) {
@@ -116,58 +208,42 @@ const GridData = () => {
   };
 
   useEffect(() => getProductData(), []);
-  // useEffect(() => {
-  //   console.log(loggedUser)
-  // }, [])
-
-  const defaultColumnDef = {
-    sortable: true,
-    editable: true,
-    filter: true,
-    resizable: true,
-  };
 
   const onGridReady = async (params) => {
     console.log("AgGridWithUseState Grid Ready");
     setGridApi(params.api);
     setGridColumnApi(params.columnApi);
-    params.api.sizeColumnsToFit();
     window.onresize = () => {
       params.api.sizeColumnsToFit();
     };
+    params.api.sizeColumnsToFit();
   };
 
-  // const toggleColumn = () => {
-  //   gridColumnApi.setColumnsVisible(["product", "price"], visibilityColumn);
-  //   setVisibilityColumn(!visibilityColumn);
-  // };
-
-  // const onRemoveSelected = () => {
-  //   const selectedData = gridApi.getSelectedRows();
-  //   const res = gridApi.applyTransaction({ remove: selectedData });
-  //   console.log(res);
-  // };
-
   return (
-    <div className="ag-theme-material" style={{ height: 400 }}>
+    <div className="ag-theme-material" style={{ height: 600 }}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Add New Product
       </Button>
-      <AddProduct handleClose={handleClose} open={open} />
+
+      <AddUpdateProductModal
+        open={open}
+        handleClose={handleClose}
+        data={formData}
+        onChange={onChange}
+        handleFormSubmit={handleFormSubmit}
+      />
 
       <AgGridReact
-        rowSelection="multiple"
-        rowData={rowData}
-        pagination={true}
         rowDragManaged={true}
-        animateRows={true}
-        paginationAutoPageSize={25}
+        rowData={rowData}
         columnDefs={colDefs}
         defaultColDef={defaultColumnDef}
         onGridReady={onGridReady}
+        enableRangeSelection={true}
+        pagination={true}
+        paginationPageSize={10}
       >
-        <AgGridColumn field="drag"></AgGridColumn>
-        <AgGridColumn field="number"></AgGridColumn>
+        <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
         <AgGridColumn field="image"></AgGridColumn>
         <AgGridColumn field="product"></AgGridColumn>
         <AgGridColumn field="unit"></AgGridColumn>

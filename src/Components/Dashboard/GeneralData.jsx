@@ -3,7 +3,7 @@ import { Container, Card, Row, Col } from "react-bootstrap";
 
 function GeneralData() {
   return (
-    <div style={{ width: 900 }}>
+    <div style={{ flexGrow: 1 }}>
       <h1>General Data</h1>
       <Fragment>
         <Row className="mx-0 p-0">

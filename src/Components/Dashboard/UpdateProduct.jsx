@@ -34,113 +34,40 @@ const status = [
   { label: "Low" },
   { label: "Out-of-Stock" },
 ];
-const URL = process.env.REACT_APP_API_URL;
 
-const AddProduct = ({ handleClose, open }) => {
+const UpdateProduct = ({
+  handleUpdateModalClose,
+  openUpdateProductModal,
+  getProductData,
+}) => {
+  const URL = process.env.REACT_APP_API_URL;
   let history = useHistory();
   let location = useLocation();
   let params = useParams();
 
-  const user = useSelector((state) => state.users.loggedUser);
-  const [product, setProduct] = useState({
-    
-    product: "Ball",
-    price: "1.99",
-    units: "kg",
-    status: "low",
-    amount: "500",
-    image: "http://placeimg.com/640/480/fashion",
-  });
+  const loggedUser = useSelector((s) => s.users.loggedUser);
+  const [product, setProduct] = useState({});
 
   const handleProductDetails = ({ target }) => {
     setProduct({ ...product, [target.name]: target.value });
   };
+  const userId = loggedUser._id;
 
-  // var config = {
-  //   method: "post",
-  //   url: "http://localhost:4546/business/618fabc53312253c0925e479/products",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   data: product,
-  // };
-
-  // axios(config)
-  //   .then(function (response) {
-  //     console.log(JSON.stringify(response.data));
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });"
-  // const userId = useParams.userId;
-  // const checkUserId = () => {
-  //   if (userId === "me") {
-  //   }
-  // };
-
-  const addProduct = async () => {
-    // axios
-    //   .post(`http://localhost:4546/business/${user.data._id}/products`, product)
-    //   .then((res) => JSON.stringify(res.data))
-    //   .then(handleClose())
-    //   .then(console.log(user.data._id))
-    //   .then(
-    //     Swal.fire({
-    //       position: "top-end",
-    //       icon: "success",
-    //       title: "Your work has been saved",
-    //       showConfirmButton: false,
-    //       timer: 1500,
-    //     })
-    //   )
-    //   .catch(
-    //     Swal.fire({
-    //       position: "top-end",
-    //       icon: "error",
-    //       title: "Could not add product, please try again",
-    //       showConfirmButton: false,
-    //       timer: 2500,
-    //     })
-    //   );
-
-    try {
-      const response = await axios.post(
-        `${URL}/business/${user._id}/products`,
-        product,
-        { withCredentials: true }
-      );
-      if (response.ok) {
-        const productData = response.json();
-        console.log(productData);
-        Swal.fire(
-          "Product Added Sucessfully!",
-          "It will apprear momentarily",
-          "success"
-        );
-      } else {
-        console.log("something went wrong when posting data");
-      }
-    } catch (err) {
-      if (err) {
-        Swal.fire(
-          "Oops!",
-          "Registration failed, either email already exist or details missing/not entered correctly, please try again.",
-          "error"
-        );
-      } else if (err.status === 500) {
-        Swal.fire("Oops!, please try again in a bit.", "error");
-      } else if (err.status === 404) {
-        Swal.fire(
-          "Oops!, Could not find this email linked to any accounts. Please continue to register.",
-          "error"
-        );
-      }
-    }
+  const handleProductUpdate = (productId) => {
+    axios
+      .put(`${URL}/business/${userId}/products/${productId}`, product)
+      .then((res) => {
+        console.log(JSON.stringify(res.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
+
   return (
     <div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add New Product</DialogTitle>
+      <Dialog open={openUpdateProductModal} onClose={handleUpdateModalClose}>
+        <DialogTitle>Update Product</DialogTitle>
         <DialogContent>
           <DialogContentText>
             A product can only have one unique name, if product already exists
@@ -223,12 +150,12 @@ const AddProduct = ({ handleClose, open }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={addProduct}>Subscribe</Button>
+          <Button onClick={handleUpdateModalClose}>Cancel</Button>
+          <Button onClick={handleProductUpdate}>Update</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;

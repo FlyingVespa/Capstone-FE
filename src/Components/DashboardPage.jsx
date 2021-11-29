@@ -1,7 +1,7 @@
 // Libraries
 import { useState, useEffect } from "react";
-import { useHistory, useParams  } from "react-router";
-import { useDispatch,  connect } from "react-redux";
+import { useHistory, useParams } from "react-router";
+import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
 // Styling
@@ -12,42 +12,23 @@ import "./Dashboard/dashboard.css";
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
 import ProductList from "./Dashboard/ProductList";
-import {fetchLoggedInUser} from "../redux";
+import { fetchLoggedInUser } from "../redux";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function DashboardPage ({ URL, fetchLoggedInUser, userData }) {
-
+function DashboardPage({ URL, fetchLoggedInUser, userData }) {
   useEffect(() => {
     fetchLoggedInUser();
-    }, []);
+  }, []);
   let params = useParams();
   let history = useHistory();
   const dispatch = useDispatch();
- 
+
   const [value, setValue] = useState(0);
   const [currentUser, setCurrentUser] = useState({});
 
-  const userId = params.userId;
-  // const getCurrentUser = () => {
-  //   if (loggedin === true) {
-  //     axios
-  //       .get(`${URL}/business/me`, { withCredentials: true })
-  //       .then((res) => JSON.stringify(res))
-  //       .then((res) => setCurrentUser(res))
-  //       .then(() => console.log("CURRENTUSER", currentUser))
-  //       .then(dispatch(currentUserDetails(currentUser)));
-  //   } else {
-  //     alert("Please login before accessing dashboard");
-  //     history.push("/");
-  //   }
-  // };
- 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-
-
-
   };
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -61,7 +42,7 @@ function DashboardPage ({ URL, fetchLoggedInUser, userData }) {
         {...other}
       >
         {value === index && (
-          <Box sx={{ p: 3 }}>
+          <Box>
             <Typography>{children}</Typography>
           </Box>
         )}
@@ -86,19 +67,16 @@ function DashboardPage ({ URL, fetchLoggedInUser, userData }) {
       <Box
         sx={{
           display: "flex",
-          bgcolor: "background.paper",
           height: 1,
           width: 1,
+          p: 4,
         }}
       >
         <Tabs
           className="mt-5 mx-5"
           orientation="vertical"
-          variant="scrollable"
           value={value}
           onChange={handleChange}
-          aria-label="Vertical tabs example"
-          sx={{ borderRight: 1, borderColor: "divider" }}
         >
           <p>General Details</p>
           <Tab label="GENERAL DETAILS" {...a11yProps(0)}></Tab>
@@ -117,7 +95,7 @@ function DashboardPage ({ URL, fetchLoggedInUser, userData }) {
         <TabPanel value={value} index={1}>
           <GeneralData URL={URL} />
         </TabPanel>
-        <TabPanel value={value} index={2} style={{ flexGrow: 1 }}>
+        <TabPanel value={value} index={2} style={{ width: 1200 }}>
           <GridData user={userData} />
         </TabPanel>
         <TabPanel value={value} index={3}>
@@ -141,8 +119,7 @@ function DashboardPage ({ URL, fetchLoggedInUser, userData }) {
   //   index: PropTypes.number.isRequired,
   //   value: PropTypes.number.isRequired,
   // };
-
-};
+}
 const mapStateToProps = (state) => {
   return {
     userData: state.users,
@@ -152,7 +129,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchLoggedInUser: () => dispatch(fetchLoggedInUser()),
-   
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

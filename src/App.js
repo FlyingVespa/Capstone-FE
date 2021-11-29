@@ -1,5 +1,5 @@
 // libraries
-import { PersistGate } from 'redux-persist/integration/react'
+// import { PersistGate } from 'redux-persist/integration/react'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 // Styling
@@ -16,7 +16,7 @@ import Footer from "./Components/Footer";
 import DashboardPage from "./Components/DashboardPage";
 import ClientHomePage from "./Components/ClientHomePage";
 ///////////////////////////////////////////////////////////////////////////////////////
-const App =()=> {
+const App = () => {
   const URL = process.env.REACT_APP_API_URL;
   return (
     <>
@@ -60,6 +60,6 @@ const App =()=> {
       </Provider>
     </>
   );
-}
+};
 
 export default App;

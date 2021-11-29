@@ -25,3 +25,10 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.ag-row-hover {
+  background-color: rgb(230, 245, 223) !important;
+}
+.ag-column-hover {
+  background-color: #94ce89 !;
+}
