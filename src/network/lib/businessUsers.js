@@ -1,15 +1,5 @@
 // import { axiosClient } from "../apiClient";
-import axios from "axios";
-const URL = process.env.REACT_APP_API_URL;
-
-const axiosClient = axios.create({
-  baseURL: `${URL}`,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  },
-});
+import axiosClient from "../axiosClient";
 
 export default axiosClient;
 export const getAllBusinessUsers = () => {

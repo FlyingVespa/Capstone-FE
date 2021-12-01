@@ -12,7 +12,7 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-  Autocomplete,
+  Input,
   FormControl,
   MenuItem,
   Select,
@@ -22,17 +22,16 @@ import {
 import { Row, Col } from "react-bootstrap";
 
 const AddUpdateProductModal = ({
-  open,
   handleClose,
   data,
   onChange,
   handleFormSubmit,
 }) => {
   const { product, price, amount, units, status, image, id } = data;
-
+  const modalStatus = useSelector((s) => s.helper.productModal);
   return (
     <div>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={modalStatus} onClose={handleClose}>
         <DialogTitle>
           {id ? "Update Product Details" : "Add A New Product"}
         </DialogTitle>
@@ -86,9 +85,10 @@ const AddUpdateProductModal = ({
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={"High"}>High</MenuItem>
-              <MenuItem value={"Medium"}>Medium</MenuItem>
+              <MenuItem value={"high"}>High</MenuItem>
+              <MenuItem value={"medium"}>Medium</MenuItem>
               <MenuItem value={"low"}>low</MenuItem>
+              <MenuItem value={"out-of-stock"}>Out Of Stock</MenuItem>
             </Select>
           </FormControl>
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>

@@ -1,14 +1,12 @@
 // Libraries
 import { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router";
-import { useDispatch, connect } from "react-redux";
-import PropTypes from "prop-types";
-import axios from "axios";
+import { connect } from "react-redux";
+
 // Styling
 import { Tabs, Tab, Typography, Box } from "@mui/material/";
-import { Spinner } from "react-bootstrap";
 import "./Dashboard/dashboard.css";
 // Components
+import LoaderSpinner from "./Loaders/LoaderSpinner";
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
 import ProductList from "./Dashboard/ProductList";
@@ -20,12 +18,8 @@ function DashboardPage({ URL, fetchLoggedInUser, userData }) {
   useEffect(() => {
     fetchLoggedInUser();
   }, []);
-  let params = useParams();
-  let history = useHistory();
-  const dispatch = useDispatch();
 
   const [value, setValue] = useState(0);
-  const [currentUser, setCurrentUser] = useState({});
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -57,9 +51,7 @@ function DashboardPage({ URL, fetchLoggedInUser, userData }) {
     };
   }
   return userData.loadingSingle ? (
-    <Spinner animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
+    <LoaderSpinner />
   ) : userData.error ? (
     <h1>{userData.error}</h1>
   ) : (
@@ -113,12 +105,6 @@ function DashboardPage({ URL, fetchLoggedInUser, userData }) {
       </Box>
     </>
   );
-
-  // TabPanel.propTypes = {
-  //   children: PropTypes.node,
-  //   index: PropTypes.number.isRequired,
-  //   value: PropTypes.number.isRequired,
-  // };
 }
 const mapStateToProps = (state) => {
   return {

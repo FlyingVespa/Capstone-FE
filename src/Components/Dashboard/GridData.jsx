@@ -1,20 +1,25 @@
 // libraries
 import axios from "axios";
-import { handleFormSubmit } from "../../network/fetch.js";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { useParams, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 // styling
-import { Avatar, Button, IconButton } from "@mui/material";
+import { Avatar, Button, IconButton, Chip } from "@mui/material";
+import { red, teal, lightGreen, orange, grey } from "@mui/material/colors";
 import { DeleteForever, Edit } from "@mui/icons-material";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
 
 // components
+import {
+  getProductData,
+  deleteProduct,
+  addUpdateProduct,
+} from "../../network/lib/products";
 import AddUpdateProductModal from "./AddUpdateProductModal";
-import { defaultColumnDef } from "./agGridOptions,";
+import { defaultColumnDef, convertDate } from "./agGridOptions,";
 const URL = process.env.REACT_APP_API_URL;
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -27,79 +32,31 @@ const initialValue = {
   image: "",
 };
 const GridData = () => {
+  const redd = red[500];
+  let params = useParams();
+  let dispatch = useDispatch();
   const loggedUser = useSelector((s) => s.users.loggedUser);
+  const modalStatus = useSelector((s) => s.helper.productModal);
   const userId = loggedUser._id;
-  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(initialValue);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setFormData(initialValue);
-  };
-  const onChange = ({ target }) => {
-    const { value, name } = target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleUpdate = (oldData) => {
-    setFormData(oldData);
-    handleClickOpen();
-  };
-
-  const convertDate = (data) => {
-    return data.value ? new Date(data.value).toLocaleDateString() : "";
-  };
-
-  // const handleFormSubmit = () => {
-  //   if (formData.id) {
-  //     axios
-  //       .put(`${URL}/business/${userId}/products/${formData.id}`, formData)
-  //       .then((res) => {
-  //         console.log(JSON.stringify(res.data));
-  //         getProductData();
-  //         handleClose();
-  //       })
-  //       .catch(function (error) {
-  //         console.log(error);
-  //       });
-  //   } else {
-  //     axios
-  //       .post(`${URL}/business/${userId}/products`, formData)
-  //       .then((res) => {
-  //         console.log(JSON.stringify(res.data));
-  //         getProductData();
-  //         handleClose();
-  //       })
-
-  //       .then(
-  //         Swal.fire({
-  //           position: "top-end",
-  //           icon: "success",
-  //           title: "Product Successfully Added",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         })
-  //       )
-  //       .catch(
-  //         (error) =>
-  //           Swal.fire({
-  //             position: "top-end",
-  //             icon: "error",
-  //             title: "Could not add product, please try again",
-  //             showConfirmButton: false,
-  //             timer: 3500,
-  //           }) && handleClose()
-  //       );
-  //   }
-  // };
-
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
+  const chipColor = (value) => {
+    switch (value) {
+      case "medium":
+        return "secondary";
+      case "low":
+        return "error";
+      case "high":
+        return "success";
+      case "out-of-stock":
+        return "default";
+      default:
+        return "primary";
+    }
+  };
+
   const [colDefs, setColDefs] = useState([
     {
       field: "#",
@@ -145,7 +102,11 @@ const GridData = () => {
       minWidth: 30,
       field: "status",
       headerName: "Status",
-      cellRenderer: "nameFieldComponent",
+      cellRendererFramework: ({ value }) => (
+        <div>
+          <Chip label={value} color={chipColor(value)} />
+        </div>
+      ),
     },
     {
       field: "createdAt",
@@ -168,10 +129,7 @@ const GridData = () => {
           <IconButton color="primary">
             <Edit onClick={() => handleUpdate(data)} />
           </IconButton>
-          <IconButton
-            color="error"
-            onClick={() => handleProductDelete(data.id)}
-          >
+          <IconButton color="error" onClick={() => deleteProduct(data, userId)}>
             <DeleteForever />
           </IconButton>
         </div>
@@ -179,35 +137,86 @@ const GridData = () => {
     },
   ]);
 
-  const handleProductDelete = (productId) => {
-    axios
-      .delete(`${URL}/business/${userId}/products/${productId}`)
-      .then((res) => {
-        console.log(JSON.stringify(res.data));
-        getProductData();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const [fileImage, setFileImage] = useState(null);
+  const fileSelectedHandler = (e) => {
+    console.log(e.target.files[0]);
+  };
+  const URL = process.env.REACT_APP_API_URL;
+
+  //////////////////////////////////////////////////////
+  const [fileInputState, setFileInputState] = useState("");
+  const [previewSource, setPreviewSource] = useState("");
+  const [selectedFile, setSelectedFile] = useState();
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    previewFile(file);
+    setSelectedFile(file);
+    setFileInputState(e.target.value);
   };
 
-  const getProductData = async () => {
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
+  const handleSubmitFile = (e) => {
+    e.preventDefault();
+    if (!selectedFile) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+      uploadImage(reader.result);
+    };
+    reader.onerror = () => {
+      console.error("AHHHHHHHH!!");
+      setErrMsg("something went wrong!");
+    };
+  };
+
+  const uploadImage = async (base64EncodedImage) => {
     try {
-      const response = await fetch(`${URL}/business/${userId}/products`);
-      if (response.ok) {
-        const productData = await response.json();
-        setRowData(productData);
-        console.log(productData);
-        console.log("üser", userId);
-      } else {
-        throw new Error("Could access data, but something went wrong");
-      }
-    } catch (error) {
-      console.log(error);
+      await fetch(`${URL}/api/upload`, {
+        method: "POST",
+        body: JSON.stringify({ data: base64EncodedImage }),
+        headers: { "Content-Type": "application/json" },
+      });
+      setFileInputState("");
+      setPreviewSource("");
+      setSuccessMsg("Image uploaded successfully");
+    } catch (err) {
+      console.error(err);
+      setErrMsg("Something went wrong!");
     }
   };
 
-  useEffect(() => getProductData(), []);
+  ////////////////////////////////////////////////////////
+
+  const handleProductModal = () => {
+    dispatch({ type: "SET_PRODUCT_MODAL", payload: !modalStatus });
+  };
+
+  const onChange = ({ target }) => {
+    const { value, name } = target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleUpdate = (oldData) => {
+    setFormData(oldData);
+    handleProductModal();
+  };
+
+  const handleFormSubmit = () => {
+    addUpdateProduct(formData, userId)
+      .then(getProductData())
+      .then(handleProductModal());
+  };
+
+  useEffect(() => getProductData(userId, setRowData), []);
 
   const onGridReady = async (params) => {
     console.log("AgGridWithUseState Grid Ready");
@@ -220,14 +229,31 @@ const GridData = () => {
   };
 
   return (
-    <div className="ag-theme-material" style={{ height: 600 }}>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add New Product
-      </Button>
+    <div>
+      <div>
+        <h1 className="title">Upload an Image</h1>
+
+        <form onSubmit={handleSubmitFile} className="form">
+          <input
+            id="fileInput"
+            type="file"
+            name="image"
+            onChange={handleFileInputChange}
+            value={fileInputState}
+            className="form-input"
+          />
+          <button className="btn" type="submit">
+            Submit
+          </button>
+        </form>
+        {previewSource && (
+          <img src={previewSource} alt="chosen" style={{ height: "300px" }} />
+        )}
+      </div>
 
       <AddUpdateProductModal
-        open={open}
-        handleClose={handleClose}
+        open={modalStatus}
+        handleClose={handleProductModal}
         data={formData}
         onChange={onChange}
         handleFormSubmit={handleFormSubmit}

@@ -3,6 +3,7 @@ import {
   SET_LOADING,
   SET_ACTIVE_STEP,
   SET_LOGGEDIN_STATUS,
+  SET_PRODUCT_MODAL,
 } from "./helpersTypes";
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
   loading: false,
   activeStep: 0,
   loggedin: false,
+  productModal: false,
 };
 
 const helperReducer = (state = initialState, action) => {
@@ -22,7 +24,8 @@ const helperReducer = (state = initialState, action) => {
       return { ...state, activeStep: action.payload };
     case SET_LOGGEDIN_STATUS:
       return { ...state, loggedin: action.payload };
-
+    case SET_PRODUCT_MODAL:
+      return { ...state, productModal: action.payload };
     default:
       return state;
   }

@@ -8,16 +8,8 @@ import {
   FETCH_USERS_FAILURE,
   CURRENT_USER_DETAILS,
 } from "./userTypes";
-import { SET_LOADING } from "../helpers/helpersTypes";
 
 const URL = process.env.REACT_APP_API_URL;
-
-export const setLoading = (payload) => {
-  return {
-    type: SET_LOADING,
-    payload: payload,
-  };
-};
 
 //ALL USERS *********************************//
 export const fetchUsersReq = () => {
@@ -83,7 +75,7 @@ export const fetchLoggedInUser = () => {
         const userData = res.data;
         dispatch(fetchLoggedUserSuccess(userData));
       })
-      
+
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(fetchLoggedUserFailure(errorMsg));
