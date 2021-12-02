@@ -230,7 +230,7 @@ const GridData = () => {
 
   return (
     <div>
-      <div>
+      {/* <div>
         <h1 className="title">Upload an Image</h1>
 
         <form onSubmit={handleSubmitFile} className="form">
@@ -249,7 +249,7 @@ const GridData = () => {
         {previewSource && (
           <img src={previewSource} alt="chosen" style={{ height: "300px" }} />
         )}
-      </div>
+      </div> */}
 
       <AddUpdateProductModal
         open={modalStatus}
