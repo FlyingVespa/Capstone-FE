@@ -1,7 +1,7 @@
 // Libraries
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector, connect } from "react-redux";
-
+import { useParams } from "react-router-dom";
 // Styling
 import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
 import fishshop from "../assets/images/fishshop.jpg";
@@ -14,11 +14,12 @@ import Services from "./ProfilePage/Services";
 import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
-
+import { getBusinessUser } from "../network/lib/businessUsers";
 import { USER_LOGGEDIN } from "../redux/users/userTypes";
 
 const ProfilePage = (props) => {
-  const dispatch = useDispatch();
+  let params = useParams();
+  let dispatch = useDispatch();
   const user = useSelector((s) => s.formBusiness);
   // const userId = props.match.params.userId;
   const [loading, setLoading] = useState(false);
@@ -66,78 +67,23 @@ const ProfilePage = (props) => {
       street_numbebr: null,
     },
   });
-
-  const URL = process.env.REACT_APP_API_URL;
-
-  const getUserData = async () => {
-    setLoading(true);
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await fetch(`${URL}/business/me`, {
-        method: "GET",
-        headers: {
-          // get localstorage bearer and send in headers
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const userData = await response.json();
-        await setUserData(userData);
-        await dispatch({ type: "SET_USER_DATA", payload: userData });
-        await dispatch({ type: USER_LOGGEDIN, payload: true });
-        await dispatch({ type: "SET_LOADING", payload: !loading });
-        await console.log(user);
-        setLoading(false);
-        // console.log(userData);
-        props.routerProps.history.push("/business/login");
-      } else {
-        throw new Error("Could access data, but something went wrong");
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
-
-  const LogoutUser = async () => {
-    setLoading(true);
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await fetch(`${URL}/business/logout`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const userData = await response.json();
-        await setUserData(userData);
-
-        setLoading(false);
-
-        console.log(userData);
-      } else {
-        throw new Error("Could access data, but something went wrong");
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
+  const currentUserId = props.match.params.userId;
+  const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
-    getUserData();
+    getBusinessUser("me", setCurrentUser);
   }, []);
+
+  useEffect(() => {
+    getBusinessUser(
+      currentUserId === "me" ? currentUser._id : currentUserId,
+      setUserData
+    );
+  }, [currentUserId, currentUser._id, userData._id]);
 
   return (
     <div>
-      {userData && loading ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      ) : (
+      {userData && (
         <>
           <Container className="profile_page">
             <Image src={userData.info.img_logo || fishshop} id="banner" />
@@ -167,7 +113,6 @@ const ProfilePage = (props) => {
                 </Col>
               </Row>
             </Container>
-            <Button onClick={LogoutUser}> logout</Button>
             <About about={userData.info.bio} />
             <hr className="" />
             <Services services={userData.info.services} />

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Form } from "react-bootstrap";
 import {
   Button,
   Dialog,
@@ -26,9 +27,32 @@ const AddUpdateProductModal = ({
   data,
   onChange,
   handleFormSubmit,
+  onImageChange,
+  fileInput,
 }) => {
   const { product, price, amount, units, status, image, id } = data;
+
   const modalStatus = useSelector((s) => s.helper.productModal);
+
+  const [previewSource, setPreviewSource] = useState("");
+  const [selectedFile, setSelectedFile] = useState();
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  // const handleFileInputChange = (e) => {
+  //   const file = e.target.files[0];
+  //   previewFile(file);
+  //   setSelectedFile(file);
+  //   setFileInputState(e.target.value);
+  // };
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
   return (
     <div>
       <Dialog open={modalStatus} onClose={handleClose}>
@@ -82,8 +106,8 @@ const AddUpdateProductModal = ({
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Stock Level</InputLabel>
             <Select value={status} onChange={onChange} name="status">
-              <MenuItem value="">
-                <em>None</em>
+              <MenuItem>
+                <em disabled>None</em>
               </MenuItem>
               <MenuItem value={"high"}>High</MenuItem>
               <MenuItem value={"medium"}>Medium</MenuItem>
@@ -94,23 +118,46 @@ const AddUpdateProductModal = ({
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Units</InputLabel>
             <Select value={units} onChange={onChange} name="units">
-              <MenuItem value="">
+              <MenuItem>
                 <em>None</em>
               </MenuItem>
               <MenuItem value={"ea"}>Each</MenuItem>
-              <ListSubheader>Volume</ListSubheader>
+              {/* <ListSubheader>Volume</ListSubheader> */}
               <MenuItem value={"ml"}>Mililiter</MenuItem>
               <MenuItem value={"cl"}>Centiliter</MenuItem>
               <MenuItem value={"l"}></MenuItem>
-              <ListSubheader>Weight</ListSubheader>
+              {/* <ListSubheader>Weight</ListSubheader> */}
               <MenuItem value={"g"}>Gram</MenuItem>
               <MenuItem value={"kg"}>Kilogram</MenuItem>
-              <ListSubheader>Length</ListSubheader>
+              {/* <ListSubheader>Length</ListSubheader> */}
               <MenuItem value={"mm"}>milimeter</MenuItem>
               <MenuItem value={"cm"}>centimeter</MenuItem>
               <MenuItem value={"m"}>meter</MenuItem>
             </Select>
           </FormControl>
+          <div>
+            <h1 className="title">Upload an Image</h1>
+            <form className="form">
+              <input
+                id="fileInput"
+                type="file"
+                name="image"
+                onChange={onImageChange}
+                value={fileInput}
+                className="form-input"
+              />
+              <button className="btn" type="submit">
+                Submit
+              </button>
+            </form>
+            {previewSource && (
+              <img
+                src={previewSource}
+                alt="chosen"
+                style={{ height: "300px" }}
+              />
+            )}
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

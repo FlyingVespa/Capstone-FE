@@ -9,10 +9,7 @@ import "./Dashboard/dashboard.css";
 import LoaderSpinner from "./Loaders/LoaderSpinner";
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
-import ProductList from "./Dashboard/ProductList";
 import { fetchLoggedInUser } from "../redux";
-
-////////////////////////////////////////////////////////////////////////////////
 
 function DashboardPage({ URL, fetchLoggedInUser, userData }) {
   useEffect(() => {
@@ -86,6 +83,7 @@ function DashboardPage({ URL, fetchLoggedInUser, userData }) {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <GeneralData URL={URL} />
+          <GridData user={userData} />
         </TabPanel>
         <TabPanel value={value} index={2} style={{ width: 1200 }}>
           <GridData user={userData} />
@@ -93,9 +91,7 @@ function DashboardPage({ URL, fetchLoggedInUser, userData }) {
         <TabPanel value={value} index={3}>
           Trading Hours
         </TabPanel>
-        <TabPanel value={value} index={4}>
-          <ProductList />
-        </TabPanel>
+        <TabPanel value={value} index={4}></TabPanel>
         <TabPanel value={value} index={5}>
           Item Six
         </TabPanel>

@@ -23,39 +23,25 @@ import { defaultColumnDef, convertDate } from "./agGridOptions,";
 const URL = process.env.REACT_APP_API_URL;
 
 ////////////////////////////////////////////////////////////////////////////////////
-const initialValue = {
-  product: "",
-  price: "",
-  amount: "",
-  units: "",
-  status: "",
-  image: "",
-};
 const GridData = () => {
-  const redd = red[500];
+  const initialValue = {
+    product: "",
+    price: "",
+    amount: "",
+    units: "",
+    status: "",
+    image: "",
+  };
   let params = useParams();
   let dispatch = useDispatch();
   const loggedUser = useSelector((s) => s.users.loggedUser);
   const modalStatus = useSelector((s) => s.helper.productModal);
   const userId = loggedUser._id;
+  const [fileInputState, setFileInputState] = useState("");
   const [formData, setFormData] = useState(initialValue);
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
-  const chipColor = (value) => {
-    switch (value) {
-      case "medium":
-        return "secondary";
-      case "low":
-        return "error";
-      case "high":
-        return "success";
-      case "out-of-stock":
-        return "default";
-      default:
-        return "primary";
-    }
-  };
 
   const [colDefs, setColDefs] = useState([
     {
@@ -102,11 +88,7 @@ const GridData = () => {
       minWidth: 30,
       field: "status",
       headerName: "Status",
-      cellRendererFramework: ({ value }) => (
-        <div>
-          <Chip label={value} color={chipColor(value)} />
-        </div>
-      ),
+      cellRendererFramework: (value) => <div>{chipColor(value)}</div>,
     },
     {
       field: "createdAt",
@@ -139,62 +121,9 @@ const GridData = () => {
 
   const [fileImage, setFileImage] = useState(null);
   const fileSelectedHandler = (e) => {
+    setFileInputState(e.target.value);
     console.log(e.target.files[0]);
   };
-  const URL = process.env.REACT_APP_API_URL;
-
-  //////////////////////////////////////////////////////
-  const [fileInputState, setFileInputState] = useState("");
-  const [previewSource, setPreviewSource] = useState("");
-  const [selectedFile, setSelectedFile] = useState();
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errMsg, setErrMsg] = useState("");
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    previewFile(file);
-    setSelectedFile(file);
-    setFileInputState(e.target.value);
-  };
-
-  const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
-  };
-
-  const handleSubmitFile = (e) => {
-    e.preventDefault();
-    if (!selectedFile) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(selectedFile);
-    reader.onloadend = () => {
-      uploadImage(reader.result);
-    };
-    reader.onerror = () => {
-      console.error("AHHHHHHHH!!");
-      setErrMsg("something went wrong!");
-    };
-  };
-
-  const uploadImage = async (base64EncodedImage) => {
-    try {
-      await fetch(`${URL}/api/upload`, {
-        method: "POST",
-        body: JSON.stringify({ data: base64EncodedImage }),
-        headers: { "Content-Type": "application/json" },
-      });
-      setFileInputState("");
-      setPreviewSource("");
-      setSuccessMsg("Image uploaded successfully");
-    } catch (err) {
-      console.error(err);
-      setErrMsg("Something went wrong!");
-    }
-  };
-
-  ////////////////////////////////////////////////////////
 
   const handleProductModal = () => {
     dispatch({ type: "SET_PRODUCT_MODAL", payload: !modalStatus });
@@ -210,10 +139,24 @@ const GridData = () => {
     handleProductModal();
   };
 
-  const handleFormSubmit = () => {
-    addUpdateProduct(formData, userId)
-      .then(getProductData())
-      .then(handleProductModal());
+  const handleFormSubmit = async () => {
+    await addUpdateProduct(formData, userId);
+    getProductData();
+    handleProductModal();
+  };
+  const chipColor = (value) => {
+    switch (value) {
+      case "medium":
+        return <Chip label={value} color="medium" />;
+      case "low":
+        return <Chip label={value} color="warnin" />;
+      case "high":
+        return <Chip label={value} color="success" />;
+      case "out-of-stock":
+        return <Chip label={value} color="error" />;
+      default:
+        return <Chip label={value} color="seconadry" />;
+    }
   };
 
   useEffect(() => getProductData(userId, setRowData), []);
@@ -229,27 +172,10 @@ const GridData = () => {
   };
 
   return (
-    <div>
-      {/* <div>
-        <h1 className="title">Upload an Image</h1>
-
-        <form onSubmit={handleSubmitFile} className="form">
-          <input
-            id="fileInput"
-            type="file"
-            name="image"
-            onChange={handleFileInputChange}
-            value={fileInputState}
-            className="form-input"
-          />
-          <button className="btn" type="submit">
-            Submit
-          </button>
-        </form>
-        {previewSource && (
-          <img src={previewSource} alt="chosen" style={{ height: "300px" }} />
-        )}
-      </div> */}
+    <div className="ag-theme-material" style={{ height: 400 }}>
+      <Button variant="outlined" onClick={handleProductModal}>
+        Add New Product
+      </Button>
 
       <AddUpdateProductModal
         open={modalStatus}
@@ -257,6 +183,8 @@ const GridData = () => {
         data={formData}
         onChange={onChange}
         handleFormSubmit={handleFormSubmit}
+        onImageChange={fileSelectedHandler}
+        fileInput={fileInputState}
       />
 
       <AgGridReact
@@ -272,7 +200,7 @@ const GridData = () => {
         <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
         <AgGridColumn field="image"></AgGridColumn>
         <AgGridColumn field="product"></AgGridColumn>
-        <AgGridColumn field="unit"></AgGridColumn>
+        <AgGridColumn field="units"></AgGridColumn>
         <AgGridColumn field="price"></AgGridColumn>
         <AgGridColumn field="status"></AgGridColumn>
         <AgGridColumn field="createdAt"></AgGridColumn>

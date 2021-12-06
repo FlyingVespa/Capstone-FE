@@ -25,7 +25,7 @@ const NavBar = ({ URL }) => {
     axios
       .get("http://localhost:4545/auth/logout", { withCredentials: true })
       .then((response) => JSON.stringify(response))
-     .then( dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false}))
+      .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }))
       .then(history.push("/"))
       .catch((error) => console.log("error", error));
   };
@@ -39,7 +39,8 @@ const NavBar = ({ URL }) => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto"></Nav>
+            <Nav.Link href="business/me">Business Me</Nav.Link>
+            <Nav className="me-auto" />
             <Nav>
               {!loggedin ? (
                 <>
@@ -70,11 +71,10 @@ const NavBar = ({ URL }) => {
               ) : (
                 <>
                   <Chip
-                    label={currentUser.email}
+                    label={currentUser.username}
                     variant="outlined"
                     avatar={<Avatar alt="Remy Sharp" src={avatar} />}
                   />
-                  <h1>{currentUser.email}</h1>
                   <Button
                     className="mx-2"
                     variant="contained"

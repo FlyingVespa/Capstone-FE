@@ -74,6 +74,9 @@ export const fetchLoggedInUser = () => {
       .then((res) => {
         const userData = res.data;
         dispatch(fetchLoggedUserSuccess(userData));
+        localStorage.setItem("userId", userData);
+        console.log(localStorage.getItem("userId"));
+        dispatch(currentUserDetails(userData));
       })
 
       .catch((error) => {
