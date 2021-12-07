@@ -13,6 +13,11 @@ export const getProductData = (userId, setRowData) => {
 };
 
 export const addUpdateProduct = async (formData, userId) => {
+  if (formData.image) {
+    let fd = new FormData();
+     fd.append("image", formData.image);
+   }
+
   if (formData.id) {
     axiosClient
       .put(`/business/${userId}/products/${formData.id}`, formData)

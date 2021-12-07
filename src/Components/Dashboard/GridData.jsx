@@ -25,11 +25,11 @@ const URL = process.env.REACT_APP_API_URL;
 ////////////////////////////////////////////////////////////////////////////////////
 const GridData = () => {
   const initialValue = {
-    product: "",
-    price: "",
-    amount: "",
-    units: "",
-    status: "",
+    product: "Test",
+    price: "1",
+    amount: "1",
+    units: "kg",
+    status: "high",
     image: "",
   };
   let params = useParams();
@@ -37,12 +37,26 @@ const GridData = () => {
   const loggedUser = useSelector((s) => s.users.loggedUser);
   const modalStatus = useSelector((s) => s.helper.productModal);
   const userId = loggedUser._id;
-  const [fileInputState, setFileInputState] = useState("");
   const [formData, setFormData] = useState(initialValue);
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
-
+  let chipColor = (value) => {
+    switch (value) {
+      case "medium":
+        return "secondary";
+      case "low":
+        return "warning";
+      case "high":
+        return "success";
+      case "out-of-stock":
+        return "error";
+      case "":
+        return "secondary";
+      default:
+        return "secondary";
+    }
+  };
   const [colDefs, setColDefs] = useState([
     {
       field: "#",
@@ -88,7 +102,11 @@ const GridData = () => {
       minWidth: 30,
       field: "status",
       headerName: "Status",
-      cellRendererFramework: (value) => <div>{chipColor(value)}</div>,
+      cellRendererFramework: ({ value }) => (
+        <div>
+          <Chip label={value} color={chipColor(value)} />
+        </div>
+      ),
     },
     {
       field: "createdAt",
@@ -119,10 +137,21 @@ const GridData = () => {
     },
   ]);
 
-  const [fileImage, setFileImage] = useState(null);
-  const fileSelectedHandler = (e) => {
-    setFileInputState(e.target.value);
-    console.log(e.target.files[0]);
+  const [previewSource, setPreviewSource] = useState("");
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
+  const handleImageUpload = () => {
+    if (formData.image) {
+      let fd = new FormData();
+      fd.append("image", formData.image);
+    }
   };
 
   const handleProductModal = () => {
@@ -144,20 +173,6 @@ const GridData = () => {
     getProductData();
     handleProductModal();
   };
-  const chipColor = (value) => {
-    switch (value) {
-      case "medium":
-        return <Chip label={value} color="medium" />;
-      case "low":
-        return <Chip label={value} color="warnin" />;
-      case "high":
-        return <Chip label={value} color="success" />;
-      case "out-of-stock":
-        return <Chip label={value} color="error" />;
-      default:
-        return <Chip label={value} color="seconadry" />;
-    }
-  };
 
   useEffect(() => getProductData(userId, setRowData), []);
 
@@ -170,6 +185,16 @@ const GridData = () => {
     };
     params.api.sizeColumnsToFit();
   };
+const [selectedFile, setSelectedFile] = useState()
+  const fileChangedHandler = (event) => {
+    const file = event.target.files[0]
+    setSelectedFile(file)
+    setPreviewSource(file);
+  console.log(file);
+    // let fd = new FormData();
+    // fd.append("image", formData.image);
+    
+  }
 
   return (
     <div className="ag-theme-material" style={{ height: 400 }}>
@@ -183,8 +208,8 @@ const GridData = () => {
         data={formData}
         onChange={onChange}
         handleFormSubmit={handleFormSubmit}
-        onImageChange={fileSelectedHandler}
-        fileInput={fileInputState}
+        fileChangedHandler={fileChangedHandler}
+        previewSource={previewSource}
       />
 
       <AgGridReact

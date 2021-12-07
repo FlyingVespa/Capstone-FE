@@ -27,32 +27,15 @@ const AddUpdateProductModal = ({
   data,
   onChange,
   handleFormSubmit,
-  onImageChange,
-  fileInput,
+  fileChangedHandler,
+  previewSource
+
 }) => {
   const { product, price, amount, units, status, image, id } = data;
 
   const modalStatus = useSelector((s) => s.helper.productModal);
 
-  const [previewSource, setPreviewSource] = useState("");
-  const [selectedFile, setSelectedFile] = useState();
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errMsg, setErrMsg] = useState("");
-  // const handleFileInputChange = (e) => {
-  //   const file = e.target.files[0];
-  //   previewFile(file);
-  //   setSelectedFile(file);
-  //   setFileInputState(e.target.value);
-  // };
-
-  const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
-  };
-
+ 
   return (
     <div>
       <Dialog open={modalStatus} onClose={handleClose}>
@@ -86,14 +69,7 @@ const AddUpdateProductModal = ({
             </Col>
             <Col></Col>
           </Row>
-          <TextField
-            margin="dense"
-            name="image"
-            label="Image"
-            variant="standard"
-            value={image}
-            onChange={onChange}
-          />
+     
           <TextField
             margin="dense"
             name="amount"
@@ -105,7 +81,7 @@ const AddUpdateProductModal = ({
 
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Stock Level</InputLabel>
-            <Select value={status} onChange={onChange} name="status">
+            <Select value={status ?? ""} onChange={onChange} name="status">
               <MenuItem>
                 <em disabled>None</em>
               </MenuItem>
@@ -117,7 +93,7 @@ const AddUpdateProductModal = ({
           </FormControl>
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Units</InputLabel>
-            <Select value={units} onChange={onChange} name="units">
+            <Select value={units ?? ""} onChange={onChange} name="units">
               <MenuItem>
                 <em>None</em>
               </MenuItem>
@@ -137,19 +113,10 @@ const AddUpdateProductModal = ({
           </FormControl>
           <div>
             <h1 className="title">Upload an Image</h1>
-            <form className="form">
-              <input
-                id="fileInput"
-                type="file"
-                name="image"
-                onChange={onImageChange}
-                value={fileInput}
-                className="form-input"
-              />
-              <button className="btn" type="submit">
-                Submit
-              </button>
-            </form>
+       
+            <input type="file" onChange={fileChangedHandler}/>
+          
+           
             {previewSource && (
               <img
                 src={previewSource}
