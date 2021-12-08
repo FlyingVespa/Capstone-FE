@@ -116,14 +116,14 @@ const AddUpdateProductModal = ({
        
             <input type="file" onChange={fileChangedHandler}/>
           
-           
+{/*            
             {previewSource && (
               <img
                 src={previewSource}
                 alt="chosen"
                 style={{ height: "300px" }}
               />
-            )}
+            )} */}
           </div>
         </DialogContent>
         <DialogActions>

@@ -12,15 +12,11 @@ export const getProductData = (userId, setRowData) => {
     .catch((err) => console.log(err));
 };
 
-export const addUpdateProduct = async (formData, userId) => {
-  if (formData.image) {
-    let fd = new FormData();
-     fd.append("image", formData.image);
-   }
+export const addUpdateProduct = async (formData, selectedFile, userId) => {
 
   if (formData.id) {
     axiosClient
-      .put(`/business/${userId}/products/${formData.id}`, formData)
+      .put(`/business/${userId}/products/${formData.id}`, formData, selectedFile)
       .then((res) => {
         console.log(res.data);
       })

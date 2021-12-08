@@ -24,20 +24,20 @@ const URL = process.env.REACT_APP_API_URL;
 
 ////////////////////////////////////////////////////////////////////////////////////
 const GridData = () => {
-  const initialValue = {
+  const initialValue = {};
+  let params = useParams();
+  let dispatch = useDispatch();
+  const loggedUser = useSelector((s) => s.users.loggedUser);
+  const modalStatus = useSelector((s) => s.helper.productModal);
+  const userId = loggedUser._id;
+  const [formData, setFormData] = useState({
     product: "Test",
     price: "1",
     amount: "1",
     units: "kg",
     status: "high",
     image: "",
-  };
-  let params = useParams();
-  let dispatch = useDispatch();
-  const loggedUser = useSelector((s) => s.users.loggedUser);
-  const modalStatus = useSelector((s) => s.helper.productModal);
-  const userId = loggedUser._id;
-  const [formData, setFormData] = useState(initialValue);
+  });
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
@@ -169,7 +169,7 @@ const GridData = () => {
   };
 
   const handleFormSubmit = async () => {
-    await addUpdateProduct(formData, userId);
+    await addUpdateProduct(formData, selectedFile, userId);
     getProductData();
     handleProductModal();
   };
@@ -185,16 +185,18 @@ const GridData = () => {
     };
     params.api.sizeColumnsToFit();
   };
-const [selectedFile, setSelectedFile] = useState()
+  const [selectedFile, setSelectedFile] = useState();
   const fileChangedHandler = (event) => {
-    const file = event.target.files[0]
-    setSelectedFile(file)
+    const file = event.target.files[0];
+    let fd = new FormData();
+    fd.append("image", file);
+    fd.append("name", file.name)
     setPreviewSource(file);
-  console.log(file);
-    // let fd = new FormData();
-    // fd.append("image", formData.image);
-    
-  }
+    setFormData({ image: fd });
+
+    console.log(file);
+    console.log("file", formData);
+  };
 
   return (
     <div className="ag-theme-material" style={{ height: 400 }}>
