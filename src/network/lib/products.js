@@ -1,22 +1,31 @@
 import Swal from "sweetalert2";
 import { axiosClient } from "../axiosClient";
+import axios from "axios";
+const URL = process.env.REACT_APP_API_URL;
 
 // 1. GET product
 // 2. POST/ PUT
 //3. DELETE
 
-export const getProductData = (userId, setRowData) => {
-  axiosClient
-    .get(`/business/${userId}/products`)
-    .then((res) => setRowData(res.data))
-    .catch((err) => console.log(err));
+export const getProductData = async (userId, callback, setLoading) => {
+ 
+  try {
+    const res = await axios.get(`${URL}/business/${userId}/products`);
+    if (res.ok) {
+      let data = await res.json();
+      callback(data);
+      setLoading(false);
+    }
+  } catch (error) {
+    console.log(error);
+    await setLoading(false);
+  }
 };
 
-export const addUpdateProduct = async (formData, selectedFile, userId) => {
-
+export const addUpdateProduct = async (formData, userId) => {
   if (formData.id) {
     axiosClient
-      .put(`/business/${userId}/products/${formData.id}`, formData, selectedFile)
+      .put(`/business/${userId}/products/${formData.id}`, formData)
       .then((res) => {
         console.log(res.data);
       })

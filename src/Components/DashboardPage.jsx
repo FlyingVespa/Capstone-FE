@@ -10,14 +10,16 @@ import LoaderSpinner from "./Loaders/LoaderSpinner";
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
 import { fetchLoggedInUser } from "../redux";
+import { getBusinessUser } from "../network/lib/businessUsers";
 
-function DashboardPage({ URL, fetchLoggedInUser, userData }) {
+const DashboardPage = () => {
+  const [userData, setUserData] = useState({});
+
   useEffect(() => {
-    fetchLoggedInUser();
+    getBusinessUser("me", setUserData);
   }, []);
 
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -101,7 +103,7 @@ function DashboardPage({ URL, fetchLoggedInUser, userData }) {
       </Box>
     </>
   );
-}
+};
 const mapStateToProps = (state) => {
   return {
     userData: state.users,

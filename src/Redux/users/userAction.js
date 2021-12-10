@@ -66,26 +66,25 @@ export const fetchUsers = () => {
   };
 };
 
-export const fetchLoggedInUser = () => {
+export const fetchLoggedInUser = (userId, callback) => {
   return (dispatch) => {
     dispatch(fetchLoggedUser);
     axios
-      .get(`${URL}/business/me`, { withCredentials: true })
+      .get(`${URL}/business/${userId}`)
       .then((res) => {
         const userData = res.data;
+        callback(userData);
         dispatch(fetchLoggedUserSuccess(userData));
-        localStorage.setItem("userId", userData);
-        console.log(localStorage.getItem("userId"));
         dispatch(currentUserDetails(userData));
       })
 
       .catch((error) => {
         const errorMsg = error.message;
+        console.log(error);
         dispatch(fetchLoggedUserFailure(errorMsg));
       });
   };
 };
-
 export const currentUserDetails = (payload) => {
   return {
     type: CURRENT_USER_DETAILS,

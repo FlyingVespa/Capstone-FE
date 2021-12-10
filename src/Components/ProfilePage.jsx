@@ -1,7 +1,8 @@
 // Libraries
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector, connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 // Styling
 import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
 import fishshop from "../assets/images/fishshop.jpg";
@@ -14,79 +15,40 @@ import Services from "./ProfilePage/Services";
 import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
+// import { getBusinessUser } from "../network/lib/businessUsers";
+import { fetchLoggedInUser } from "../redux/users/userAction.js";
+import { getProductData } from "../network/lib/products.js";
 import { getBusinessUser } from "../network/lib/businessUsers";
-import { USER_LOGGEDIN } from "../redux/users/userTypes";
 
-const ProfilePage = (props) => {
+const ProfilePage = () => {
+  const URL = process.env.REACT_APP_API_URL;
   let params = useParams();
   let dispatch = useDispatch();
-  const user = useSelector((s) => s.formBusiness);
-  // const userId = props.match.params.userId;
-  const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState({
-    _id: "",
-    url: "",
-    email: "",
-    basic: {
-      name: "",
-      category: "",
-      username: "",
-    },
-    contact: {
-      email: "",
-      tel: "",
-      cell: "",
-      insta: "",
-      whatsapp: "",
-      twitter: "",
-    },
-    times: {
-      monday: { trading: true, open: "09:00", closed: "17:00" },
-      tuesday: { trading: true, open: "09:00", closed: "17:00" },
-      wednesday: { trading: true, open: "09:00", closed: "17:00" },
-      thursday: { trading: true, open: "09:00", closed: "17:00" },
-      friday: { trading: true, open: "09:00", closed: "17:00" },
-      saturday: { trading: true, open: "09:00", closed: "17:00" },
-      sunday: { trading: true, open: "09:00", closed: "17:00" },
-      public: { trading: true, open: "09:00", closed: "17:00" },
-    },
-    info: {
-      services: [],
-      shipping: false,
-      bio: null,
-      img_logo: null,
-      img_user: null,
-      img_banner: null,
-    },
-    location: {
-      country: null,
-      region: null,
-      city: null,
-      zip: null,
-      street: null,
-      street_numbebr: null,
-    },
-  });
-  const currentUserId = props.match.params.userId;
-  const [currentUser, setCurrentUser] = useState({});
+  let history = useHistory();
+  const loggedUser = useSelector((s) => s.users.loggedUser);
+  const userId = loggedUser._id;
+  const currentUserId = params.userId;
+  const [isMe, setIsMe] = useState(false);
+  // const [currentUser, setCurrentUser] = useState({});
+  const [profileData, setProfileData] = useState({});
+  const [isRefreshed, setIsRefreshed] = useState(false);
+  const [productData, setProductData] = useState(null);
 
   useEffect(() => {
-    getBusinessUser("me", setCurrentUser);
+    getBusinessUser("me", setProfileData);
+    dispatch({ type: "SET_CURRENT_USER", payload: profileData });
   }, []);
-
-  useEffect(() => {
-    getBusinessUser(
-      currentUserId === "me" ? currentUser._id : currentUserId,
-      setUserData
-    );
-  }, [currentUserId, currentUser._id, userData._id]);
 
   return (
     <div>
-      {userData && (
+      <Button onClick={() => history.push("/business/me/dashboard")}>
+        Dashboards
+      </Button>
+
+      {profileData && (
         <>
           <Container className="profile_page">
-            <Image src={userData.info.img_logo || fishshop} id="banner" />
+            <Image src={profileData.img_logo || fishshop} id="banner" />
           </Container>
           <Container className="main mb-5">
             <Container
@@ -100,31 +62,24 @@ const ProfilePage = (props) => {
                 </Col>
                 <Col>
                   <h1>
-                    {userData.basic.name}
+                    {profileData.businessname}
                     <IoIosStarOutline className="icon star" />
                   </h1>
-                  <span>
-                    {userData.basic.category} in {userData.location.city},
-                    {userData.location.country}
-                  </span>
+                  <span>{profileData.category}</span>
                   <IoMdAlarm />
                   <span> open</span>
                   <Button href="#location">Locate us</Button>
                 </Col>
               </Row>
             </Container>
-            <About about={userData.info.bio} />
+            {/* <Button onClick={product}>Get products</Button> */}
+
+            <About about={profileData.bio} />
             <hr className="" />
-            <Services services={userData.info.services} />
-            <hr className="" />
-            <Promotions promo={userData} />
-            <hr className="" />
-            <Featured promo={userData.info} />
-            <hr className="" />
-            <StockList promo={userData.info} />
+
             <Button>Create Shopping List</Button>
             <hr className="" id="location" />
-            {userData.basic.name}
+            {profileData.username}
             <Image className="profile-map" />
           </Container>
         </>
@@ -132,15 +87,4 @@ const ProfilePage = (props) => {
     </div>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    loggedin: state.users.loggedin,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // users: () => dispatch(fetchLoggedInUser()),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+export default ProfilePage;

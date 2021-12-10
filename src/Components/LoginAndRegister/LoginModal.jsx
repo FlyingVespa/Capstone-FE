@@ -2,102 +2,44 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button, Modal, Form } from "react-bootstrap";
 import {
   TextField,
   InputAdornment,
   Input,
   InputLabel,
   IconButton,
+  Dialog,
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import Swal from "sweetalert2";
-import { fetchLoggedInUser } from "../../redux/users/userAction";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-const LoginModal = ({ handleClose, show }) => {
-  const logged_status = useSelector((s) => s.helper.logged_status);
+const LoginModal = ({ handleClose , handleChange, loginDetails, loginUser}) => {
   const dispatch = useDispatch();
   let history = useHistory();
-  const URL = process.env.REACT_APP_API_URL;
-
-  const [loginDetails, setLoginDetails] = useState({
-    email: "test@business.com",
-    password: "1234",
-  });
 
   const vpassword = useSelector((s) => s.helper.password_visible);
+  const modalStatus = useSelector((s) => s.helper.productModal);
+
+ 
+
   const handleClickShowPassword = () => {
     dispatch({ type: "SHOW_PASSWORD", payload: !vpassword });
   };
 
-  const handleChange = ({ target }) => {
-    setLoginDetails({ ...loginDetails, [target.name]: target.value });
-  };
-  const details = {
-    email: loginDetails.email,
-    password: loginDetails.password,
-  };
-
-  // const loginClient = () => {
-  //   axios
-  //     .post(`${URL}/auth/login`, details, { withCredentials: true })
-  //     .then((res) => JSON.stringify(res))
-  //     .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
-  //     .then(handleClose())
-  //     // .then(history.push("/profile/me"))
-  //     .catch(
-  //       (error) =>
-  //         console.log(error) &&
-  //         dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
-  //     );
-  // };
-  // const loginUser = () => {
-  //   axios
-  //     .post(`${URL}/auth/login`, details, { withCredentials: true })
-  //     .then((res) => JSON.stringify(res.data))
-  //     // .then(res=> console.log(res))
-  //     .then(res => res == "user" ? console.log("YES") : console.log("NO"))
-  //     .then(history.push("/business/me/dashboard"))
-  //     .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true }))
-  //     .then(handleClose())
-  //     .catch(
-  //       (error) =>
-  //         console.log(error) &&
-  //         dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false })
-  //     );
-  // };
-
-  const loginUser = async () => {
-    try {
-      const resp = await axios.post(`${URL}/auth/login`, details, {
-        withCredentials: true,
-      });
-      let data = await JSON.stringify(resp.data);
-      await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true})
-      if (data.includes("client")) {
-       await history.push("profile/me")
-      handleClose()
-      } else if (data.includes("user")){
-        history.push("/business/me/dashboard")
-        handleClose()
-      } else {
-        console.log("no role has been assigned to account");
-      }
-      
-    } catch (error) {
-      console.log(error)
-    }
- 
-  };
 
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
-          <h3>Login</h3>
-          <Form>
+      <Dialog open={modalStatus} onClose={handleClose}>
+        <DialogTitle>LOGIN</DialogTitle>
+        <DialogContent>
+          <FormControl>
             <TextField
               required
               name="email"
@@ -129,23 +71,15 @@ const LoginModal = ({ handleClose, show }) => {
                 </InputAdornment>
               }
             />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={handleClose}>
-            Close
-          </Button>
-          <Button
-            onClick={loginUser}
-            type="submit"
-            className="mt-5"
-            variant="success"
-          >
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button color="primary" onClick={loginUser} variant="contained">
             Login
           </Button>
-      
-        </Modal.Footer>
-      </Modal>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

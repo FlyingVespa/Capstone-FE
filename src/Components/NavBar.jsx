@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Navbar, Nav, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,28 +7,58 @@ import { Button, Avatar, Chip } from "@mui/material";
 
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
+let initialState = { email: "test@business.com", password: "1234" };
 
 const NavBar = ({ URL }) => {
-  const dispatch = useDispatch();
-  const loggedin = useSelector((s) => s.helper.loggedin);
-  const currentUser = useSelector((s) => s.users.user);
-  const avatar = currentUser
-    ? currentUser.img_logo
-    : "https://source.unsplash.com/user/erondu";
 
+  const dispatch = useDispatch();
   let history = useHistory();
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+
+  const helper = useSelector((s) => s.helper);
+  const currentUser = useSelector((s) => s.users.user);
+
+  const [loginDetails, setLoginDetails] = useState(initialState);
 
   const logoutUser = () => {
     axios
-      .get("http://localhost:4545/auth/logout", { withCredentials: true })
+      .get(`${URL}/auth/logout`, { withCredentials: true })
       .then((response) => JSON.stringify(response))
       .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }))
       .then(history.push("/"))
       .catch((error) => console.log("error", error));
   };
+  const handleLoginModal = () => {
+    dispatch({ type: "SET_MODAL", payload: !helper.productModal });
+  };
+  const handleChange = ({ target }) => {
+    setLoginDetails({ ...loginDetails, [target.name]: target.value });
+  };
+
+  const loginUser = async () => {
+    try {
+      const resp = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/login`,
+        loginDetails,
+        {
+          withCredentials: true,
+        }
+      );
+      let data = await JSON.stringify(resp.data);
+      await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
+      if (data.includes("client")) {
+        await history.push("profile/me");
+        dispatch({type: "SET_MODAL", payload: !helper.productModal})
+      } else if (data.includes("user")) {
+        history.push("/business/me/dashboard");
+        dispatch({type: "SET_MODAL", payload: !helper.productModal})      } else {
+        console.log("no role has been assigned to account");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   return (
     <>
       <Navbar className="navbar-top" expand="lg">
@@ -39,17 +69,19 @@ const NavBar = ({ URL }) => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav.Link href="business/me">Business Me</Nav.Link>
+            <Button onClick={() => history.push("business/me")}>
+              Business Me
+            </Button>
             <Nav className="me-auto" />
             <Nav>
-              {!loggedin ? (
+              {!helper.loggedin ? (
                 <>
                   <Button
                     className="mx-2"
                     variant="contained"
                     color="success"
                     size="medium"
-                    onClick={handleShow}
+                    onClick={handleLoginModal}
                     exact
                   >
                     Login
@@ -64,37 +96,33 @@ const NavBar = ({ URL }) => {
                     Sign Up Free
                   </Button>
                 </>
-              ) : !currentUser ? (
-                <div className="d-flex justify-content-center mt-5">
-                  <Spinner animation="border" />
-                </div>
               ) : (
-                <>
-                  <Chip
-                    label={currentUser.username}
-                    variant="outlined"
-                    avatar={<Avatar alt="Remy Sharp" src={avatar} />}
-                  />
-                  <Button
-                    className="mx-2"
-                    variant="contained"
-                    color="success"
-                    size="medium"
-                    onClick={logoutUser}
-                  >
-                    Logout
-                  </Button>
-                </>
+                currentUser && (
+                  <>
+                    <Chip
+                      label={currentUser.username}
+                      variant="outlined"
+                      // avatar={<Avatar alt="Remy Sharp" src={avatar} />}
+                    />
+
+                    <p>{currentUser.username}</p>
+                    <Button
+                      className="mx-2"
+                      variant="contained"
+                      color="success"
+                      size="medium"
+                      onClick={logoutUser}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                )
               )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <LoginModal
-        show={show}
-        handleClose={handleClose}
-        handleShow={handleShow}
-      />
+        <LoginModal open={helper.productModal} handleClose={handleLoginModal} loginDetails={loginDetails} handleChange={handleChange} loginUser={loginUser}/>
     </>
   );
 };
