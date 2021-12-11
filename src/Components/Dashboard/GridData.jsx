@@ -17,18 +17,20 @@ import {
   deleteProduct,
   addUpdateProduct,
 } from "../../network/lib/products";
-import AddUpdateProductModal from "./AddUpdateProductModal";
-import { defaultColumnDef, convertDate } from "./agGridOptions,";
-import { Spinner } from "react-bootstrap";
+import AddProductModal from "./AddProductModal";
+import UpdateProductModal from "./UpdateProductModal";
+import TableLoader from "../Loaders/TableLoader";
+import { defaultColumnDef, convertDate, chipColor } from "./agGridOptions,";
 const URL = process.env.REACT_APP_API_URL;
 
 ////////////////////////////////////////////////////////////////////////////////////
 const GridData = ({ user }) => {
-  const initialValue = {};
   let params = useParams();
   let dispatch = useDispatch();
-  const loggedUser = useSelector((s) => s.users.loggedUser);
-  const modalStatus = useSelector((s) => s.helper.productModal);
+
+  const addProductModal = useSelector((s) => s.helper.productModal);
+  const updateProductModal = useSelector((s) => s.helper.updateModal);
+
   const userId = user._id;
   const [formData, setFormData] = useState({
     product: "Test",
@@ -39,29 +41,14 @@ const GridData = ({ user }) => {
     image: "",
   });
   const [rowData, setRowData] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  let chipColor = (value) => {
-    switch (value) {
-      case "medium":
-        return "secondary";
-      case "low":
-        return "warning";
-      case "high":
-        return "success";
-      case "out-of-stock":
-        return "error";
-      case "":
-        return "secondary";
-      default:
-        return "secondary";
-    }
-  };
-
+  const [loading, setLoading] = useState();
+  const [gridApi, setGridApi] = useState();
+  const [gridColumnApi, setGridColumnApi] = useState();
   useEffect(() => {
-    getProductData(userId, setRowData, setLoading);
+    getProductData(userId, setRowData);
     console.log(userId);
   }, []);
+
   const [colDefs, setColDefs] = useState([
     {
       field: "#",
@@ -131,9 +118,12 @@ const GridData = ({ user }) => {
       cellRendererFramework: ({ data }) => (
         <div>
           <IconButton color="primary">
-            <Edit onClick={() => handleUpdate(data)} />
+            <Edit onClick={() => handleUpdate(userId, data, setRowData)} />
           </IconButton>
-          <IconButton color="error" onClick={() => deleteProduct(data, userId)}>
+          <IconButton
+            color="error"
+            onClick={() => deleteProduct(data, userId, setRowData)}
+          >
             <DeleteForever />
           </IconButton>
         </div>
@@ -141,35 +131,20 @@ const GridData = ({ user }) => {
     },
   ]);
 
-  const [previewSource, setPreviewSource] = useState("");
-
-  const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
+  const handleAddModal = () => {
+    dispatch({ type: "SET_MODAL", payload: !addProductModal });
   };
-
-  const handleImageUpload = () => {
-    if (formData.image) {
-      let fd = new FormData();
-      fd.append("image", formData.image);
-    }
+  const handleUpdateModal = () => {
+    dispatch({ type: "SET_UPDATE_MODAL", payload: !updateProductModal });
   };
-
-  const handleProductModal = () => {
-    dispatch({ type: "SET_PRODUCT_MODAL", payload: !modalStatus });
-  };
-
   const onChange = ({ target }) => {
     const { value, name } = target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleUpdate = (oldData) => {
-    setFormData(oldData);
-    handleProductModal();
+  const handleUpdate = async (oldData) => {
+    await setFormData(oldData);
+    handleUpdateModal();
   };
 
   const handleFormSubmit = async () => {
@@ -183,15 +158,19 @@ const GridData = ({ user }) => {
       fd.append("price", formData.price);
       await addUpdateProduct(fd, userId);
     } else {
-      addUpdateProduct(formData, userId);
+      addUpdateProduct(userId, formData, setRowData);
     }
-    getProductData(userId, setRowData);
-    handleProductModal();
+
+  
   };
 
   const onGridReady = async (params) => {
     console.log("AgGridWithUseState Grid Ready");
-
+    setGridApi(params.api);
+    setGridColumnApi(params.columnApi);
+    params.api.showLoadingOverlay();
+    params.api.setDomLayout("autoHeight");
+    getProductData(userId, setRowData);
     window.onresize = () => {
       params.api.sizeColumnsToFit();
     };
@@ -201,58 +180,64 @@ const GridData = ({ user }) => {
   const fileChangedHandler = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-    setPreviewSource(file);
     console.log(file);
   };
 
   return (
-    <div className="ag-theme-material" style={{ height: 400 }}>
-      <Button variant="outlined" onClick={handleProductModal}>
+    <div
+      className="ag-theme-material"
+      style={{ width: "100%", height: "100%;" }}
+    >
+      <Button variant="outlined" onClick={handleAddModal}>
         Add New Product
       </Button>
 
-      <AddUpdateProductModal
-        open={modalStatus}
-        handleClose={handleProductModal}
-        data={formData}
-        onChange={onChange}
-        handleFormSubmit={handleFormSubmit}
-        fileChangedHandler={fileChangedHandler}
-        previewSource={previewSource}
-      />
-      {!loading ? (
-        <AgGridReact
-          rowDragManaged={true}
-          rowData={rowData}
-          columnDefs={colDefs}
-          defaultColDef={defaultColumnDef}
-          onGridReady={onGridReady}
-          enableRangeSelection={true}
-          pagination={true}
-          paginationPageSize={10}
-        >
-          <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
-          <AgGridColumn field="image"></AgGridColumn>
-          <AgGridColumn field="product"></AgGridColumn>
-          <AgGridColumn field="units"></AgGridColumn>
-          <AgGridColumn field="price"></AgGridColumn>
-          <AgGridColumn field="status"></AgGridColumn>
-          <AgGridColumn field="createdAt"></AgGridColumn>
-          <AgGridColumn field="updatedAt"></AgGridColumn>
-          <AgGridColumn field="delete"></AgGridColumn>
-        </AgGridReact>
+      {loading !== true ? (
+        <>
+          <AddProductModal
+            open={!addProductModal}
+            handleClose={handleAddModal}
+            data={formData}
+            onChange={onChange}
+            handleFormSubmit={handleFormSubmit}
+            fileChangedHandler={fileChangedHandler}
+          />
+          <UpdateProductModal
+            open={!updateProductModal}
+            handleClose={handleUpdateModal}
+            data={formData}
+            onChange={onChange}
+            handleFormSubmit={handleFormSubmit}
+            fileChangedHandler={fileChangedHandler}
+          />
+
+          <AgGridReact
+            rowDragManaged={true}
+            rowData={rowData}
+            columnDefs={colDefs}
+            defaultColDef={defaultColumnDef}
+            onGridReady={onGridReady}
+            enableRangeSelection={true}
+            pagination={true}
+            paginationPageSize={12}
+            frameworkComponents={{
+              customLoadingOverlay: TableLoader,
+            }}
+            loadingOverlayComponent={`customLoadingOverlay`}
+          >
+            <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
+            <AgGridColumn field="image"></AgGridColumn>
+            <AgGridColumn field="product"></AgGridColumn>
+            <AgGridColumn field="units"></AgGridColumn>
+            <AgGridColumn field="price"></AgGridColumn>
+            <AgGridColumn field="status"></AgGridColumn>
+            <AgGridColumn field="createdAt"></AgGridColumn>
+            <AgGridColumn field="updatedAt"></AgGridColumn>
+            <AgGridColumn field="delete"></AgGridColumn>
+          </AgGridReact>
+        </>
       ) : (
-        <Box sx={{ width: 600 }}>
-          <Skeleton />
-          <Skeleton animation="wave" />
-          <Skeleton animation={false} />
-          <Skeleton />
-          <Skeleton animation="wave" />
-          <Skeleton animation={false} />
-          <Skeleton />
-          <Skeleton animation="wave" />
-          <Skeleton animation={false} />
-        </Box>
+        <TableLoader />
       )}
     </div>
   );

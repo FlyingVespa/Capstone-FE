@@ -22,23 +22,17 @@ export const getAllBusinessUsers = () => {
 //   }
 // };
 export const getBusinessUser = (userId, callback) => {
-  // return (dispatch) => {
-  //   dispatch(userAction.fetchLoggedUser);
     axios
       .get(`${URL}/business/${userId}`, {withCredentials: true})
       .then((res) => {
         const userData = res.data
         callback(userData);
         console.log(userData);
-        // useDispatch(userAction.currentUserDetails(userData))
-        // dispatch(userAction.fetchLoggedUserSuccess(userData));
-        // dispatch(userAction.currentUserDetails(userData));
       })
-
       .catch((error) => {
         const errorMsg = error.message;
         console.log(error);
-        // dispatch(userAction.fetchLoggedUserFailure(errorMsg));
+ 
       });
   };
 // };

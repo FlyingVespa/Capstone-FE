@@ -9,7 +9,6 @@ import "./Dashboard/dashboard.css";
 import LoaderSpinner from "./Loaders/LoaderSpinner";
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
-import { fetchLoggedInUser } from "../redux";
 import { getBusinessUser } from "../network/lib/businessUsers";
 
 const DashboardPage = () => {
@@ -19,9 +18,10 @@ const DashboardPage = () => {
     getBusinessUser("me", setUserData);
   }, []);
 
-  const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const [value, setvalue] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    console.log(newValue);
+    setvalue( newValue );
   };
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -49,6 +49,8 @@ const DashboardPage = () => {
       "aria-controls": `vertical-tabpanel-${index}`,
     };
   }
+
+   
   return userData.loadingSingle ? (
     <LoaderSpinner />
   ) : userData.error ? (
@@ -67,7 +69,7 @@ const DashboardPage = () => {
           className="mt-5 mx-5"
           orientation="vertical"
           value={value}
-          onChange={handleChange}
+          onChange={handleTabChange}
         >
           <p>General Details</p>
           <Tab label="GENERAL DETAILS" {...a11yProps(0)}></Tab>
@@ -85,7 +87,6 @@ const DashboardPage = () => {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <GeneralData URL={URL} />
-          <GridData user={userData} />
         </TabPanel>
         <TabPanel value={value} index={2} style={{ width: 1200 }}>
           <GridData user={userData} />
@@ -104,15 +105,5 @@ const DashboardPage = () => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    userData: state.users,
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchLoggedInUser: () => dispatch(fetchLoggedInUser()),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
+export default DashboardPage;

@@ -17,3 +17,21 @@ export const defaultColumnDef = {
 export const convertDate = (data) => {
   return data.value ? new Date(data.value).toLocaleDateString() : "";
 };
+
+
+export const chipColor = (value) => {
+  switch (value) {
+    case "medium":
+      return "secondary";
+    case "low":
+      return "warning";
+    case "high":
+      return "success";
+    case "out-of-stock":
+      return "error";
+    case "":
+      return "secondary";
+    default:
+      return "secondary";
+  }
+};

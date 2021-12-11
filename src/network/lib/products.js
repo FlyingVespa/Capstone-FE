@@ -7,37 +7,49 @@ const URL = process.env.REACT_APP_API_URL;
 // 2. POST/ PUT
 //3. DELETE
 
-export const getProductData = async (userId, callback, setLoading) => {
- 
+export const getProductData = async (userId, callback) => {
   try {
     const res = await axios.get(`${URL}/business/${userId}/products`);
-    if (res.ok) {
-      let data = await res.json();
-      callback(data);
-      setLoading(false);
-    }
+    let data = await res.data;
+    callback(data);
   } catch (error) {
     console.log(error);
-    await setLoading(false);
   }
 };
 
-export const addUpdateProduct = async (formData, userId) => {
-  if (formData.id) {
+export const addUpdateProduct = async (userId, data, setRowData) => {
+  if (data.id) {
     axiosClient
-      .put(`/business/${userId}/products/${formData.id}`, formData)
+      .put(`/business/${userId}/products/${data.id}`, data)
       .then((res) => {
         console.log(res.data);
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .then(getProductData(userId, setRowData))
+      .then(
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Product Successfully Added",
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      )
+      .catch((error) =>
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Could not add product, please try again",
+          showConfirmButton: false,
+          timer: 3500,
+        })
+      );
   } else {
     axiosClient
-      .post(`/business/${userId}/products`, formData)
+      .post(`/business/${userId}/products`, data)
       .then((res) => {
         console.log(JSON.stringify(res.data));
       })
+      .then(getProductData(userId, setRowData))
       .then(
         Swal.fire({
           position: "top-end",
@@ -59,20 +71,16 @@ export const addUpdateProduct = async (formData, userId) => {
   }
 };
 
-export const deleteProduct = (formData, userId, file) => {
-  if (formData.id) {
-    axiosClient
-      .delete(`/business/${userId}/products/${formData.id}`, file)
-      .then((res) => {
-        console.log(JSON.stringify(res.data));
-        getProductData();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  } else {
-    console.log("NO id for product - delete function");
-  }
+export const deleteProduct = (data, userId, setRowData) => {
+  axios
+    .delete(`${URL}/business/me/products/${data.id}`)
+    .then((res) => {
+      console.log(res);
+    })
+    .then(getProductData(userId, setRowData))
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const uploadProductImage = (formData, userId) => {

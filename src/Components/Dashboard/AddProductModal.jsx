@@ -21,26 +21,22 @@ import {
 } from "@mui/material";
 import { Row, Col } from "react-bootstrap";
 
-const AddUpdateProductModal = ({
+const AddProductModal = ({
   handleClose,
   data,
   onChange,
   handleFormSubmit,
   fileChangedHandler,
-  previewSource
-
+  previewSource,
 }) => {
   const { product, price, amount, units, status, image, id } = data;
 
   const modalStatus = useSelector((s) => s.helper.productModal);
 
- 
   return (
     <div>
       <Dialog open={modalStatus} onClose={handleClose}>
-        <DialogTitle>
-          {id ? "Update Product Details" : "Add A New Product"}
-        </DialogTitle>
+        <DialogTitle>{"Add A New Product"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             A product can only have one unique name, if product already exists
@@ -68,7 +64,6 @@ const AddUpdateProductModal = ({
             </Col>
             <Col></Col>
           </Row>
-     
           <TextField
             margin="dense"
             name="amount"
@@ -77,7 +72,6 @@ const AddUpdateProductModal = ({
             value={amount}
             onChange={onChange}
           />
-
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Stock Level</InputLabel>
             <Select value={status ?? ""} onChange={onChange} name="status">
@@ -112,17 +106,7 @@ const AddUpdateProductModal = ({
           </FormControl>
           <div>
             <h1 className="title">Upload an Image</h1>
-       
-            <input type="file" onChange={fileChangedHandler}/>
-          
-{/*            
-            {previewSource && (
-              <img
-                src={previewSource}
-                alt="chosen"
-                style={{ height: "300px" }}
-              />
-            )} */}
+            <input type="file" onChange={fileChangedHandler} />
           </div>
         </DialogContent>
         <DialogActions>
@@ -132,7 +116,7 @@ const AddUpdateProductModal = ({
             onClick={() => handleFormSubmit()}
             variant="contained"
           >
-            {id ? "Update" : "Submit"}
+            {"Submit"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -140,4 +124,4 @@ const AddUpdateProductModal = ({
   );
 };
 
-export default AddUpdateProductModal;
+export default AddProductModal;
