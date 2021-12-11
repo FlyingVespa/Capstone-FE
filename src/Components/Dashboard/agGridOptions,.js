@@ -22,16 +22,16 @@ export const convertDate = (data) => {
 export const chipColor = (value) => {
   switch (value) {
     case "medium":
-      return "secondary";
+      return "primary";
     case "low":
       return "warning";
     case "high":
       return "success";
-    case "out-of-stock":
+    case "undefined":
       return "error";
     case "":
-      return "secondary";
+      return "error";
     default:
-      return "secondary";
+      return "error";
   }
 };

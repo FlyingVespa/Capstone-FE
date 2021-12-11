@@ -21,26 +21,22 @@ import {
 } from "@mui/material";
 import { Row, Col } from "react-bootstrap";
 
-const AddUpdateProductModal = ({
-  handleClose,
+const UpdateProductModal = ({
+  handleUpdateModal,
   data,
   onChange,
-  handleFormSubmit,
+  handleUpdateProduct,
   fileChangedHandler,
-  previewSource
-
+  previewSource,
 }) => {
-  const { product, price, amount, units, status, image, id } = data;
+  const { product, price, desc, units, status, id } = data;
 
-  const modalStatus = useSelector((s) => s.helper.productModal);
+  const modalStatus = useSelector((s) => s.helper.updateProductModal);
 
- 
   return (
     <div>
-      <Dialog open={modalStatus} onClose={handleClose}>
-        <DialogTitle>
-          {"Update Product Details" }
-        </DialogTitle>
+      <Dialog open={modalStatus} onClose={handleUpdateModal}>
+        <DialogTitle>{`Update ${id} Product Details`}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             A product can only have one unique name, if product already exists
@@ -68,43 +64,37 @@ const AddUpdateProductModal = ({
             </Col>
             <Col></Col>
           </Row>
-     
+
           <TextField
             margin="dense"
-            name="amount"
-            label="Amount"
+            name="desc"
+            label="Description"
             variant="standard"
-            value={amount}
+            value={desc}
             onChange={onChange}
           />
 
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Stock Level</InputLabel>
-            <Select value={status ?? ""} onChange={onChange} name="status">
-              <MenuItem>
-                <em disabled>None</em>
-              </MenuItem>
+            <Select value={status} onChange={onChange} name="status">
               <MenuItem value={"high"}>High</MenuItem>
               <MenuItem value={"medium"}>Medium</MenuItem>
               <MenuItem value={"low"}>low</MenuItem>
-              <MenuItem value={"out-of-stock"}>Out Of Stock</MenuItem>
+              <MenuItem value={"none"}>Out Of Stock</MenuItem>
             </Select>
           </FormControl>
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Units</InputLabel>
-            <Select value={units ?? ""} onChange={onChange} name="units">
-              <MenuItem>
-                <em>None</em>
-              </MenuItem>
+            <Select value={units} onChange={onChange} name="units">
               <MenuItem value={"ea"}>Each</MenuItem>
-              {/* <ListSubheader>Volume</ListSubheader> */}
+              <ListSubheader>Volume</ListSubheader>
               <MenuItem value={"ml"}>Mililiter</MenuItem>
               <MenuItem value={"cl"}>Centiliter</MenuItem>
               <MenuItem value={"l"}></MenuItem>
-              {/* <ListSubheader>Weight</ListSubheader> */}
+              <ListSubheader>Weight</ListSubheader>
               <MenuItem value={"g"}>Gram</MenuItem>
               <MenuItem value={"kg"}>Kilogram</MenuItem>
-              {/* <ListSubheader>Length</ListSubheader> */}
+              <ListSubheader>Length</ListSubheader>
               <MenuItem value={"mm"}>milimeter</MenuItem>
               <MenuItem value={"cm"}>centimeter</MenuItem>
               <MenuItem value={"m"}>meter</MenuItem>
@@ -112,10 +102,10 @@ const AddUpdateProductModal = ({
           </FormControl>
           <div>
             <h1 className="title">Upload an Image</h1>
-       
-            <input type="file" onChange={fileChangedHandler}/>
-          
-{/*            
+
+            <input type="file" name="image" onChange={fileChangedHandler} />
+
+            {/*            
             {previewSource && (
               <img
                 src={previewSource}
@@ -126,13 +116,16 @@ const AddUpdateProductModal = ({
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleUpdateModal}>Cancel</Button>
           <Button
             color="primary"
-            onClick={() => handleFormSubmit()}
+            onClick={() => {
+              handleUpdateProduct();
+              handleUpdateModal();
+            }}
             variant="contained"
           >
-            {"Update"}
+            Update
           </Button>
         </DialogActions>
       </Dialog>
@@ -140,4 +133,4 @@ const AddUpdateProductModal = ({
   );
 };
 
-export default AddUpdateProductModal;
+export default UpdateProductModal;

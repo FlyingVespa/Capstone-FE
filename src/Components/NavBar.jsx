@@ -10,7 +10,6 @@ import LoginModal from "./LoginAndRegister/LoginModal";
 let initialState = { email: "test@business.com", password: "1234" };
 
 const NavBar = ({ URL }) => {
-
   const dispatch = useDispatch();
   let history = useHistory();
 
@@ -28,7 +27,7 @@ const NavBar = ({ URL }) => {
       .catch((error) => console.log("error", error));
   };
   const handleLoginModal = () => {
-    dispatch({ type: "SET_MODAL", payload: !helper.productModal });
+    dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
   };
   const handleChange = ({ target }) => {
     setLoginDetails({ ...loginDetails, [target.name]: target.value });
@@ -47,17 +46,17 @@ const NavBar = ({ URL }) => {
       await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
       if (data.includes("client")) {
         await history.push("profile/me");
-        dispatch({type: "SET_MODAL", payload: !helper.productModal})
+        dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
       } else if (data.includes("user")) {
         history.push("/business/me/dashboard");
-        dispatch({type: "SET_MODAL", payload: !helper.productModal})      } else {
+        dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
+      } else {
         console.log("no role has been assigned to account");
       }
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <>
@@ -122,7 +121,13 @@ const NavBar = ({ URL }) => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-        <LoginModal open={helper.productModal} handleClose={handleLoginModal} loginDetails={loginDetails} handleChange={handleChange} loginUser={loginUser}/>
+      <LoginModal
+        open={helper.productModal}
+        handleClose={handleLoginModal}
+        loginDetails={loginDetails}
+        handleChange={handleChange}
+        loginUser={loginUser}
+      />
     </>
   );
 };

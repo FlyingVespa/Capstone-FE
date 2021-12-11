@@ -25,7 +25,7 @@ const LoginModal = ({ handleClose , handleChange, loginDetails, loginUser}) => {
   let history = useHistory();
 
   const vpassword = useSelector((s) => s.helper.password_visible);
-  const modalStatus = useSelector((s) => s.helper.productModal);
+  const modalStatus = useSelector((s) => s.helper.loginModal);
 
  
 

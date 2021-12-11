@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { useParams, useHistory } from "react-router-dom";
-import Swal from "sweetalert2";
+
 // styling
-import { Avatar, Button, IconButton, Chip, Box, Skeleton } from "@mui/material";
+import { Avatar, Button, IconButton, Chip } from "@mui/material";
 import { DeleteForever, Edit } from "@mui/icons-material";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
@@ -15,31 +15,24 @@ import "ag-grid-community/dist/styles/ag-theme-material.css";
 import {
   getProductData,
   deleteProduct,
-  addUpdateProduct,
+  addProduct,
+  updateProduct,
 } from "../../network/lib/products";
 import AddProductModal from "./AddProductModal";
 import UpdateProductModal from "./UpdateProductModal";
 import TableLoader from "../Loaders/TableLoader";
 import { defaultColumnDef, convertDate, chipColor } from "./agGridOptions,";
 const URL = process.env.REACT_APP_API_URL;
-
 ////////////////////////////////////////////////////////////////////////////////////
-const GridData = ({ user }) => {
+const GridData = ({ userData }) => {
   let params = useParams();
   let dispatch = useDispatch();
 
-  const addProductModal = useSelector((s) => s.helper.productModal);
-  const updateProductModal = useSelector((s) => s.helper.updateModal);
+  const addProductModal = useSelector((s) => s.helper.addProductModal);
+  const updateProductModal = useSelector((s) => s.helper.updateProductModal);
 
-  const userId = user._id;
-  const [formData, setFormData] = useState({
-    product: "Test",
-    price: "1",
-    amount: "1",
-    units: "kg",
-    status: "high",
-    image: "",
-  });
+  const userId = userData._id;
+  const [formData, setFormData] = useState({});
   const [rowData, setRowData] = useState([]);
   const [loading, setLoading] = useState();
   const [gridApi, setGridApi] = useState();
@@ -85,8 +78,8 @@ const GridData = ({ user }) => {
       minWidth: 20,
     },
     {
-      field: "amount",
-      headerName: "amount",
+      field: "desc",
+      headerName: "Description",
       minWidth: 20,
     },
     {
@@ -118,11 +111,18 @@ const GridData = ({ user }) => {
       cellRendererFramework: ({ data }) => (
         <div>
           <IconButton color="primary">
-            <Edit onClick={() => handleUpdate(userId, data, setRowData)} />
+            <Edit
+              onClick={async () => {
+                await handleUpdate(data);
+                await getProductData(userId, setRowData);
+              }}
+            />
           </IconButton>
           <IconButton
             color="error"
-            onClick={() => deleteProduct(data, userId, setRowData)}
+            onClick={() => {
+              handleDelete(data);
+            }}
           >
             <DeleteForever />
           </IconButton>
@@ -132,7 +132,7 @@ const GridData = ({ user }) => {
   ]);
 
   const handleAddModal = () => {
-    dispatch({ type: "SET_MODAL", payload: !addProductModal });
+    dispatch({ type: "SET_ADD_MODAL", payload: !addProductModal });
   };
   const handleUpdateModal = () => {
     dispatch({ type: "SET_UPDATE_MODAL", payload: !updateProductModal });
@@ -144,24 +144,49 @@ const GridData = ({ user }) => {
 
   const handleUpdate = async (oldData) => {
     await setFormData(oldData);
-    handleUpdateModal();
+    await updateProduct(userId, formData);
+    await handleUpdateModal();
   };
 
-  const handleFormSubmit = async () => {
+  const handleDelete = async (data) => {
+    await deleteProduct(userId, data);
+     getProductData(userId, setRowData);
+  };
+
+  const handleUpdateProduct = async () => {
+    if (!selectedFile === undefined) {
+      let fd = new FormData();
+      await fd.append("image", selectedFile);
+      await fd.append("name", selectedFile.name);
+      await fd.append("product", formData.product);
+      await fd.append("units", formData.units);
+      await fd.append("desc", formData.desc);
+      await fd.append("price", formData.price);
+      await updateProduct(userId, fd);
+      getProductData(userId, setRowData);
+    } else {
+      await updateProduct(userId, formData);
+      getProductData(userId, setRowData);
+    }
+  };
+
+  const handleAddProduct = async () => {
     if (selectedFile !== undefined && selectedFile !== "") {
       let fd = new FormData();
-      fd.append("image", selectedFile);
-      fd.append("name", selectedFile.name);
-      fd.append("product", formData.product);
-      fd.append("units", formData.units);
-      fd.append("amount", formData.amount);
-      fd.append("price", formData.price);
-      await addUpdateProduct(fd, userId);
+      await fd.append("image", selectedFile);
+      await fd.append("name", selectedFile.name);
+      await fd.append("product", formData.product);
+      await fd.append("units", formData.units);
+      await fd.append("desc", formData.desc);
+      await fd.append("price", formData.price);
+      await addProduct(userId, fd);
+      getProductData(userId, setRowData);
+      handleAddModal();
     } else {
-      addUpdateProduct(userId, formData, setRowData);
+      await addProduct(userId, formData);
+      getProductData(userId, setRowData);
+      handleAddModal();
     }
-
-  
   };
 
   const onGridReady = async (params) => {
@@ -177,10 +202,10 @@ const GridData = ({ user }) => {
     params.api.sizeColumnsToFit();
   };
   const [selectedFile, setSelectedFile] = useState();
-  const fileChangedHandler = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    console.log(file);
+
+  const fileChangedHandler = async (e) => {
+    await setSelectedFile(e.target.files[0]);
+    console.log(selectedFile);
   };
 
   return (
@@ -195,19 +220,19 @@ const GridData = ({ user }) => {
       {loading !== true ? (
         <>
           <AddProductModal
-            open={!addProductModal}
-            handleClose={handleAddModal}
+            open={addProductModal}
+            handleAddModal={handleAddModal}
             data={formData}
             onChange={onChange}
-            handleFormSubmit={handleFormSubmit}
+            handleFormSubmit={handleAddProduct}
             fileChangedHandler={fileChangedHandler}
           />
           <UpdateProductModal
-            open={!updateProductModal}
-            handleClose={handleUpdateModal}
+            open={updateProductModal}
+            handleUpdateModal={handleUpdateModal}
             data={formData}
             onChange={onChange}
-            handleFormSubmit={handleFormSubmit}
+            handleUpdateProduct={handleUpdateProduct}
             fileChangedHandler={fileChangedHandler}
           />
 
@@ -229,11 +254,12 @@ const GridData = ({ user }) => {
             <AgGridColumn field="image"></AgGridColumn>
             <AgGridColumn field="product"></AgGridColumn>
             <AgGridColumn field="units"></AgGridColumn>
+            <AgGridColumn field="desc"></AgGridColumn>
             <AgGridColumn field="price"></AgGridColumn>
             <AgGridColumn field="status"></AgGridColumn>
             <AgGridColumn field="createdAt"></AgGridColumn>
             <AgGridColumn field="updatedAt"></AgGridColumn>
-            <AgGridColumn field="delete"></AgGridColumn>
+            <AgGridColumn field="actions"></AgGridColumn>
           </AgGridReact>
         </>
       ) : (

@@ -3,7 +3,8 @@ import {
   SET_LOADING,
   SET_ACTIVE_STEP,
   SET_LOGGEDIN_STATUS,
-  SET_MODAL,
+  SET_LOGIN_MODAL,
+  SET_ADD_MODAL,
   SET_UPDATE_MODAL
 } from "./helpersTypes";
 
@@ -12,8 +13,9 @@ const initialState = {
   loading: false,
   activeStep: 0,
   loggedin: false,
-  productModal: false,
-  updateModal: false,
+  loginModal: false,
+  addProductModal: false,
+  updateProductModal: false,
 };
 
 const helperReducer = (state = initialState, action) => {
@@ -26,10 +28,12 @@ const helperReducer = (state = initialState, action) => {
       return { ...state, activeStep: action.payload };
     case SET_LOGGEDIN_STATUS:
       return { ...state, loggedin: action.payload };
-    case SET_MODAL:
-      return { ...state, productModal: action.payload };
+    case SET_LOGIN_MODAL:
+      return { ...state, loginModal: action.payload };
+    case SET_ADD_MODAL:
+      return { ...state, addProductModal: action.payload };
     case SET_UPDATE_MODAL:
-      return { ...state, updateModal: action.payload };
+      return { ...state, updateProductModal: action.payload };
     default:
       return state;
   }

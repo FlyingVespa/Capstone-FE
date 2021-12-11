@@ -89,7 +89,7 @@ const DashboardPage = () => {
           <GeneralData URL={URL} />
         </TabPanel>
         <TabPanel value={value} index={2} style={{ width: 1200 }}>
-          <GridData user={userData} />
+          <GridData userData={userData} />
         </TabPanel>
         <TabPanel value={value} index={3}>
           Trading Hours
