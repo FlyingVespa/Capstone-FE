@@ -33,7 +33,6 @@ const AddProductModal = ({
                 <Form.Control
                   name="product"
                   type="text"
-                  placeholder="name@example.com"
                   value={product}
                   onChange={onChange}
                 />

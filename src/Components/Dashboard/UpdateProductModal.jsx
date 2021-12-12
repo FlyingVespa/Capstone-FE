@@ -8,28 +8,27 @@ const UpdateProductModal = ({
   handleUpdateModal,
   data,
   onChange,
-  handleUpdateProduct,
+  handleFormSubmit,
   fileChangedHandler,
   previewSource,
 }) => {
-  const { product, price, desc, units, status, id } = data;
+  const { product, price, desc } = data;
   const [validated, setValidated] = useState(false);
   const modalStatus = useSelector((s) => s.helper.updateProductModal);
 
   return (
     <Modal size="lg" show={modalStatus} onHide={handleUpdateModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Product</Modal.Title>
+        <Modal.Title>Update Product</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form validated={validated} onSubmit={handleUpdateProduct}>
+        <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
           <Row className="g-2">
             <Col md>
               <FloatingLabel label="Product">
                 <Form.Control
                   name="product"
                   type="text"
-                  placeholder="name@example.com"
                   value={product}
                   onChange={onChange}
                 />
@@ -107,7 +106,7 @@ const UpdateProductModal = ({
             <Form.Check
               required
               label="All product info is correct"
-              feedback="You must confirm before submitting."
+              feedback="You must confirm before updating."
               feedbackType="invalid"
             />
           </Form.Group>
@@ -117,11 +116,7 @@ const UpdateProductModal = ({
         <Button onClick={handleUpdateModal} className="mx-1">
           Cancel
         </Button>
-        <Button
-          onClick={handleUpdateProduct}
-          className="mx-1"
-          variant="contained"
-        >
+        <Button onClick={()=>handleFormSubmit()} className="mx-1" variant="contained">
           Update
         </Button>
       </Modal.Footer>

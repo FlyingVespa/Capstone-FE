@@ -18,37 +18,35 @@ export const getProductData = async (userId, setRowData) => {
 };
 
 export const updateProduct = async (userId, formData) => {
-  if (formData.id) {
-    try {
-      let res = await axios.put(
-        `${URL}/business/${userId}/products/${formData.id}`,
-        formData
-      );
-
-      let data = await res.data;
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Product Successfully Updated",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: "Could not update product, please try again",
-        showConfirmButton: false,
-        timer: 3500,
-      });
-    }
-  } else {
-    console.log(` data does not contain id`);
+  try {
+    let res = await axios.patch(
+      `${URL}/business/${userId}/products/${formData.id}`,
+      formData
+    );
+    let data = await res.data;
+    console.log(data);
+  } catch (error) {
+    console.log(error);
   }
 };
-export const addProduct = async (userId, formData, handleSuccess) => {
+// export const updateProduct = async (userId, formData) => {
+//   var requestOptions = {
+//     method: "PATCH",
+//     body: formData,
+//     redirect: "follow",
+//   };
+
+//   fetch(
+//     `${URL}/business/${userId}/products/${formData.id}`,
+//     formData,
+//     requestOptions
+//   )
+//     .then((response) => response.text())
+//     .then((result) => console.log(result))
+//     .catch((error) => console.log("error", error));
+// };
+
+export const addProduct = async (userId, formData) => {
   try {
     let res = await axios.post(`${URL}/business/${userId}/products`, formData);
     let data = await res.data;

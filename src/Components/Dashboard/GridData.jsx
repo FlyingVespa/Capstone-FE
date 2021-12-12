@@ -110,13 +110,13 @@ const GridData = ({ userData }) => {
       headerName: "Actions",
       cellRendererFramework: ({ data }) => (
         <div>
-          <IconButton color="primary">
-            <Edit
-              onClick={async () => {
-                await handleUpdate(data);
-                await getProductData(userId, setRowData);
-              }}
-            />
+          <IconButton
+            color="primary"
+            onClick={() => {
+              handleUpdate(data);
+            }}
+          >
+            <Edit />
           </IconButton>
           <IconButton
             color="error"
@@ -144,30 +144,29 @@ const GridData = ({ userData }) => {
 
   const handleUpdate = async (oldData) => {
     await setFormData(oldData);
-    await updateProduct(userId, formData);
     await handleUpdateModal();
   };
+  
   const handleDelete = async (data) => {
     await deleteProduct(userId, data);
   };
 
   const handleUpdateProduct = async () => {
-    if (!selectedFile === undefined) {
+    if (selectedFile) {
       let fd = new FormData();
-      await fd.append("image", selectedFile);
-      await fd.append("name", selectedFile.name);
+      await fd.append("image", selectedFile, selectedFile.name);
       await fd.append("product", formData.product);
       await fd.append("units", formData.units);
       await fd.append("desc", formData.desc);
       await fd.append("price", formData.price);
       await fd.append("stocklevel", formData.stocklevel);
       await updateProduct(userId, fd);
+      getProductData(userId, setRowData);
       handleUpdateModal();
-      await getProductData(userId, setRowData);
     } else {
       await updateProduct(userId, formData);
+      getProductData(userId, setRowData);
       handleUpdateModal();
-      await getProductData(userId, setRowData);
     }
   };
 
@@ -205,14 +204,15 @@ const GridData = ({ userData }) => {
   };
   const [selectedFile, setSelectedFile] = useState();
 
-  const fileChangedHandler = async (e) => {
-    await setSelectedFile(e.target.files[0]);
-    console.log(selectedFile);
+  const fileChangedHandler = (e) => {
+    setSelectedFile(e.target.files[0]);
+    console.log("selected file", selectedFile);
   };
 
   useEffect(() => {
     getProductData(userId, setRowData);
   }, []);
+
   return (
     <div
       className="ag-theme-material"
@@ -237,7 +237,7 @@ const GridData = ({ userData }) => {
             handleUpdateModal={handleUpdateModal}
             data={formData}
             onChange={onChange}
-            handleUpdateProduct={handleUpdateProduct}
+            handleFormSubmit={handleUpdateProduct}
             fileChangedHandler={fileChangedHandler}
           />
 
