@@ -20,7 +20,7 @@ export const getProductData = async (userId, setRowData) => {
 export const updateProduct = async (userId, formData) => {
   if (formData.id) {
     try {
-      let res = await axios.patch(
+      let res = await axios.put(
         `${URL}/business/${userId}/products/${formData.id}`,
         formData
       );

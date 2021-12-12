@@ -1,21 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import {
-  Button,
-  TextField,
-  MenuItem,
-  Select,
-  InputLabel,
-  ListSubheader,
-} from "@mui/material";
-import {
-  Row,
-  Col,
-  Modal,
-  Form,
-  FormControl,
-  FloatingLabel,
-} from "react-bootstrap";
+import { Button } from "@mui/material";
+import { Row, Col, Modal, Form, FloatingLabel } from "react-bootstrap";
 
 const AddProductModal = ({
   handleAddModal,
@@ -25,19 +11,19 @@ const AddProductModal = ({
   fileChangedHandler,
   previewSource,
 }) => {
-  const { product, price, desc, units, status, image, id } = data;
+  const { product, price, desc } = data;
   const modalStatus = useSelector((s) => s.helper.addProductModal);
   const [validated, setValidated] = useState(false);
 
   return (
     <Modal
-      size="sm"
+      size="lg"
       show={modalStatus}
       onHide={handleAddModal}
-      aria-labelledby="example-modal-sizes-title-sm"
+      className="align-middle"
     >
       <Modal.Header closeButton>
-        <Modal.Title id="example-modal-sizes-title-sm">Add Product</Modal.Title>
+        <Modal.Title>Add Product</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
@@ -54,118 +40,91 @@ const AddProductModal = ({
               </FloatingLabel>
             </Col>
             <Col md>
-              {" "}
               <FloatingLabel label="Price">
                 <Form.Control
                   name="price"
-                  type="text"
-                  placeholder="name@example.com"
+                  type="number"
+                  placeholder="1.99"
+                  step=".01"
                   value={price}
                   onChange={onChange}
                 />
               </FloatingLabel>
             </Col>
           </Row>
+          <br />
           <Row className="g-2">
             <Col md>
               <FloatingLabel label="Description">
                 <Form.Control
-                  name="product"
+                  name="desc"
                   type="text"
                   value={desc}
                   onChange={onChange}
                 />
               </FloatingLabel>
             </Col>
-            <Col md></Col>
           </Row>
+          <br />
           <Row className="g-2">
             <Col md>
-              <FloatingLabel label="Works with selects">
-                <Form.Select aria-label="Floating label select example">
-                  <option value={"high"}>High</option>
-                  <option value={"medium"}>Medium</option>
-                  <option value={"low"}>low</option>
-                  <option value={"none"}>Out Of Stock</option>
+              <FloatingLabel label="Select Product Status">
+                <Form.Select onChange={onChange} name="stocklevel">
+                  <option selected disabled>
+                    Set stock level
+                  </option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">low</option>
+                  <option value="outofstock">Out Of Stock</option>
                 </Form.Select>
               </FloatingLabel>
             </Col>
             <Col md>
-              <FloatingLabel label="Works with selects">
-                <Form.Select aria-label="Floating label select example">
-                  <option value={"ea"}>Each</option>
-                  <option value={"ml"}>Mililiter</option>
-                  <option value={"cl"}>Centiliter</option>
-                  <option value={"l"}></option>
-                  <option value={"g"}>Gram</option>
-                  <option value={"kg"}>Kilogram</option>
-                  <option value={"mm"}>milimeter</option>
-                  <option value={"cm"}>centimeter</option>
-                  <option value={"m"}>meter</option>
+              <FloatingLabel label="Select Product Units">
+                <Form.Select onChange={onChange} name="units">
+                  <option selected disabled>
+                    Units
+                  </option>
+                  <option value="ea">Each</option>
+                  <option value="ml">Mililiter</option>
+                  <option value="cl">Centiliter</option>
+                  <option value="l">Liter</option>
+                  <option value="mm">milimeter</option>
+                  <option value="cm">centimeter</option>
+                  <option value="m">meter</option>
+                  <option value="g">Gram</option>
+                  <option value="kg">Kilogram</option>
                 </Form.Select>
               </FloatingLabel>
             </Col>
           </Row>
-
+          <br />
           <Row>
-            <Col></Col>
+            <Col>
+              <Form.Group controlId="formFile" className="mb-3">
+                <Form.Control type="file" onChange={fileChangedHandler} />
+              </Form.Group>
+            </Col>
           </Row>
-          <TextField
-            margin="dense"
-            name="desc"
-            label="Description"
-            variant="standard"
-            required={true}
-          />
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel>Stock Level</InputLabel>
-            <Select value={status} onChange={onChange} name="status">
-              <MenuItem value={"high"}>High</MenuItem>
-              <MenuItem value={"medium"}>Medium</MenuItem>
-              <MenuItem value={"low"}>low</MenuItem>
-              <MenuItem value={"none"}>Out Of Stock</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel>Units</InputLabel>
-            <Select value={units} onChange={onChange} name="units">
-              <MenuItem value={"ea"}>Each</MenuItem>
-              <ListSubheader>Volume</ListSubheader>
-              <MenuItem value={"ml"}>Mililiter</MenuItem>
-              <MenuItem value={"cl"}>Centiliter</MenuItem>
-              <MenuItem value={"l"}></MenuItem>
-              <ListSubheader>Weight</ListSubheader>
-              <MenuItem value={"g"}>Gram</MenuItem>
-              <MenuItem value={"kg"}>Kilogram</MenuItem>
-              <ListSubheader>Length</ListSubheader>
-              <MenuItem value={"mm"}>milimeter</MenuItem>
-              <MenuItem value={"cm"}>centimeter</MenuItem>
-              <MenuItem value={"m"}>meter</MenuItem>
-            </Select>
-          </FormControl>
-
-          <Form.Control type="file" onChange={fileChangedHandler} />
-
-          <input type="file" onChange={fileChangedHandler} />
-
-          <Button onClick={handleAddModal}>Cancel</Button>
-          <Button
-            color="primary"
-            onClick={handleFormSubmit}
-            variant="contained"
-          >
-            Submit
-          </Button>
           <Form.Group className="mb-3">
             <Form.Check
               required
-              label="Agree to terms and conditions"
-              feedback="You must agree before submitting."
+              label="All product info is correct"
+              feedback="You must confirm before submitting."
               feedbackType="invalid"
             />
           </Form.Group>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={handleAddModal} className="mx-1">
+          Cancel
+        </Button>
+        <Button onClick={handleFormSubmit} className="mx-1" variant="contained">
+          Submit
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };

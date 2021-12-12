@@ -84,8 +84,8 @@ const GridData = ({ userData }) => {
     },
     {
       minWidth: 30,
-      field: "status",
-      headerName: "Status",
+      field: "stocklevel",
+      headerName: "Stock Level",
       cellRendererFramework: ({ value }) => (
         <div>
           <Chip label={value} color={chipColor(value)} />
@@ -138,8 +138,8 @@ const GridData = ({ userData }) => {
     dispatch({ type: "SET_UPDATE_MODAL", payload: !updateProductModal });
   };
   const onChange = ({ target }) => {
-    const { value, name } = target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [target.name]: target.value });
+    console.log(target.value);
   };
 
   const handleUpdate = async (oldData) => {
@@ -147,10 +147,8 @@ const GridData = ({ userData }) => {
     await updateProduct(userId, formData);
     await handleUpdateModal();
   };
-
   const handleDelete = async (data) => {
     await deleteProduct(userId, data);
-     getProductData(userId, setRowData);
   };
 
   const handleUpdateProduct = async () => {
@@ -162,11 +160,14 @@ const GridData = ({ userData }) => {
       await fd.append("units", formData.units);
       await fd.append("desc", formData.desc);
       await fd.append("price", formData.price);
+      await fd.append("stocklevel", formData.stocklevel);
       await updateProduct(userId, fd);
-      getProductData(userId, setRowData);
+      handleUpdateModal();
+      await getProductData(userId, setRowData);
     } else {
       await updateProduct(userId, formData);
-      getProductData(userId, setRowData);
+      handleUpdateModal();
+      await getProductData(userId, setRowData);
     }
   };
 
@@ -179,6 +180,7 @@ const GridData = ({ userData }) => {
       await fd.append("units", formData.units);
       await fd.append("desc", formData.desc);
       await fd.append("price", formData.price);
+      await fd.append("stocklevel", formData.stocklevel);
       await addProduct(userId, fd);
       getProductData(userId, setRowData);
       handleAddModal();
@@ -208,6 +210,9 @@ const GridData = ({ userData }) => {
     console.log(selectedFile);
   };
 
+  useEffect(() => {
+    getProductData(userId, setRowData);
+  }, []);
   return (
     <div
       className="ag-theme-material"
@@ -256,7 +261,7 @@ const GridData = ({ userData }) => {
             <AgGridColumn field="units"></AgGridColumn>
             <AgGridColumn field="desc"></AgGridColumn>
             <AgGridColumn field="price"></AgGridColumn>
-            <AgGridColumn field="status"></AgGridColumn>
+            <AgGridColumn field="stocklevel"></AgGridColumn>
             <AgGridColumn field="createdAt"></AgGridColumn>
             <AgGridColumn field="updatedAt"></AgGridColumn>
             <AgGridColumn field="actions"></AgGridColumn>
