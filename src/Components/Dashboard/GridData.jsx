@@ -154,7 +154,8 @@ const GridData = ({ userData }) => {
   const handleUpdateProduct = async () => {
     if (selectedFile) {
       let fd = new FormData();
-      await fd.append("image", selectedFile, selectedFile.name);
+      await fd.append("image", selectedFile);
+      await fd.append("name", selectedFile.name);
       await fd.append("product", formData.product);
       await fd.append("units", formData.units);
       await fd.append("desc", formData.desc);
