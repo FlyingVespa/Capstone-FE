@@ -4,7 +4,7 @@ import { Col, Row, Image, Container } from "react-bootstrap";
 import { TabList, TabContext, TabPanel } from "@mui/lab";
 import { Tab, Box } from "@mui/material";
 
-import reg from "../../assets/images/Reg.png";
+import reg from "../../assets/images/register.gif";
 
 import BusinessRegistration from "./BusinessRegistration";
 import ClientRegistration from "./ClientRegistration";

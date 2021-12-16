@@ -183,7 +183,7 @@ footer a {
 }
 
 #landing_background {
-  transform: rotate(-10deg);
+  transform: scaleX(-1);
   position: absolute;
   right: 10%;
   top: 10%;

@@ -1,9 +1,8 @@
 import axiosClient from "../axiosClient";
 import axios from "axios";
-import {useDispatch} from "react-redux";
 import * as userAction from "../../redux/users/userAction.js";
 const URL = process.env.REACT_APP_API_URL;
-export default axiosClient;
+
 export const getAllBusinessUsers = () => {
   return axiosClient.get("/business");
 };
@@ -21,20 +20,20 @@ export const getAllBusinessUsers = () => {
 //     console.error();
 //   }
 // };
-export const getBusinessUser = (userId, callback) => {
-    axios
-      .get(`${URL}/business/${userId}`, {withCredentials: true})
-      .then((res) => {
-        const userData = res.data
-        callback(userData);
-        console.log(userData);
-      })
-      .catch((error) => {
-        const errorMsg = error.message;
-        console.log(error);
- 
-      });
-  };
+export const getBusinessUser = (userId, callback, setAuth) => {
+  axios
+    .get(`${URL}/business/${userId}`, { withCredentials: true })
+    .then((res) => {
+      const userData = res.data;
+      callback(userData);
+
+      console.log(userData);
+    })
+    .catch((error) => {
+      const errorMsg = error.message;
+      console.log(errorMsg);
+    });
+};
 // };
 
 export const fetchUsers = () => {

@@ -3,13 +3,8 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Styling
-import { Typography, Box, Tabs, Tab, Fab } from "@mui/material/";
-import { TabList , TabPanel, TabContext } from "@mui/lab";
-// import { Row, Nav, Col, Tab } from "react-bootstrap";
-import PhoneIcon from '@mui/icons-material/Phone';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PersonPinIcon from '@mui/icons-material/PersonPin';
-import PhoneMissedIcon from '@mui/icons-material/PhoneMissed';
+import { Typography, Box } from "@mui/material/";
+import {Row, Nav, Col, Tab} from "react-bootstrap"
 import "./Dashboard/dashboard.css";
 // Components
 import LoaderSpinner from "./Loaders/LoaderSpinner";
@@ -21,6 +16,7 @@ const DashboardPages = () => {
   const [userData, setUserData] = useState({});
   let dispatch = useDispatch();
 
+
   useEffect(() => {
     getBusinessUser("me", setUserData);
   }, []);
@@ -29,44 +25,71 @@ const DashboardPages = () => {
   const handleTabChange = (event, newValue) => {
     setvalue(newValue);
   };
- 
- 
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`vertical-tabpanel-${index}`}
+        aria-labelledby={`vertical-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+  function a11yProps(index) {
+    return {
+      id: `vertical-tab-${index}`,
+      "aria-controls": `vertical-tabpanel-${index}`,
+    };
+  }
+
   return userData.loadingSingle ? (
     <LoaderSpinner />
   ) : userData.error ? (
     <h1>{userData.error}</h1>
   ) : (
     <>
-     <Fab variant="extended">
-  <PhoneMissedIcon sx={{ mr: 1 }} />
-  Navigate
-</Fab>
+      {/* <Box
+        sx={{
+          display: "flex",
+          height: 1,
+          width: 1,
+          p: 4,
+        }}
+      > */}
 
-      <TabContext value={value} >
-          <TabList onChange={handleTabChange} aria-label="lab API tabs example" centered className="m-5"> 
-            <Tab label="Item One" value="1" />
-            <Tab label="Item Two" value="2" />
-            <Tab label="Item Three" value="3" />
-            <Tab icon={<PhoneIcon />} label="top" />
-          </TabList>
-        <TabPanel value="1"><GridData userData={userData} /></TabPanel>
-        <TabPanel value="2"><GeneralData/></TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
-      </TabContext>
-  
 
-       {/* <Tabs
+<Nav variant="pills" activeKey="1" className="flex-column">
+      <Nav.Item>
+        <Nav.Link eventKey="1" href="#/home">
+          NavLink 1 content
+        </Nav.Link>
+      </Nav.Item>
+</Nav>
+
+        
+        {/* <Tabs
           className="mt-5 mx-5"
+          orientation="vertical"
           value={value}
           onChange={handleTabChange}
         >
-          <Tab label="GENERAL DETAILS"></Tab>
-          <Tab label="PRODUCT DETAILS" />
-          <Tab label="ALL PRODUCTS" />
-          <Tab label="PROMOTIONS"  />
-          <Tab label="TRADING HOURS"  />
-          <Tab label="GENERAL INFO"  />
-          <Tab label="" />
+          <Tab label="GENERAL DETAILS" {...a11yProps(0)}></Tab>
+          <Tab label="PRODUCT DETAILS" {...a11yProps(1)} />
+          <Tab label="ALL PRODUCTS" {...a11yProps(2)} />
+          <Tab label="PROMOTIONS" {...a11yProps(3)} />
+          <Tab label="TRADING HOURS" {...a11yProps(4)} />
+          <Tab label="GENERAL INFO" {...a11yProps(5)} />
+          <Tab label="" {...a11yProps(6)} />
         </Tabs>
         <TabPanel value={value} index={0}>
           123
@@ -86,8 +109,8 @@ const DashboardPages = () => {
         </TabPanel>
         <TabPanel value={value} index={6}>
           Item Seven
-        </TabPanel> */}
-    
+        </TabPanel>
+      </Box> */}
     </>
   );
 };

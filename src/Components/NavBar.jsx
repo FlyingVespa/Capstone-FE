@@ -21,10 +21,11 @@ const NavBar = ({ URL }) => {
   const logoutUser = () => {
     axios
       .get(`${URL}/auth/logout`, { withCredentials: true })
-      .then((response) => JSON.stringify(response))
+      .then((response) => JSON.stringify(response.data))
       .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }))
+    
       .then(history.push("/"))
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.log("error", error))
   };
   const handleLoginModal = () => {
     dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
@@ -47,9 +48,11 @@ const NavBar = ({ URL }) => {
       if (data.includes("client")) {
         await history.push("profile/me");
         dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
+        dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true});
       } else if (data.includes("user")) {
         history.push("/business/me/dashboard");
         dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
+        dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
       } else {
         console.log("no role has been assigned to account");
       }

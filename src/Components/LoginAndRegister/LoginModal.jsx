@@ -14,25 +14,22 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
-
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-const LoginModal = ({ handleClose , handleChange, loginDetails, loginUser}) => {
+const LoginModal = ({ handleClose, handleChange, loginDetails, loginUser }) => {
   const dispatch = useDispatch();
   let history = useHistory();
 
   const vpassword = useSelector((s) => s.helper.password_visible);
   const modalStatus = useSelector((s) => s.helper.loginModal);
 
- 
 
   const handleClickShowPassword = () => {
     dispatch({ type: "SHOW_PASSWORD", payload: !vpassword });
   };
-
 
   return (
     <>

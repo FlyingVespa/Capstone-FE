@@ -73,6 +73,7 @@ export const fetchLoggedInUser = (userId, callback) => {
       .get(`${URL}/business/${userId}`)
       .then((res) => {
         const userData = res.data;
+        console.log(document.cookie)
         callback(userData);
         dispatch(fetchLoggedUserSuccess(userData));
         dispatch(currentUserDetails(userData));

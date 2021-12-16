@@ -12,6 +12,8 @@ function HomePage({ props, fetchUsers, usersData }) {
     fetchUsers();
   }, []);
 
+  
+
   return usersData.loading ? (
     <Spinner animation="border" role="status">
       <span className="visually-hidden">Loading...</span>

@@ -1,15 +1,15 @@
 // Libraries
-import { Container, Col, Button, Row, Image } from "react-bootstrap";
-
+import { useSelector } from "react";
 // styling
-import shopping from "../assets/images/shopping.png";
+import shopping from "../assets/images/shopping.svg";
 import "./ClientHomePage/clienthomepage.css";
-
+import { Container, Col, Button, Row, Image } from "react-bootstrap";
 // Components
 import ListPageDetails from "./ListPageDetails";
 
 const LandingPage = () => {
-  // const [isMe, setIsMe] = useState(false);
+  // const auth = useSelector((s) => s.helper.loggedin);
+  // const modalStatus = useSelector((s) => s.helper.loginModal);
 
   return (
     <>
@@ -34,6 +34,8 @@ const LandingPage = () => {
                 </Button>
               </div>
               <p>Start exploring listed businesses </p>
+              {/* <p>{autsh}</p> */}
+              {/* {modalStatus ? <p>true</p> : <p>false</p>} */}
             </Col>
             <Col className="m-2"></Col>
           </Row>

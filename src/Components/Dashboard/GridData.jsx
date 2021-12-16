@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // styling
 import { Avatar, Button, IconButton, Chip } from "@mui/material";
@@ -37,11 +37,6 @@ const GridData = ({ userData }) => {
   const [loading, setLoading] = useState();
   const [gridApi, setGridApi] = useState();
   const [gridColumnApi, setGridColumnApi] = useState();
-  useEffect(() => {
-    getProductData(userId, setRowData);
-    console.log(userId);
-  }, []);
-
   const [colDefs, setColDefs] = useState([
     {
       field: "#",
@@ -146,7 +141,7 @@ const GridData = ({ userData }) => {
     await setFormData(oldData);
     await handleUpdateModal();
   };
-  
+
   const handleDelete = async (data) => {
     await deleteProduct(userId, data);
   };
@@ -162,11 +157,11 @@ const GridData = ({ userData }) => {
       await fd.append("price", formData.price);
       await fd.append("stocklevel", formData.stocklevel);
       await updateProduct(userId, fd);
-      getProductData(userId, setRowData);
+      // getProductData(userId, setRowData);
       handleUpdateModal();
     } else {
       await updateProduct(userId, formData);
-      getProductData(userId, setRowData);
+      // getProductData(userId, setRowData);
       handleUpdateModal();
     }
   };
@@ -182,11 +177,11 @@ const GridData = ({ userData }) => {
       await fd.append("price", formData.price);
       await fd.append("stocklevel", formData.stocklevel);
       await addProduct(userId, fd);
-      getProductData(userId, setRowData);
+      // getProductData(userId, setRowData);
       handleAddModal();
     } else {
       await addProduct(userId, formData);
-      getProductData(userId, setRowData);
+      // getProductData(userId, setRowData);
       handleAddModal();
     }
   };
@@ -197,7 +192,7 @@ const GridData = ({ userData }) => {
     setGridColumnApi(params.columnApi);
     params.api.showLoadingOverlay();
     params.api.setDomLayout("autoHeight");
-    getProductData(userId, setRowData);
+
     window.onresize = () => {
       params.api.sizeColumnsToFit();
     };
@@ -209,15 +204,14 @@ const GridData = ({ userData }) => {
     setSelectedFile(e.target.files[0]);
     console.log("selected file", selectedFile);
   };
-
   useEffect(() => {
     getProductData(userId, setRowData);
   }, []);
 
   return (
     <div
-      className="ag-theme-material"
-      style={{ width: "100%", height: "100%;" }}
+      className="ag-theme-material m-5"
+      // style={{ width: "100%", height: "100%;" }}
     >
       <Button variant="outlined" onClick={handleAddModal}>
         Add New Product
@@ -242,31 +236,33 @@ const GridData = ({ userData }) => {
             fileChangedHandler={fileChangedHandler}
           />
 
-          <AgGridReact
-            rowDragManaged={true}
-            rowData={rowData}
-            columnDefs={colDefs}
-            defaultColDef={defaultColumnDef}
-            onGridReady={onGridReady}
-            enableRangeSelection={true}
-            pagination={true}
-            paginationPageSize={12}
-            frameworkComponents={{
-              customLoadingOverlay: TableLoader,
-            }}
-            loadingOverlayComponent={`customLoadingOverlay`}
-          >
-            <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
-            <AgGridColumn field="image"></AgGridColumn>
-            <AgGridColumn field="product"></AgGridColumn>
-            <AgGridColumn field="units"></AgGridColumn>
-            <AgGridColumn field="desc"></AgGridColumn>
-            <AgGridColumn field="price"></AgGridColumn>
-            <AgGridColumn field="stocklevel"></AgGridColumn>
-            <AgGridColumn field="createdAt"></AgGridColumn>
-            <AgGridColumn field="updatedAt"></AgGridColumn>
-            <AgGridColumn field="actions"></AgGridColumn>
-          </AgGridReact>
+          <div className="table-container"> 
+            <AgGridReact
+              rowDragManaged={true}
+              rowData={rowData}
+              columnDefs={colDefs}
+              defaultColDef={defaultColumnDef}
+              onGridReady={onGridReady}
+              enableRangeSelection={true}
+              pagination={true}
+              paginationPageSize={12}
+              frameworkComponents={{
+                customLoadingOverlay: TableLoader,
+              }}
+              loadingOverlayComponent={`customLoadingOverlay`}
+            >
+              <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
+              <AgGridColumn field="image"></AgGridColumn>
+              <AgGridColumn field="product"></AgGridColumn>
+              <AgGridColumn field="units"></AgGridColumn>
+              <AgGridColumn field="desc"></AgGridColumn>
+              <AgGridColumn field="price"></AgGridColumn>
+              <AgGridColumn field="stocklevel"></AgGridColumn>
+              <AgGridColumn field="createdAt"></AgGridColumn>
+              <AgGridColumn field="updatedAt"></AgGridColumn>
+              <AgGridColumn field="actions"></AgGridColumn>
+            </AgGridReact>
+          </div>
         </>
       ) : (
         <TableLoader />
