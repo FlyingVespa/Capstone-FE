@@ -39,5 +39,20 @@
   margin-right: auto;
   width: 70vw;
   /* border: black solid 2px; */
-  /* box-shadow: 2px 2px 10px black */
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 15px;
+  overflow: hidden;
 }
+.generaldata-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70vw;
+  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+  /* border-radius: 15px; */
+  overflow: hidden;}
+  .rrr{
+    display: flex;
+    margin-left: auto;
+    margin-right: 0;
+    
+  }

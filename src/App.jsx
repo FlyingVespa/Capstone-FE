@@ -9,14 +9,18 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // components
 // import { store, persistor } from "./redux/store";
-import ProfilePage from "./Components/ProfilePage";
+import ProfilePage from "./Components/BusinessProfilePage";
 import LandingPage from "./Components/LandingPage";
 import NavBar from "./Components/NavBar";
-import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
-import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
+import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import DashboardPage from "./Components/DashboardPage";
-import ClientHomePage from "./Components/ClientHomePage";
+import ClientHomePage from "./Components/ClientDashboard";
+import BusinessListPage from "./Components/BusinessListPage";
+import BusinessProfilePage from "./Components/BusinessProfilePage"
+
+
+
 import UnAuthorized from "./Components/httpStatuses/401.jsx";
 ///////////////////////////////////////////////////////////////////////////////////////
 const App = () => {
@@ -34,8 +38,8 @@ const App = () => {
         component={auth ? DashboardPage : UnAuthorized}
       />
       <Route path="/" exact component={LandingPage} />
-      <Route path="/business" exact component={HomePage} />
-      <Route path="/business/:userId" exact component={ProfilePage} />
+      <Route path="/business" exact component={BusinessListPage} />
+      <Route path="/business/:userId" exact component={BusinessProfilePage} />
       <Route path="/register" component={RegisterPage} />
      
       <Footer />

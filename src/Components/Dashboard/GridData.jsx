@@ -6,8 +6,10 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { useParams } from "react-router-dom";
 
 // styling
-import { Avatar, Button, IconButton, Chip } from "@mui/material";
+import { Col, Row } from "react-bootstrap";
+import { Avatar, Button, IconButton, Chip, Fab } from "@mui/material";
 import { DeleteForever, Edit } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
 
@@ -192,7 +194,6 @@ const GridData = ({ userData }) => {
     setGridColumnApi(params.columnApi);
     params.api.showLoadingOverlay();
     params.api.setDomLayout("autoHeight");
-
     window.onresize = () => {
       params.api.sizeColumnsToFit();
     };
@@ -209,14 +210,12 @@ const GridData = ({ userData }) => {
   }, []);
 
   return (
-    <div
-      className="ag-theme-material m-5"
-      // style={{ width: "100%", height: "100%;" }}
-    >
-      <Button variant="outlined" onClick={handleAddModal}>
-        Add New Product
-      </Button>
-
+    <div className="ag-theme-material m-5">
+        <div className="my-3">
+          <Fab color="primary" variant="extended" onClick={handleAddModal}>
+            <AddIcon /> Add New Item
+          </Fab>
+        </div>
       {loading !== true ? (
         <>
           <AddProductModal
@@ -236,7 +235,7 @@ const GridData = ({ userData }) => {
             fileChangedHandler={fileChangedHandler}
           />
 
-          <div className="table-container"> 
+          <div className="table-container">
             <AgGridReact
               rowDragManaged={true}
               rowData={rowData}
@@ -244,12 +243,13 @@ const GridData = ({ userData }) => {
               defaultColDef={defaultColumnDef}
               onGridReady={onGridReady}
               enableRangeSelection={true}
-              pagination={true}
-              paginationPageSize={12}
+              // pagination={true}
+              // paginationPageSize={12}
               frameworkComponents={{
                 customLoadingOverlay: TableLoader,
               }}
               loadingOverlayComponent={`customLoadingOverlay`}
+              className="mb-4"
             >
               <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
               <AgGridColumn field="image"></AgGridColumn>

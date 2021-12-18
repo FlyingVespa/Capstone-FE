@@ -23,9 +23,8 @@ const NavBar = ({ URL }) => {
       .get(`${URL}/auth/logout`, { withCredentials: true })
       .then((response) => JSON.stringify(response.data))
       .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }))
-    
       .then(history.push("/"))
-      .catch((error) => console.log("error", error))
+      .catch((error) => console.log("error", error));
   };
   const handleLoginModal = () => {
     dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
@@ -48,7 +47,7 @@ const NavBar = ({ URL }) => {
       if (data.includes("client")) {
         await history.push("profile/me");
         dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
-        dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true});
+        dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
       } else if (data.includes("user")) {
         history.push("/business/me/dashboard");
         dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
@@ -76,7 +75,27 @@ const NavBar = ({ URL }) => {
             </Button>
             <Nav className="me-auto" />
             <Nav>
-              {!helper.loggedin ? (
+              {helper.loggedin ? (
+                // currentUser && (
+                <>
+                  {/* <Chip
+                    label={currentUser.username}
+                    variant="outlined"
+                    // avatar={<Avatar alt="Remy Sharp" src={avatar} />}
+                  /> */}
+
+                  {/* <p>{currentUser.username}</p> */}
+                  <Button
+                    className="mx-2"
+                    variant="contained"
+                    color="success"
+                    size="medium"
+                    onClick={logoutUser}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
                 <>
                   <Button
                     className="mx-2"
@@ -98,27 +117,6 @@ const NavBar = ({ URL }) => {
                     Sign Up Free
                   </Button>
                 </>
-              ) : (
-                currentUser && (
-                  <>
-                    <Chip
-                      label={currentUser.username}
-                      variant="outlined"
-                      // avatar={<Avatar alt="Remy Sharp" src={avatar} />}
-                    />
-
-                    <p>{currentUser.username}</p>
-                    <Button
-                      className="mx-2"
-                      variant="contained"
-                      color="success"
-                      size="medium"
-                      onClick={logoutUser}
-                    >
-                      Logout
-                    </Button>
-                  </>
-                )
               )}
             </Nav>
           </Navbar.Collapse>

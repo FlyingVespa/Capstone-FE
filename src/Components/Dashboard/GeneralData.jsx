@@ -3,7 +3,7 @@ import { Container, Card, Row, Col, Tab, Nav, Sonnet } from "react-bootstrap";
 
 function GeneralData() {
   return (
-    <div style={{ flexGrow: 1 }}>
+    <div className="generaldata-container">
       <h1>General Data</h1>
       <Fragment>
     

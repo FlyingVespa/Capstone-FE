@@ -1,0 +1,6 @@
+{
+  "appId": "online.buylocal.www",
+  "appName": "buylocal.online-fe",
+  "webDir": "build",
+  "bundledWebRuntime": false
+}

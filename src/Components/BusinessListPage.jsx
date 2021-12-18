@@ -1,18 +1,16 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { Container, Col, Spinner } from "react-bootstrap";
-
+import { Container, Col, Row, Spinner } from "react-bootstrap";
 import "./ClientHomePage/clienthomepage.css";
+import ListMap from "./BusinessListPage/ListMap";
 import SearchBar from "./ClientHomePage/SearchBar";
+import ShopCard from "./BusinessListPage/ShopCard";
 import { fetchUsers } from "../redux";
 
-function HomePage({ props, fetchUsers, usersData }) {
+const BusinessListPage = ({ props, fetchUsers, usersData }) => {
   useEffect(() => {
     fetchUsers();
   }, []);
-
-  
 
   return usersData.loading ? (
     <Spinner animation="border" role="status">
@@ -22,29 +20,26 @@ function HomePage({ props, fetchUsers, usersData }) {
     <h1>{usersData.error}</h1>
   ) : (
     <Container className="homepage">
-      <Container>
-        <Col>
-          <h1>Find & Buy Local</h1>
+      <Col>
+        <h1>Find & Buy Local</h1>
 
-          <SearchBar usersData={usersData} />
-        </Col>
-      </Container>
+        <SearchBar usersData={usersData} />
 
-      <Container>
-        <div>
+        <div className="my-5">
+          <ListMap />
+        </div>
+      </Col>
+
+      <div>
+        <Row className="g-3">
           {usersData &&
             usersData.users &&
-            usersData.users.map((user) => (
-              <Link to={`/business/${user.url}`}>
-                {" "}
-                <p>{user.email}</p>
-              </Link>
-            ))}
-        </div>
-      </Container>
+            usersData.users.map((user) => <ShopCard user={user} />)}
+        </Row>
+      </div>
     </Container>
   );
-}
+};
 const mapStateToProps = (state) => {
   return {
     usersData: state.users,
@@ -54,7 +49,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUsers: () => dispatch(fetchUsers()),
-   
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(BusinessListPage);

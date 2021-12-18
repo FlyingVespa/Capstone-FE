@@ -16,11 +16,10 @@ import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
 // import { getBusinessUser } from "../network/lib/businessUsers";
-import { fetchLoggedInUser } from "../redux/users/userAction.js";
-import { getProductData } from "../network/lib/products.js";
+
 import { getBusinessUser } from "../network/lib/businessUsers";
 
-const ProfilePage = () => {
+const BusinessProfilePage = () => {
   const URL = process.env.REACT_APP_API_URL;
   let params = useParams();
   let dispatch = useDispatch();
@@ -87,4 +86,4 @@ const ProfilePage = () => {
     </div>
   );
 };
-export default ProfilePage;
+export default BusinessProfilePage;

@@ -58,7 +58,7 @@ function LinkTab(props) {
   );
 }
 
-const ClientHomePage = () => {
+const ClientDashboard = () => {
   const [value, setValue] = useState(0);
   let params = useParams();
   let history = useHistory();
@@ -126,4 +126,4 @@ const ClientHomePage = () => {
   );
 };
 
-export default ClientHomePage;
+export default ClientDashboard;

@@ -56,8 +56,7 @@ const userReducer = (state = intitialState, action) => {
       };
     case REGISTER_BUSINESS_USER:
       return { ...state, registerBusiness: action.payload };
-    case USER_LOGGEDIN:
-      return { ...state, loggedin: action.payload };
+   
     case CURRENT_USER_DETAILS:
       return {
         ...state,
