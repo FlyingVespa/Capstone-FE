@@ -13,7 +13,7 @@ import {
 } from "react-leaflet";
 import "leaflet-fullscreen/dist/Leaflet.fullscreen.js";
 import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
-
+import { HiOutlineZoomIn, HiOutlineZoomOut } from "react-icons/hi";
 const ListMap = () => {
   const [zoom, setZoom] = useState(11);
   const [statuss, setStatuss] = useState({
@@ -24,13 +24,16 @@ const ListMap = () => {
   const [center, setCenter] = useState([38.2395, 15.4388]);
 
   const defaultZoom = 10;
-  const defaultCenter = [0, 0];
+  const defaultCenter = [43.0, -79.0];
 
   const mapRef = useRef();
   const { BaseLayer } = LayersControl;
   useEffect(() => {
     const { current = {} } = mapRef;
     const { leafletElement: map } = current;
+    map.locate({
+      setView: true,
+    });
   }, []);
 
   return (
@@ -46,18 +49,24 @@ const ListMap = () => {
         zoomControl={false}
       >
         <LayersControl>
-            <BaseLayer selected name="Standard">
-          <TileLayer
-            attribution='"<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors"'
-            url="https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=tRBS1CzZ2FJZHZdJSwLZkXk5bxihDxtkAGacqcXduKRXEbrgXvFAERqPDxwhWS63"
+          <BaseLayer selected name="S">
+            <TileLayer
+              attribution='<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            </BaseLayer>
-            <BaseLayer name="Black and White">
-          <TileLayer
-            attribution='"<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors"'
-            url="https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=tRBS1CzZ2FJZHZdJSwLZkXk5bxihDxtkAGacqcXduKRXEbrgXvFAERqPDxwhWS63"
+          </BaseLayer>
+          <BaseLayer selected name="Standard">
+            <TileLayer
+              attribution='"<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors"'
+              url="https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=tRBS1CzZ2FJZHZdJSwLZkXk5bxihDxtkAGacqcXduKRXEbrgXvFAERqPDxwhWS63"
             />
-            </BaseLayer>
+          </BaseLayer>
+          <BaseLayer name="Black and White">
+            <TileLayer
+              attribution='"<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors"'
+              url="https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=tRBS1CzZ2FJZHZdJSwLZkXk5bxihDxtkAGacqcXduKRXEbrgXvFAERqPDxwhWS63"
+            />
+          </BaseLayer>
         </LayersControl>
 
         <Marker position={[51.505, -0.09]}>
@@ -65,7 +74,7 @@ const ListMap = () => {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
-        <ZoomControl position="bottomright" zoomInText="C" zoomOutText="X" />
+        <ZoomControl position="bottomright" />
       </Map>
     </>
   );
