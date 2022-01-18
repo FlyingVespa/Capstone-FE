@@ -7,11 +7,11 @@ const URL = process.env.REACT_APP_API_URL;
 // 2. POST/ PUT
 //3. DELETE
 
-export const getProductData = async (userId, setRowData) => {
+export const getProductData = async (userId, callback) => {
   try {
     const res = await axios.get(`${URL}/business/${userId}/products`);
     let data = await res.data;
-    setRowData(data);
+    callback(data);
   } catch (error) {
     console.log(error);
   }
@@ -28,6 +28,20 @@ export const updateProduct = async (userId, formData) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getUserProducts = async (userId, callback) => {
+  axios
+    .get(`${URL}/business/${userId}/products`)
+    .then((res) => {
+      const userData = res.data;
+      callback(userData);
+      console.log(userData);
+    })
+    .catch((error) => {
+      const errorMsg = error.message;
+      console.log(errorMsg);
+    });
 };
 // export const updateProduct = async (userId, formData) => {
 //   var requestOptions = {

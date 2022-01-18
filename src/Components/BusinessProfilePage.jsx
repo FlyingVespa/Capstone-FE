@@ -7,6 +7,9 @@ import { useParams, useHistory } from "react-router-dom";
 import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
 import fishshop from "../assets/images/fishshop.jpg";
 import { IoIosStarOutline, IoMdAlarm } from "react-icons/io";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
 
 // Components
 import Logo from "./ProfilePage/logo";
@@ -15,9 +18,11 @@ import Services from "./ProfilePage/Services";
 import Featured from "./ProfilePage/Featured";
 import Promotions from "./ProfilePage/Promotions";
 import StockList from "./ProfilePage/StockList";
+import ProductItem from "./ProfilePage/ProductItem";
 // import { getBusinessUser } from "../network/lib/businessUsers";
 
 import { getBusinessUser } from "../network/lib/businessUsers";
+import { getProductData, getUserProducts } from "../network/lib/products";
 
 const BusinessProfilePage = () => {
   const URL = process.env.REACT_APP_API_URL;
@@ -28,14 +33,25 @@ const BusinessProfilePage = () => {
   const userId = loggedUser._id;
   const currentUserId = params.userId;
   const [isMe, setIsMe] = useState(false);
-  // const [currentUser, setCurrentUser] = useState({});
   const [profileData, setProfileData] = useState({});
   const [isRefreshed, setIsRefreshed] = useState(false);
-  const [productData, setProductData] = useState(null);
+  const [productData, setProductData] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getBusinessUser("me", setProfileData);
-    dispatch({ type: "SET_CURRENT_USER", payload: profileData });
+    const fetchThings = async () => {
+      await getBusinessUser("me", setProfileData, setLoading);
+      await dispatch({ type: "CURRENT_USER_DETAILS", payload: profileData });
+    };
+    fetchThings();
+  }, []);
+
+  useEffect(() => {
+    const fetchMoreThings = () => {
+      getUserProducts(profileData._id, setProductData);
+      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: productData });
+    };
+    fetchMoreThings();
   }, []);
 
   return (
@@ -78,8 +94,34 @@ const BusinessProfilePage = () => {
 
             <Button>Create Shopping List</Button>
             <hr className="" id="location" />
+            <Row className="product-container">
+              {productData &&
+                productData.map((item, i) =>
+                  loading ? (
+                    <Skeleton variant="text" />
+                  ) : (
+                    <ProductItem item={item} key={i} />
+                  )
+                )}
+            </Row>
+            {/* 
+            {productData &&
+              productData.map((item, i) => <p key={i}>{item.product}</p>)} */}
+            <hr className="" />
             {profileData.username}
+            {profileData._id}
             <Image className="profile-map" />
+
+            {loading && (
+              <Backdrop
+                sx={{
+                  color: "black",
+                  zIndex: (theme) => theme.zIndex.drawer + 9,
+                }}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
+            )}
           </Container>
         </>
       )}
