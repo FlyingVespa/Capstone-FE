@@ -1,66 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@600&family=Work+Sans:wght@700&display=swap");
-.profile_page.jumbotron {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40vh;
-  overflow: hidden;
-  z-index: -1;
-  position: relative;
-}
-.jumbotron #banner,
-#map {
-  padding-top: 100px !important;
-}
-.container > div.homepage-map.jumbotron {
-  overflow: hidden;
-  height: 400px;
-}
-.header {
-  z-index: 2;
-  background-color: white;
-}
 
-.icon.star {
-  position: absolute;
-  top: 37vh;
-  right: 48vh;
-  cursor: pointer;
-  font-size: 50px;
-  opacity: 0.05;
-}
-
-#open_status {
-  border: solid 2px rgb(99, 150, 23);
-  width: fit-content;
-  padding: 5px;
-  border-radius: 3rem;
-}
-
-#open_status span {
-  font-size: 1.5rem;
-  color: rgb(108, 177, 85);
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
-.main {
-  margin-top: -10vh;
-  width: 55vw;
-}
-
-.featured img {
-  height: 9rem;
-}
-
-.stocklist img {
-  height: 50px;
-}
-
-.Logo {
-  margin-top: -10vh;
-}
 /* FOOTER */
 
 footer {

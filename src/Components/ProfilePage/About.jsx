@@ -1,30 +1,80 @@
-import React from "react";
-import { Container, Col, Row, Button } from "react-bootstrap";
+import { useState } from "react";
+import { Container, Col, Row, Button, Modal } from "react-bootstrap";
 import { FiInfo } from "react-icons/fi";
 
-function About({ about }) {
+import {
+  FaFacebookSquare,
+  FaWhatsappSquare,
+  FaPhoneSquareAlt,
+} from "react-icons/fa";
+
+import TradingHoursModal from "./TradingHoursModal";
+function About({ about, data }) {
+  const [showTradingHours, setShowTradingHours] = useState(false);
+
+  const handleCloseTradingHours = () => setShowTradingHours(false);
+  const handleShowTradingHours = () => setShowTradingHours(true);
+  let operatingHours = data.times ? Object.keys(data.times) : null;
   return (
-    <Container className="m-1 -p1">
-      <p>
-        <FiInfo /> ABOUT
-      </p>
-      <Container>
-        <Row>
-          <Col md={8}>
-            <p>{about}</p>
-          </Col>
-          <Col>
-            <Row></Row>
-            <Col className="m-2">
-              <Button>Contact Us</Button>
+    <>
+      <Container className="m-1 -p1">
+        <p>
+          <FiInfo /> ABOUT
+        </p>
+        <Container>
+          <Row>
+            <Col md={8}>
+              <p>{about}</p>
             </Col>
-            <Col className="m-2">
-              <Button disabled>TEL 2354 35 4352</Button>
+            <Col>
+              <Col className="trading-hours m-2">
+                <Button variant="primary" onClick={handleShowTradingHours}>
+                  Trading Hours
+                </Button>
+                <FaFacebookSquare />
+                <FaWhatsappSquare />
+                <FaPhoneSquareAlt />
+                {/* ImMail */}
+              </Col>
             </Col>
-          </Col>
-        </Row>
+          </Row>
+        </Container>
       </Container>
-    </Container>
+
+      <Modal show={showTradingHours} onHide={handleCloseTradingHours} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Trading Hours</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {operatingHours.map((day) => (
+            <>
+              <Row>
+                <Col md={4}>
+                  <p id="times-day" style={{ textTransform: "capitalize" }}>
+                    {day}
+                  </p>
+                </Col>
+                {data.times[day].trading !== true ? (
+                  <Col>
+                    <p>Closed</p>
+                  </Col>
+                ) : (
+                  <>
+                    <Col md={4}>
+                      <p>{data.times[day].open}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p>{data.times[day].closed}</p>
+                    </Col>
+                  </>
+                )}
+              </Row>
+            </>
+          ))}
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 
