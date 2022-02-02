@@ -45,11 +45,24 @@ const BusinessProfilePage = () => {
   const [trading, setTrading] = useState(false);
 
   useEffect(() => {
-    const fetchThings = async () => {
-      await getBusinessUser("me", setProfileData, setLoading);
-      await dispatch({ type: "CURRENT_USER_DETAILS", payload: profileData });
+    // await getBusinessUser("me", setProfileData, setLoading);
+    // await dispatch({ type: "CURRENT_USER_DETAILS", payload: profileData });
+
+    const getBusinessUser = (userId) => {
+      try {
+        axios
+          .get(`${URL}/business/${userId}`, { withCredentials: true })
+          .then((result) => {
+            const profileData = result.data;
+          })
+          .then(
+            dispatch({ type: "CURRENT_USER_DETAILS", payload: profileData })
+          );
+      } catch (error) {
+        console.error();
+      }
     };
-    fetchThings();
+    getBusinessUser();
   }, []);
 
   useEffect(() => {

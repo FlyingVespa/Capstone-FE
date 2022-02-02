@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Container, Col, Row, Button, Modal } from "react-bootstrap";
 import { FiInfo } from "react-icons/fi";
 
@@ -9,12 +10,18 @@ import {
 } from "react-icons/fa";
 
 import TradingHoursModal from "./TradingHoursModal";
+
 function About({ about, data }) {
   const [showTradingHours, setShowTradingHours] = useState(false);
 
   const handleCloseTradingHours = () => setShowTradingHours(false);
   const handleShowTradingHours = () => setShowTradingHours(true);
   let operatingHours = data.times ? Object.keys(data.times) : null;
+
+  let profileData = useSelector((s) => s.users.user);
+  const handleclick = (e) => {
+    console.log("Test", profileData);
+  };
   return (
     <>
       <Container className="m-1 -p1">
@@ -31,6 +38,7 @@ function About({ about, data }) {
                 <Button variant="primary" onClick={handleShowTradingHours}>
                   Trading Hours
                 </Button>
+                <button onClick={handleclick}>Testing</button>
                 <FaFacebookSquare />
                 <FaWhatsappSquare />
                 <FaPhoneSquareAlt />
