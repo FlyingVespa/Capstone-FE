@@ -41,28 +41,29 @@ const BusinessProfilePage = () => {
   const [isRefreshed, setIsRefreshed] = useState(false);
   const [productData, setProductData] = useState();
   const [loading, setLoading] = useState(false);
-
   const [trading, setTrading] = useState(false);
+  const user = useSelector((s) => s.users.user);
+  const getBusinessUser = (userId) => {
+    try {
+      axios
+        .get(`${URL}/business/${userId}`, { withCredentials: true })
+        .then((result) => {
+          const userData = result.data;
+          setProfileData(userData);
+          dispatch({ type: "CURRENT_USER_DETAILS", payload: userData });
+        });
+    } catch (error) {
+      console.error();
+    }
+  };
 
   useEffect(() => {
-    // await getBusinessUser("me", setProfileData, setLoading);
-    // await dispatch({ type: "CURRENT_USER_DETAILS", payload: profileData });
-
-    const getBusinessUser = (userId) => {
-      try {
-        axios
-          .get(`${URL}/business/${userId}`, { withCredentials: true })
-          .then((result) => {
-            const profileData = result.data;
-          })
-          .then(
-            dispatch({ type: "CURRENT_USER_DETAILS", payload: profileData })
-          );
-      } catch (error) {
-        console.error();
-      }
-    };
-    getBusinessUser();
+    getBusinessUser(currentUserId);
+    console.log("userID", currentUserId);
+    console.log("TIMES", user.times);
+    console.log("TIMESaaa", user.times.monday);
+    console.log("[TIMESaaa]", user.times["monday"]);
+    // console.log("[T]", profileData?.times["monday"]);
   }, []);
 
   useEffect(() => {
@@ -84,30 +85,45 @@ const BusinessProfilePage = () => {
     ? profileData.img_user
     : userImgPlaceholder;
 
-  let operatingHours = profileData.times
-    ? Object.keys(profileData.times)
-    : null;
+  // let operatingHours = Object.keys(profileData?.times);
+  let weekdays = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
   const today = new Date();
-  let days = today.getDay();
-
-  // var date =
-  //   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  // var time =
-  //   today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
-  //   const checkOpen = (day, currenttime) => {
-  // if (day == "close") {
-  //   setTrading(false)
-  // } else if (day == "trading" &&  currenttime  > profileData.times[day].open && currenttime < profileData.times[day].closed){
-  //     setTrading(true)
-  //   }
-
-  // }
-
-  // }
-
-  // var dateTime = day + " " + time;
-
+  const days = today.getDay(); /* 4*/
+  let s = weekdays[days];
+  // { weekdays[days] === 5555555 }
+  // const keyValue = [
+  //   0:{sunday},
+  //  1:  monday,
+  //   2: "tuesday",
+  //   3: "wednesday",
+  //   4: "thursday",
+  //   5: "friday",
+  //   6: "saturday",
+  // ]
+  // const keyValues = []
+  //   sunday: 0,
+  //   monday: 1,
+  //   tuesday: 2,
+  //   wednesday: 3,
+  //   thursday: 4,
+  //   friday: 5,
+  //   saturday: 6,
+  //   public: 7,
+  // };
+  // let parsing = JSON.parse(keyValue);
+  // const ss = keyValue[days];
+  // let aa = Object.keys(weekdays[days]);
+  const printthis = (day) => {
+    console.log(profileData.times);
+  };
   return (
     <>
       {/* <Button onClick={() => history.push("/business/me/dashboard")}>
@@ -124,33 +140,32 @@ const BusinessProfilePage = () => {
                 <Row className="">
                   <Col xs={2}>
                     <Image src={logoImg} id="img-logo" />
+                    {/* <p>{s}</p> */}
+                    {/* <p>{blue}</p> */}
+                    {/* <p>{currentlyOpen}</p> */}
                   </Col>
                   <Col>
                     <h1 className="text-businessname">
                       {profileData.businessname}
                     </h1>
                     <p className="text-category">{profileData.category}</p>
-                    <p>{days}</p>
-                    {/* <p>{profileData?.times[day].open}</p> */}
-                    {/* <p id="demo"></p> */}
-                    {operatingHours?.map((day) =>
-                      profileData?.times[day].trading !== true ? (
-                        <Col>
-                          <p>Closed</p>
-                        </Col>
+                    {/* {== true ? (
+                      <p>open</p>
+                    ) : (
+                      <p>closed</p>
+                    )} */}
+                    {/* <p>{days}</p>
+                    {operatingHours.map((day) =>
+                      profileData?.times[day].trading === true &&
+                      days == day + 1 ? (
+                        <p>yes</p>
                       ) : (
-                        <>
-                          <Col md={4}>
-                            <p id="times-open">{profileData.times[day].open}</p>
-                          </Col>
-                          <Col md={4}>
-                            <p id="times-closed">
-                              {profileData.times[day].closed}
-                            </p>
-                          </Col>
-                        </>
+                        <p>no</p>
                       )
-                    )}
+                    )} */}
+                    {/* <p>{profileData?.times[4].trading}</p> */}
+                    {/* <p id="demo"></p> */}
+
                     {/* <IoMdAlarm /> */}
                     {/* <span> open</span> */}
                     {/* <GrMapLocation id="icon-location" /> */}
@@ -158,7 +173,7 @@ const BusinessProfilePage = () => {
                 </Row>
               </Container>
 
-              <About about={profileData.bio} data={profileData} />
+              <About about={profileData.bio} />
               <hr className="" />
 
               <Button>Create Shopping List</Button>
