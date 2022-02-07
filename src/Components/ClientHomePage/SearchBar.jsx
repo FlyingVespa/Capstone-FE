@@ -1,6 +1,5 @@
 // Libraries
 import { useState, useEffect, Fragment } from "react";
-import { withRouter } from "react-router-dom";
 
 // Styling
 import { Container, Row, Col } from "react-bootstrap";
@@ -203,4 +202,4 @@ function SearchBar({ usersData, routerProps }) {
   );
 }
 
-export default withRouter(SearchBar);
+export default SearchBar;

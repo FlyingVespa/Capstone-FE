@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector, connect } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // Styling
 import { Image, Container, Badge, Row, Col, Button } from "react-bootstrap";
 import { IoIosStarOutline, IoMdAlarm } from "react-icons/io";
@@ -32,7 +32,7 @@ const BusinessProfilePage = () => {
   const URL = process.env.REACT_APP_API_URL;
   let params = useParams();
   let dispatch = useDispatch();
-  let history = useHistory();
+  let navigate = useNavigate();
   const loggedUser = useSelector((s) => s.users.loggedUser);
   const userId = loggedUser._id;
   const currentUserId = params.userId;
@@ -48,9 +48,9 @@ const BusinessProfilePage = () => {
       axios
         .get(`${URL}/business/${userId}`, { withCredentials: true })
         .then((result) => {
-          const userData = result.data;
-          setProfileData(userData);
-          dispatch({ type: "CURRENT_USER_DETAILS", payload: userData });
+          // const userData = result.data;
+          setProfileData(result.data);
+          // dispatch({ type: "CURRENT_USER_DETAILS", payload: userData });
         });
     } catch (error) {
       console.error();
@@ -60,10 +60,10 @@ const BusinessProfilePage = () => {
   useEffect(() => {
     getBusinessUser(currentUserId);
     console.log("userID", currentUserId);
-    console.log("TIMES", user.times);
-    console.log("TIMESaaa", user.times.monday);
-    console.log("[TIMESaaa]", user.times["monday"]);
-    // console.log("[T]", profileData?.times["monday"]);
+    // console.log("TIMES", user.times);
+    // console.log("TIMESaaa", user.times.monday);
+    // console.log("[TIMESaaa]", user.times["monday"]);
+    console.log("[T]", profileData.times["monday"]);
   }, []);
 
   useEffect(() => {
@@ -126,10 +126,6 @@ const BusinessProfilePage = () => {
   };
   return (
     <>
-      {/* <Button onClick={() => history.push("/business/me/dashboard")}>
-        Dashboards
-      </Button> */}
-
       {profileData && (
         <>
           <div className="profile page">
@@ -173,7 +169,7 @@ const BusinessProfilePage = () => {
                 </Row>
               </Container>
 
-              <About about={profileData.bio} />
+              {/* <About data={profileData} /> */}
               <hr className="" />
 
               <Button>Create Shopping List</Button>

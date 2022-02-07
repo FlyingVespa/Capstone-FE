@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   TextField,
@@ -21,11 +21,9 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginModal = ({ handleClose, handleChange, loginDetails, loginUser }) => {
   const dispatch = useDispatch();
-  let history = useHistory();
-
+  const navigate = useNavigate();
   const vpassword = useSelector((s) => s.helper.password_visible);
   const modalStatus = useSelector((s) => s.helper.loginModal);
-
 
   const handleClickShowPassword = () => {
     dispatch({ type: "SHOW_PASSWORD", payload: !vpassword });

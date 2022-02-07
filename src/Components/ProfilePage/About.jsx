@@ -11,25 +11,20 @@ import {
 
 import TradingHoursModal from "./TradingHoursModal";
 
-function About({ about }) {
+function About({ data }) {
   const [showTradingHours, setShowTradingHours] = useState(false);
 
   const handleCloseTradingHours = () => setShowTradingHours(false);
   const handleShowTradingHours = () => setShowTradingHours(true);
 
-  const profileData = useSelector((s) => s.users.user);
+  // const profileData = useSelector((s) => s.users.user);
 
-  let operatingHours = Object.keys(profileData.times);
-  const handleclick = (e) => {
-    console.log("Test", operatingHours);
-  };
+  let operatingHours = Object.keys(data.times);
+  // const handleclick = (e) => {
+  //   console.log("Test", operatingHours);
+  // };
   const today = new Date();
   const days = today.getDay();
-
-  const sss = () => {
-    if (document.getElementById("times-day").innerHTML == { days }) {
-    }
-  };
 
   return (
     <>
@@ -40,14 +35,14 @@ function About({ about }) {
         <Container>
           <Row>
             <Col md={8}>
-              <p>{about}</p>
+              <p>{data.bio}</p>
             </Col>
             <Col>
               <Col className="trading-hours m-2">
                 <Button variant="primary" onClick={handleShowTradingHours}>
                   Trading Hours
                 </Button>
-                <button onClick={handleclick}>Testing</button>
+                {/* <button onClick={handleclick}>Testing</button> */}
                 <FaFacebookSquare />
                 <FaWhatsappSquare />
                 <FaPhoneSquareAlt />
@@ -75,17 +70,17 @@ function About({ about }) {
                     <p>{day}</p>
                   )}
                 </Col>
-                {profileData.times[day].trading !== true ? (
+                {data.times[day].trading !== true ? (
                   <Col>
                     <p>Closed</p>
                   </Col>
                 ) : (
                   <>
                     <Col md={4}>
-                      <p>{profileData.times[day].open}</p>
+                      <p>{data.times[day].open}</p>
                     </Col>
                     <Col md={4}>
-                      <p>{profileData.times[day].closed}</p>
+                      <p>{data.times[day].closed}</p>
                     </Col>
                   </>
                 )}

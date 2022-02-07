@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -39,7 +39,7 @@ const BusinessRegistration = () => {
   });
 
   const dispatch = useDispatch();
-  let history = useHistory();
+  let navigate = useNavigate();
   const dispatchData = () =>
     dispatch({
       type: "REGISTER_BUSINESS_USER",
@@ -209,7 +209,7 @@ const BusinessRegistration = () => {
               className="mx-auto"
               variant="danger"
               onClick={() => {
-                history.push("/");
+                navigate("/");
               }}
             >
               Cancel
@@ -225,7 +225,6 @@ const BusinessRegistration = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  
                   onClick={handleNext}
                 >
                   Confirm

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Navbar, Nav, Spinner } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Button, Avatar, Chip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+// import {  } from "react-router";
+import { Button, Avatar } from "@mui/material";
 
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
@@ -11,8 +12,7 @@ let initialState = { email: "test@business.com", password: "1234" };
 
 const NavBar = ({ URL }) => {
   const dispatch = useDispatch();
-  let history = useHistory();
-
+  let navigate = useNavigate();
   const helper = useSelector((s) => s.helper);
   const currentUser = useSelector((s) => s.users.user);
 
@@ -23,7 +23,7 @@ const NavBar = ({ URL }) => {
       .get(`${URL}/auth/logout`, { withCredentials: true })
       .then((response) => JSON.stringify(response.data))
       .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }))
-      .then(history.push("/"))
+      .then(navigate("/"))
       .catch((error) => console.log("error", error));
   };
   const handleLoginModal = () => {
@@ -45,13 +45,16 @@ const NavBar = ({ URL }) => {
       let data = await JSON.stringify(resp.data);
       await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
       if (data.includes("client")) {
-        await history.push("profile/me");
+        await navigate("profile/me");
         dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
         dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
+        dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
+        console.log();
       } else if (data.includes("user")) {
-        history.push("/business/me/dashboard");
         dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
         dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
+        dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
+        navigate("/business/me");
       } else {
         console.log("no role has been assigned to account");
       }
@@ -70,9 +73,7 @@ const NavBar = ({ URL }) => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Button onClick={() => history.push("business/me")}>
-              Business Me
-            </Button>
+            <Button onClick={() => navigate("business/me")}>Business Me</Button>
             <Nav className="me-auto" />
             <Nav>
               {helper.loggedin ? (

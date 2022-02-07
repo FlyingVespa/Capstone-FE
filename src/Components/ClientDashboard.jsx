@@ -1,7 +1,7 @@
 //libraries
-import axios from 'axios'
+import axios from "axios";
 import { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -14,7 +14,7 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { currentUserDetails } from "../redux/users/userAction";
 
 ///////////////////////////////////////////////////////////////////////////////
-const TabPanel =(props) =>{
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -32,12 +32,12 @@ const TabPanel =(props) =>{
       )}
     </div>
   );
-    TabPanel.propTypes = {
-      children: PropTypes.node,
-      index: PropTypes.number.isRequired,
-      value: PropTypes.number.isRequired,
-    };
-}
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+};
 
 function a11yProps(index) {
   return {
@@ -61,7 +61,7 @@ function LinkTab(props) {
 const ClientDashboard = () => {
   const [value, setValue] = useState(0);
   let params = useParams();
-  let history = useHistory();
+  let navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedin = useSelector((s) => s.helper.loggedin);
 
@@ -75,13 +75,13 @@ const ClientDashboard = () => {
       axios
         .get(`${URL}/profile/me`, { withCredentials: true })
         .then((res) => JSON.stringify(res))
-        .then(result => console.log(result))
+        .then((result) => console.log(result))
         .then((result) => setCurrentUser(result))
         .then(() => console.log("CURRENTUSER", currentUser))
         .then(dispatch(currentUserDetails(currentUser)));
     } else {
       alert("Please login before accessing dashboard");
-      history.push("/");
+      navigate("/");
     }
   };
   useEffect(() => {
@@ -95,21 +95,10 @@ const ClientDashboard = () => {
           <LinkTab
             icon={<TravelExploreIcon />}
             label="SEARCH STORES"
-            // {...a11yProps(0)}
             href="/trash"
           />
-          <LinkTab
-            icon={<PersonPinIcon />}
-            label="NEARBY"
-            // {...a11yProps(1)}
-            href="/trashs"
-          />
-          <LinkTab
-            icon={<FavoriteIcon />}
-            label="FAVORITES"
-            // {...a11yProps(2)}
-            href="/spam"
-          />
+          <LinkTab icon={<PersonPinIcon />} label="NEARBY" href="/trashs" />
+          <LinkTab icon={<FavoriteIcon />} label="FAVORITES" href="/spam" />
         </Tabs>
       </Box>
       {/* 

@@ -1,21 +1,12 @@
 import React from "react";
-import { useHistory } from "react-router";
-import {
-  CardActions,
-  CardContent,
-  Card,
-  CardMedia,
-  Button,
-  Typography,
-  Grid,
-  Divider,
-} from "@mui/material";
+import { useNavigate } from "react-router";
+import { CardContent, Card, CardMedia, Divider } from "@mui/material";
 import { GrMapLocation } from "react-icons/gr";
 
 import { Col, Row, Badge } from "react-bootstrap";
 
 const ShopCard = ({ user }) => {
-  let history = useHistory();
+  let navigate = useNavigate();
   return (
     <Col lg={2} md={4} xs={6} className="align-items-stretch">
       <Card className="shop-card p-0 m-0 h-100">
@@ -32,7 +23,7 @@ const ShopCard = ({ user }) => {
         </div>
         <CardContent className="text-center m-0">
           <h5>{user.businessname}</h5>
-          <Divider/>
+          <Divider />
           <div>
             <Row className="my-1">
               <Col xs={3}>
@@ -44,11 +35,6 @@ const ShopCard = ({ user }) => {
             </Row>
           </div>
         </CardContent>
-        {/* <CardActions>
-          <Button onClick={() => history.push(`/business/${user._id}`)}>
-            Visit
-          </Button>
-        </CardActions> */}
       </Card>
     </Col>
   );
