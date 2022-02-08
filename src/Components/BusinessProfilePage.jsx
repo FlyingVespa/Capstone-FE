@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector, connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 // Styling
-import { Image, Container, Badge, Row, Col, Button } from "react-bootstrap";
+import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
 import { IoIosStarOutline, IoMdAlarm } from "react-icons/io";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -25,7 +25,6 @@ import ProductItem from "./ProfilePage/ProductItem";
 
 import { GrMapLocation } from "react-icons/gr";
 
-import { getBusinessUser } from "../network/lib/businessUsers";
 import { getProductData, getUserProducts } from "../network/lib/products";
 
 const BusinessProfilePage = () => {
@@ -34,8 +33,9 @@ const BusinessProfilePage = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   const loggedUser = useSelector((s) => s.users.loggedUser);
-  const userId = loggedUser._id;
-  const currentUserId = params.userId;
+  const loggedInStatus = useSelector((s) => s.helper.loggedin);
+
+  const userId = params.userId;
   const [isMe, setIsMe] = useState(false);
   const [profileData, setProfileData] = useState({});
   const [isRefreshed, setIsRefreshed] = useState(false);
@@ -43,38 +43,30 @@ const BusinessProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [trading, setTrading] = useState(false);
   const user = useSelector((s) => s.users.user);
-  const getBusinessUser = (userId) => {
-    try {
-      axios
-        .get(`${URL}/business/${userId}`, { withCredentials: true })
-        .then((result) => {
-          // const userData = result.data;
-          setProfileData(result.data);
-          // dispatch({ type: "CURRENT_USER_DETAILS", payload: userData });
+
+  useEffect(() => {
+    const fetchUserData = async (profileId) => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${URL}/business/${profileId}`, {
+          withCredentials: true,
         });
-    } catch (error) {
-      console.error();
-    }
-  };
-
-  useEffect(() => {
-    getBusinessUser(currentUserId);
-    console.log("userID", currentUserId);
-    // console.log("TIMES", user.times);
-    // console.log("TIMESaaa", user.times.monday);
-    // console.log("[TIMESaaa]", user.times["monday"]);
-    console.log("[T]", profileData.times["monday"]);
-  }, []);
-
-  useEffect(() => {
-    const fetchMoreThings = () => {
-      getUserProducts(profileData._id, setProductData);
-      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: productData });
+        setProfileData(response.data);
+      } catch (error) {
+        console.error(error.message);
+      }
+      setLoading(false);
     };
-    fetchMoreThings();
-    // fetchDay();
+    fetchUserData(userId);
+    if (profileData !== undefined && profileData !== null) {
+      const fetchProducts = () => {
+        getUserProducts(profileData._id, setProductData);
+        dispatch({ type: "FETCH_ALL_PRODUCTS", payload: productData });
+      };
+      fetchProducts();
+    }
+    verifyMe();
   }, []);
-
   let bannerImg = profileData.img_banner
     ? profileData.img_banner
     : bannerImgPlaceholder;
@@ -95,38 +87,26 @@ const BusinessProfilePage = () => {
     "friday",
     "saturday",
   ];
+  const verifyMe = () => {
+    if (params.userId == "me" && loggedInStatus == false) {
+      console.log("its not me");
+    } else if (params.userId != "me") {
+      console.log("its not me sec");
+    }
+  };
+
   const today = new Date();
   const days = today.getDay(); /* 4*/
-  let s = weekdays[days];
-  // { weekdays[days] === 5555555 }
-  // const keyValue = [
-  //   0:{sunday},
-  //  1:  monday,
-  //   2: "tuesday",
-  //   3: "wednesday",
-  //   4: "thursday",
-  //   5: "friday",
-  //   6: "saturday",
-  // ]
-  // const keyValues = []
-  //   sunday: 0,
-  //   monday: 1,
-  //   tuesday: 2,
-  //   wednesday: 3,
-  //   thursday: 4,
-  //   friday: 5,
-  //   saturday: 6,
-  //   public: 7,
-  // };
-  // let parsing = JSON.parse(keyValue);
-  // const ss = keyValue[days];
-  // let aa = Object.keys(weekdays[days]);
-  const printthis = (day) => {
-    console.log(profileData.times);
-  };
+  const { businessname, username, _id, category } = profileData;
   return (
     <>
-      {profileData && (
+      {loading && (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
+
+      {profileData && !loading && (
         <>
           <div className="profile page">
             <Image src={bannerImg} id="img-banner" />
@@ -136,42 +116,15 @@ const BusinessProfilePage = () => {
                 <Row className="">
                   <Col xs={2}>
                     <Image src={logoImg} id="img-logo" />
-                    {/* <p>{s}</p> */}
-                    {/* <p>{blue}</p> */}
-                    {/* <p>{currentlyOpen}</p> */}
                   </Col>
                   <Col>
-                    <h1 className="text-businessname">
-                      {profileData.businessname}
-                    </h1>
-                    <p className="text-category">{profileData.category}</p>
-                    {/* {== true ? (
-                      <p>open</p>
-                    ) : (
-                      <p>closed</p>
-                    )} */}
-                    {/* <p>{days}</p>
-                    {operatingHours.map((day) =>
-                      profileData?.times[day].trading === true &&
-                      days == day + 1 ? (
-                        <p>yes</p>
-                      ) : (
-                        <p>no</p>
-                      )
-                    )} */}
-                    {/* <p>{profileData?.times[4].trading}</p> */}
-                    {/* <p id="demo"></p> */}
-
-                    {/* <IoMdAlarm /> */}
-                    {/* <span> open</span> */}
-                    {/* <GrMapLocation id="icon-location" /> */}
+                    <h1 className="text-businessname">{businessname}</h1>
+                    <p className="text-category">{category}</p>
                   </Col>
                 </Row>
               </Container>
-
               {/* <About data={profileData} /> */}
               <hr className="" />
-
               <Button>Create Shopping List</Button>
               <hr className="" id="location" />
               <Row className="product-container">
@@ -184,14 +137,12 @@ const BusinessProfilePage = () => {
                     )
                   )}
               </Row>
-              {/* 
-            {productData &&
-              productData.map((item, i) => <p key={i}>{item.product}</p>)} */}
+              {productData &&
+                productData.map((item, i) => <p key={i}>{item.product}</p>)}
               <hr className="" />
-              {profileData.username}
-              {profileData._id}
+              {username}
+              {_id}
               <Image className="profile-map" />
-
               {loading && (
                 <Backdrop
                   sx={{

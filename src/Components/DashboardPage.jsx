@@ -1,6 +1,7 @@
 // Libraries
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 // Styling
 import { Box, Tab } from "@mui/material/";
@@ -11,14 +12,25 @@ import "./Dashboard/dashboard.css";
 import LoaderSpinner from "./Loaders/LoaderSpinner";
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
-import { getBusinessUser } from "../network/lib/businessUsers";
+// import { getBusinessUser } from "../network/lib/businessUsers";
 
 const DashboardPages = () => {
   const [userData, setUserData] = useState({});
   let dispatch = useDispatch();
 
   useEffect(() => {
-    getBusinessUser("me", setUserData);
+    const getBusinessUser = (userId) => {
+      try {
+        axios
+          .get(`${URL}/business/${userId}`, { withCredentials: true })
+          .then((result) => {
+            setUserData(result.data);
+          });
+      } catch (error) {
+        console.error();
+      }
+    };
+    getBusinessUser("me");
   }, []);
 
   const [value, setvalue] = useState(0);
@@ -32,7 +44,6 @@ const DashboardPages = () => {
     <h1>{userData.error}</h1>
   ) : (
     <>
-   
       <Box sx={{ display: "flex", height: "65vh" }}>
         <TabContext value={value} orientation="vertical">
           <TabList

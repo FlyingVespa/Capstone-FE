@@ -1,7 +1,8 @@
 // libraries
 // import { PersistGate } from "redux-persist/integration/react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment } from "react";
 
 // import { Provider } from "react-redux";
 // Styling
@@ -28,22 +29,29 @@ const App = () => {
 
   return (
     <div className="App">
-      <NavBar URL={URL} />
-      <Route
-        path="/profile/:userId"
-        exact
-        component={auth ? ClientHomePage : UnAuthorized}
-      />
-      <Route
-        path="/business/me/dashboard"
-        component={auth ? DashboardPage : UnAuthorized}
-      />
-      <Route path="/" exact component={LandingPage} />
-      <Route path="/business" exact component={BusinessListPage} />
-      <Route path="/business/:userId" exact component={BusinessProfilePage} />
-      <Route path="/register" component={RegisterPage} />
-
-      <Footer />
+      <Fragment>
+        <NavBar URL={URL} />
+        <Routes>
+          <Route
+            path="/profile/:userId"
+            exact
+            element={auth ? <ClientHomePage /> : <UnAuthorized />}
+          />
+          <Route
+            path="/business/me/dashboard"
+            element={auth ? <DashboardPage /> : <UnAuthorized />}
+          />
+          <Route exact path="/" component={<LandingPage />} />
+          <Route exact path="/business" component={<BusinessListPage />} />
+          <Route
+            exact
+            path="/business/:userId"
+            element={<BusinessProfilePage />}
+          />
+          <Route path="/register" element={<RegisterPage />} />
+        </Routes>
+        <Footer />
+      </Fragment>
     </div>
   );
 };

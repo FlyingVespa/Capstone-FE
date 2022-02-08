@@ -18,13 +18,19 @@ const NavBar = ({ URL }) => {
 
   const [loginDetails, setLoginDetails] = useState(initialState);
 
+  const isis = useSelector((s) => s.helper.loggedin);
+
   const logoutUser = () => {
-    axios
-      .get(`${URL}/auth/logout`, { withCredentials: true })
-      .then((response) => JSON.stringify(response.data))
-      .then(dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }))
-      .then(navigate("/"))
-      .catch((error) => console.log("error", error));
+    try {
+      axios
+        .get(`${URL}/auth/logout`, { withCredentials: true })
+        .then(
+          dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }) &&
+            navigate("/")
+        );
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   const handleLoginModal = () => {
     dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
@@ -45,16 +51,17 @@ const NavBar = ({ URL }) => {
       let data = await JSON.stringify(resp.data);
       await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
       if (data.includes("client")) {
-        await navigate("profile/me");
-        dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
-        dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-        dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
-        console.log();
+        await dispatch({
+          type: "SET_LOGIN_MODAL",
+          payload: !helper.loginModal,
+        });
+        await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
       } else if (data.includes("user")) {
-        dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
-        dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-        dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
-        navigate("/business/me");
+        // await dispatch({
+        //   type: "SET_LOGIN_MODAL",
+        //   payload: !helper.loginModal,
+        // });
+        await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
       } else {
         console.log("no role has been assigned to account");
       }

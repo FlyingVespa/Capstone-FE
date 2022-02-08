@@ -8,17 +8,17 @@ export const getAllBusinessUsers = () => {
 };
 
 // let dispatch = useDispatch();
-export const getBusinessUser = (userId, callback) => {
-  try {
-    axios
-      .get(`${URL}/business/${userId}`, { withCredentials: true })
-      .then((result) => {
-        callback(result.data);
-      });
-  } catch (error) {
-    console.error();
-  }
-};
+// export const getBusinessUser = (userId, callback) => {
+//   try {
+//     axios
+//       .get(`${URL}/business/${userId}`, { withCredentials: true })
+//       .then((result) => {
+//         callback(result.data);
+//       });
+//   } catch (error) {
+//     console.error();
+//   }
+// };
 // export const getBusinessUser = (userId, callback, setLoading) => {
 //   setLoading(true);
 //   axios
@@ -40,7 +40,6 @@ export const getBusinessUser = (userId, callback) => {
 export const fetchUsers = () => {
   return (dispatch) => {
     dispatch(userAction.fetchUsersReq);
-
     axios
       .get(`${URL}/business`)
       .then((res) => {
