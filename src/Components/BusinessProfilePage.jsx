@@ -9,23 +9,24 @@ import { IoIosStarOutline, IoMdAlarm } from "react-icons/io";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+} from "https://cdn.skypack.dev/react-leaflet@next/index.js";
 
 import userImgPlaceholder from "../assets/placeholder/user.png";
 import logoImgPlaceholder from "../assets/placeholder/logo.png";
 import bannerImgPlaceholder from "../assets/placeholder/banner.jpg";
 
-// Components
+import "./ProfilePage/profilepage.css";
 import Logo from "./ProfilePage/logo";
 import About from "./ProfilePage/About";
 import Services from "./ProfilePage/Services";
 import Featured from "./ProfilePage/Featured";
-import Promotions from "./ProfilePage/Promotions";
-import StockList from "./ProfilePage/StockList";
+
 import ProductItem from "./ProfilePage/ProductItem";
-
-import { GrMapLocation } from "react-icons/gr";
-
-import { getProductData, getUserProducts } from "../network/lib/products";
+import ListMap from "./BusinessListPage/ListMap";
 
 const BusinessProfilePage = () => {
   const URL = process.env.REACT_APP_API_URL;
@@ -58,15 +59,25 @@ const BusinessProfilePage = () => {
       setLoading(false);
     };
     fetchUserData(userId);
-    if (profileData !== undefined && profileData !== null) {
-      const fetchProducts = () => {
-        getUserProducts(profileData._id, setProductData);
-        dispatch({ type: "FETCH_ALL_PRODUCTS", payload: productData });
-      };
-      fetchProducts();
-    }
     verifyMe();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(
+        `${URL}/business/${profileData._id}/products`
+      );
+      let data = await res.data;
+      setProductData(data);
+      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: productData });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [profileData._id]);
   let bannerImg = profileData.img_banner
     ? profileData.img_banner
     : bannerImgPlaceholder;
@@ -94,7 +105,7 @@ const BusinessProfilePage = () => {
       console.log("its not me sec");
     }
   };
-
+  const position = [51.505, -0.09];
   const today = new Date();
   const days = today.getDay(); /* 4*/
   const { businessname, username, _id, category } = profileData;
@@ -125,8 +136,12 @@ const BusinessProfilePage = () => {
               </Container>
               {/* <About data={profileData} /> */}
               <hr className="" />
-              <Button>Create Shopping List</Button>
-              <hr className="" id="location" />
+
+              <Row>
+                <Button className="btn-shoppinglist float-right">
+                  View Pricelist
+                </Button>
+              </Row>
               <Row className="product-container">
                 {productData &&
                   productData.map((item, i) =>
@@ -137,11 +152,11 @@ const BusinessProfilePage = () => {
                     )
                   )}
               </Row>
-              {productData &&
-                productData.map((item, i) => <p key={i}>{item.product}</p>)}
+
               <hr className="" />
-              {username}
-              {_id}
+              <h2>Location</h2>
+              <ListMap />
+
               <Image className="profile-map" />
               {loading && (
                 <Backdrop

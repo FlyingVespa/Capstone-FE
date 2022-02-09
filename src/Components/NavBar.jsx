@@ -24,7 +24,7 @@ const NavBar = ({ URL }) => {
     try {
       axios
         .get(`${URL}/auth/logout`, { withCredentials: true })
-        .then(
+        .then.then(
           dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }) &&
             navigate("/")
         );
@@ -48,22 +48,29 @@ const NavBar = ({ URL }) => {
           withCredentials: true,
         }
       );
-      let data = await JSON.stringify(resp.data);
+      let data = resp.data;
+
       await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-      if (data.includes("client")) {
+      if (resp.data.role === "client") {
+        await dispatch({
+          type: "SET_LOGIN_MODAL",
+          payload: !helper.loginModal,
+        });
+
+        await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
+        console.log("role", data.role);
+        navigate("/profile/me");
+      } else if (resp.data.role === "user") {
         await dispatch({
           type: "SET_LOGIN_MODAL",
           payload: !helper.loginModal,
         });
         await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-      } else if (data.includes("user")) {
-        // await dispatch({
-        //   type: "SET_LOGIN_MODAL",
-        //   payload: !helper.loginModal,
-        // });
-        await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
+        console.log("role", data.role);
+        navigate("/business/me");
       } else {
         console.log("no role has been assigned to account");
+        console.log("role", data);
       }
     } catch (error) {
       console.log(error);

@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Button } from "react-bootstrap";
-import { DivOverlay } from "react-leaflet";
-import { Fab } from "@mui/material";
 import {
   Map,
   Marker,
@@ -13,7 +10,7 @@ import {
 } from "react-leaflet";
 import "leaflet-fullscreen/dist/Leaflet.fullscreen.js";
 import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
-import { HiOutlineZoomIn, HiOutlineZoomOut } from "react-icons/hi";
+
 const ListMap = () => {
   const [zoom, setZoom] = useState(11);
   const [statuss, setStatuss] = useState({

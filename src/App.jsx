@@ -41,8 +41,8 @@ const App = () => {
             path="/business/me/dashboard"
             element={auth ? <DashboardPage /> : <UnAuthorized />}
           />
-          <Route exact path="/" component={<LandingPage />} />
-          <Route exact path="/business" component={<BusinessListPage />} />
+          <Route exact path="/" element={<LandingPage />} />
+          <Route exact path="/business" element={<BusinessListPage />} />
           <Route
             exact
             path="/business/:userId"
