@@ -17,6 +17,7 @@ import "./ProfilePage/profilepage.css";
 
 import ProductItem from "./ProfilePage/ProductItem";
 import Map from "./ProfilePage/Map";
+import UserMap from "./ProfilePage/UserMap";
 
 const BusinessProfilePage = () => {
   const URL = process.env.REACT_APP_API_URL;
@@ -140,9 +141,13 @@ const BusinessProfilePage = () => {
                     )
                   )}
               </Row>
-
-              <Map />
               <hr className="" />
+              <div className="my-5">
+                <Map location={profileData.location} data={profileData} />
+                {/* <Button className="distance">Calculate Distance</Button> */}
+              </div>
+              <hr className="" />
+              {/* <UserMap /> */}
               <h2>Location</h2>
 
               <Image className="profile-map" />

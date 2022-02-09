@@ -30,8 +30,6 @@
 /* HEADER END */
 /* ABOUT END */
 
-/* stocklist.container > div > div:nth-child(1) */
-
 .stock-item-container {
   display: flex;
   justify-content: center;
@@ -139,4 +137,10 @@
 
 .btn-shoppinglist {
   float: right !important;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100vh;
+  /* z-index: -1; */
 }
