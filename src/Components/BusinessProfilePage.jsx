@@ -1,32 +1,22 @@
 // Libraries
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector, connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 // Styling
 import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
-import { IoIosStarOutline, IoMdAlarm } from "react-icons/io";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-} from "https://cdn.skypack.dev/react-leaflet@next/index.js";
 
 import userImgPlaceholder from "../assets/placeholder/user.png";
 import logoImgPlaceholder from "../assets/placeholder/logo.png";
 import bannerImgPlaceholder from "../assets/placeholder/banner.jpg";
 
 import "./ProfilePage/profilepage.css";
-import Logo from "./ProfilePage/logo";
-import About from "./ProfilePage/About";
-import Services from "./ProfilePage/Services";
-import Featured from "./ProfilePage/Featured";
 
 import ProductItem from "./ProfilePage/ProductItem";
-import ListMap from "./BusinessListPage/ListMap";
+import Map from "./ProfilePage/Map";
 
 const BusinessProfilePage = () => {
   const URL = process.env.REACT_APP_API_URL;
@@ -105,7 +95,6 @@ const BusinessProfilePage = () => {
       console.log("its not me sec");
     }
   };
-  const position = [51.505, -0.09];
   const today = new Date();
   const days = today.getDay(); /* 4*/
   const { businessname, username, _id, category } = profileData;
@@ -121,7 +110,6 @@ const BusinessProfilePage = () => {
         <>
           <div className="profile page">
             <Image src={bannerImg} id="img-banner" />
-
             <Container className="main mb-5">
               <Container className="header mb-5 p-5">
                 <Row className="">
@@ -153,9 +141,9 @@ const BusinessProfilePage = () => {
                   )}
               </Row>
 
+              <Map />
               <hr className="" />
               <h2>Location</h2>
-              <ListMap />
 
               <Image className="profile-map" />
               {loading && (

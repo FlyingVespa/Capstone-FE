@@ -29,7 +29,7 @@
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
     "react-icons": "^4.2.0",
-    "react-leaflet": "^4.0.0-alpha.1",
+    "react-leaflet": "^3.2.5",
     "react-places-autocomplete": "^7.3.0",
     "react-redux": "^7.2.5",
     "react-router": "^6.2.1",
@@ -60,16 +60,9 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }
