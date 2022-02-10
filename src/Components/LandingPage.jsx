@@ -8,36 +8,38 @@ import { Container, Col, Button, Row, Image } from "react-bootstrap";
 import ListPageDetails from "./LandingPage/ListPageDetails";
 
 const LandingPage = () => {
-
   return (
     <>
-      <div className="landing_page">
-        <Container className="landing_page" id="landing_page">
-          <Image src={shopping} id="landing_background" />
-
+      <div className="landing page">
+        <Container className="">
           <Row>
-            <div>
-              <h1 className="m-0 p-0">Buy Local</h1>
-            </div>
-            <Col>
-              <p className="m-0 p-0">.online</p>
-              <p>It takes you to start the trend</p>
-              <p>
-                Support the local businesses who support the area where you
-                live, work and play
-              </p>
-              <div className="btn-explore">
-                <Button href="/business" variant="light">
-                  List Your Business For Free
-                </Button>
-              </div>
-              <p>Start exploring listed businesses </p>
+            <Col xs={12} md={6}>
+              <Row>
+                <div className="main-text">
+                  <h1 className="m-0 p-0">Buy Local</h1>
+                  <p className="m-0 p-0">.online</p>
+                </div>
+              </Row>
+              <Row className="description">
+                <p>
+                  It takes you to start the trend. Support the local businesses
+                  who support the area where you live, work and play
+                </p>
+                <div className="btn-explore">
+                  <Button href="/business" variant="light">
+                    List Your Business For Free
+                  </Button>
+                </div>
+              </Row>
             </Col>
-            <Col className="m-2"></Col>
+            <Col sm={12} md={6}>
+              <div>
+                <Image src={shopping} />
+              </div>
+            </Col>
           </Row>
         </Container>
       </div>
-      <ListPageDetails />
     </>
   );
 };

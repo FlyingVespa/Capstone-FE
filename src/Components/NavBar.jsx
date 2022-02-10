@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import {  } from "react-router";
 import { Button, Avatar } from "@mui/material";
 
 import logo from "../assets/logo/shop.png";
@@ -15,10 +14,7 @@ const NavBar = ({ URL }) => {
   let navigate = useNavigate();
   const helper = useSelector((s) => s.helper);
   const currentUser = useSelector((s) => s.users.user);
-
   const [loginDetails, setLoginDetails] = useState(initialState);
-
-  const isis = useSelector((s) => s.helper.loggedin);
 
   const logoutUser = () => {
     try {
@@ -87,19 +83,21 @@ const NavBar = ({ URL }) => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Button onClick={() => navigate("business/me")}>Business Me</Button>
             <Nav className="me-auto" />
             <Nav>
               {helper.loggedin ? (
                 // currentUser && (
                 <>
-                  {/* <Chip
-                    label={currentUser.username}
-                    variant="outlined"
-                    // avatar={<Avatar alt="Remy Sharp" src={avatar} />}
-                  /> */}
-
-                  {/* <p>{currentUser.username}</p> */}
+                  {currentUser !== null ? (
+                    <>
+                      <Avatar src={currentUser.img_user} />
+                      <p> {currentUser.email}</p>
+                    </>
+                  ) : (
+                    <>
+                      <Avatar src={logo} /> <p>{currentUser.email}</p>
+                    </>
+                  )}
                   <Button
                     className="mx-2"
                     variant="contained"
@@ -112,25 +110,33 @@ const NavBar = ({ URL }) => {
                 </>
               ) : (
                 <>
-                  <Button
-                    className="mx-2"
-                    variant="contained"
-                    color="success"
-                    size="medium"
-                    onClick={handleLoginModal}
-                    exact
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    href="/register"
-                    className="mx-2"
-                    variant="contained"
-                    color="success"
-                    size="medium"
-                  >
-                    Sign Up Free
-                  </Button>
+                  <Row>
+                    <Col>
+                      <Button
+                        id="login-signup"
+                        className="mx-2"
+                        variant="contained"
+                        color="success"
+                        size="medium"
+                        onClick={handleLoginModal}
+                        exact
+                      >
+                        Login
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button
+                        id="login-signup"
+                        href="/register"
+                        className="mx-2"
+                        variant="contained"
+                        color="success"
+                        size="medium"
+                      >
+                        Sign Up Free
+                      </Button>
+                    </Col>
+                  </Row>
                 </>
               )}
             </Nav>
