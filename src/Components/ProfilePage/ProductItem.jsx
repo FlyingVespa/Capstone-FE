@@ -20,7 +20,7 @@ const ProductItem = ({ item, key }) => {
 
   return (
     <>
-      <Col md={3} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+      <Col md={6} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
         <div className="qwe">
           <Avatar
             key={key}

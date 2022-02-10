@@ -4,7 +4,15 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 // Styling
-import { Image, Container, Spinner, Row, Col, Button } from "react-bootstrap";
+import {
+  Image,
+  Container,
+  Spinner,
+  Row,
+  Col,
+  Button,
+  FormControl,
+} from "react-bootstrap";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
@@ -17,7 +25,9 @@ import "./ProfilePage/profilepage.css";
 
 import ProductItem from "./ProfilePage/ProductItem";
 import Map from "./ProfilePage/Map";
+import About from "./ProfilePage/About";
 import UserMap from "./ProfilePage/UserMap";
+import TradingHours from "./ProfilePage/TradingHours";
 
 const BusinessProfilePage = () => {
   const URL = process.env.REACT_APP_API_URL;
@@ -44,6 +54,7 @@ const BusinessProfilePage = () => {
           withCredentials: true,
         });
         setProfileData(response.data);
+        console.log("ProfileData:", response.data);
       } catch (error) {
         console.error(error.message);
       }
@@ -110,58 +121,95 @@ const BusinessProfilePage = () => {
       {profileData && !loading && (
         <>
           <div className="profile page">
-            <Image src={bannerImg} id="img-banner" />
-            <Container className="main mb-5">
-              <Container className="header mb-5 p-5">
-                <Row className="">
-                  <Col xs={2}>
-                    <Image src={logoImg} id="img-logo" />
-                  </Col>
-                  <Col>
-                    <h1 className="text-businessname">{businessname}</h1>
-                    <p className="text-category">{category}</p>
-                  </Col>
-                </Row>
-              </Container>
-              {/* <About data={profileData} /> */}
-              <hr className="" />
+            <Row>
+              <Col md={9} className="container-1">
+                <Container className="">
+                  <Row>
+                    <Col>
+                      <Container className="">
+                        <Row>
+                          <Col>
+                            <Image src={logoImg} id="img-logo" />
+                          </Col>
+                          <Col xs={10}>
+                            <h1 className="text-businessname">
+                              {businessname}
+                            </h1>
+                            <p className="text-category">{category}</p>
+                          </Col>
+                        </Row>
+                      </Container>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <About data={profileData} />
+                    </Col>
+                    <Col>
+                      <TradingHours data={profileData} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Container>
+                      <Map location={profileData.location} data={profileData} />
+                    </Container>
+                  </Row>
+                </Container>
+              </Col>
 
-              <Row>
-                <Button className="btn-shoppinglist float-right">
-                  View Pricelist
-                </Button>
-              </Row>
-              <Row className="product-container">
-                {productData &&
-                  productData.map((item, i) =>
-                    loading ? (
-                      <Skeleton variant="text" />
-                    ) : (
-                      <ProductItem item={item} key={i} />
-                    )
-                  )}
-              </Row>
-              <hr className="" />
-              <div className="my-5">
-                <Map location={profileData.location} data={profileData} />
-                {/* <Button className="distance">Calculate Distance</Button> */}
-              </div>
-              <hr className="" />
-              {/* <UserMap /> */}
-              <h2>Location</h2>
+              <Col md={3} className="container-2 stoclist">
+                <Container>
+                  <Row className="product-container">
+                    {/* PRODUCT LIST */}
+                    <h2 className="text-center">Product List</h2>
+                    <FormControl
+                      type="text"
+                      placeholder="Search products"
+                      className=""
+                    />
+                    {productData &&
+                      productData.map((item, i) =>
+                        loading ? (
+                          <Skeleton variant="text" />
+                        ) : (
+                          <ProductItem item={item} key={i} />
+                        )
+                      )}
+                  </Row>
+                </Container>
+              </Col>
+            </Row>
 
-              <Image className="profile-map" />
-              {loading && (
-                <Backdrop
-                  sx={{
-                    color: "black",
-                    zIndex: (theme) => theme.zIndex.drawer + 9,
-                  }}
-                >
-                  <CircularProgress color="inherit" />
-                </Backdrop>
-              )}
-            </Container>
+            {/* <About data={profileData} /> */}
+            <hr className="" />
+
+            <Row>
+              <Button className="btn-shoppinglist float-right">
+                View Pricelist
+              </Button>
+            </Row>
+
+            <hr className="" />
+            <div className="my-5">
+              {/* <Button className="distance">Calculate Distance</Button> */}
+            </div>
+            <hr className="" />
+            {/* <UserMap /> */}
+            <h2>Location</h2>
+
+            <Image className="profile-map" />
+            {loading && (
+              <Backdrop
+                sx={{
+                  color: "black",
+                  zIndex: (theme) => theme.zIndex.drawer + 9,
+                }}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
+            )}
+
+            <Container></Container>
           </div>
         </>
       )}
