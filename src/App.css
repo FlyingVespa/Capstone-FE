@@ -14,41 +14,36 @@ body {
   display: flex;
 }
 
+.landing.page .image {
+  display: flex;
+  justify-content: center;
+}
 .landing.page img {
   margin: 0 auto;
-  height: 300px;
-  border: 1px solid blue;
-}
-
-.landing.page .row .col {
-  border: 1px solid red;
-  width: 70vw;
-}
-
-.landing.page .main-text {
-  border: 1px solid black;
-  padding-right: 50px;
+  height: 250px;
+  margin-bottom: 20px;
 }
 
 .landing.page h1 {
   font-family: "Work Sans", sans-serif;
   color: #fff;
   font-size: 4rem;
-  text-align: right;
+  padding: 0;
+  margin: 0;
 }
 
-.landing.page .main-text p:nth-child(2) {
+.landing.page .main-text p {
   font-family: "Work Sans", sans-serif;
   color: #084426;
   text-transform: uppercase;
-  font-size: 2rem;
-  text-align: right;
+  font-size: 1.8rem;
+  /* text-align: right; */
   margin-top: -1rem !important;
-  right: 20px;
 }
 .landing.page .description p {
   text-align: center;
 }
+
 .landing.page .btn-explore {
   margin: auto;
   margin-bottom: 20px;
@@ -83,6 +78,12 @@ body {
   background-color: #ffffff;
   margin: 15px;
 }
+
+#login-signup {
+  width: 100%;
+  min-width: 150px;
+}
+/* NAVBAR END */
 
 .searchField {
   background-color: white;
@@ -151,7 +152,7 @@ footer {
   width: 100%;
   bottom: 0;
   background: #eff2f9;
-  padding: 50px 0px;
+  padding: 20px 0px;
   margin-top: auto;
 }
 
@@ -222,11 +223,13 @@ footer a {
     height: 300px;
     display: block;
   }
-
-  #login-signup {
-    width: 100%;
-    min-width: 150px;
-    border: #007bff solid 4px !important;
+  .landing.page .main-text h1 {
+    font-size: 3rem;
+  }
+  .landing.page .main-text p {
+    font-size: 2rem;
+    margin: 0;
+    padding: 0;
   }
 }
 
@@ -236,17 +239,73 @@ footer a {
     background-color: #a3a2bb;
     display: flex;
   }
+
+  .landing.page img {
+    height: 400px;
+    display: block;
+  }
+
+  .landing.page .main-text h1 {
+    font-size: 5rem;
+  }
+  .landing.page .main-text p {
+    font-size: 2.7rem;
+    /* margin: 0; */
+    /* padding: 0; */
+  }
+
+  .landing.page .row > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
+  .navbar-top {
+    height: 10vh;
+  }
   .landing.page .description p {
     font-size: 1.2rem;
     padding: 0;
     margin: 0;
   }
   .landing.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     background-color: #94ce89;
     display: flex;
+    height: 70vh;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .landing.page .main-text h1 {
+    font-size: 7rem;
+  }
+  .landing.page .main-text p {
+    font-size: 4rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .landing.page img {
+    height: 450px;
+    display: block;
+  }
+  .landing.page .btn-explore {
+    left: 0;
+    margin: 0;
+  }
+
+  footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 20vh;
   }
 }

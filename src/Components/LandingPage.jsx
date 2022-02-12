@@ -11,17 +11,17 @@ const LandingPage = () => {
   return (
     <>
       <div className="landing page">
-        <Container className="">
+        <Container>
           <Row>
             <Col xs={12} md={6}>
               <Row>
                 <div className="main-text">
-                  <h1 className="m-0 p-0">Buy Local</h1>
-                  <p className="m-0 p-0">.online</p>
+                  <Row>
+                    <h1>Buy Local</h1>
+                    <p>.online</p>
+                  </Row>
                 </div>
-              </Row>
-              <Row className="description">
-                <p>
+                <p className="p-0">
                   It takes you to start the trend. Support the local businesses
                   who support the area where you live, work and play
                 </p>
@@ -33,7 +33,7 @@ const LandingPage = () => {
               </Row>
             </Col>
             <Col sm={12} md={6}>
-              <div>
+              <div className="image">
                 <Image src={shopping} />
               </div>
             </Col>

@@ -95,7 +95,8 @@ const NavBar = ({ URL }) => {
                     </>
                   ) : (
                     <>
-                      <Avatar src={logo} /> <p>{currentUser.email}</p>
+                      <Avatar src={currentUser.img_user} />{" "}
+                      <p>{currentUser.email}</p>
                     </>
                   )}
                   <Button
