@@ -1,11 +1,12 @@
 import { Fragment } from "react";
-import { Container, Card, Row, Col } from "react-bootstrap";
+import { Container, Card, Row, Col, Tab, Nav, Sonnet } from "react-bootstrap";
 
 function GeneralData() {
   return (
-    <div style={{ width: 900 }}>
+    <div className="generaldata-container">
       <h1>General Data</h1>
       <Fragment>
+    
         <Row className="mx-0 p-0">
           <Col className="mx-0 p-0">
             <Card>

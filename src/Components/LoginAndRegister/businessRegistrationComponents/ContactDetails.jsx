@@ -13,7 +13,6 @@ const ContactDetails = ({ d, f }) => {
         helperText="This email will be shared with customers"
         onChange={f}
         value={d.pub_email}
-        fullWidth
         required
       />
 
@@ -28,7 +27,6 @@ const ContactDetails = ({ d, f }) => {
             helperText="Required"
             onChange={f}
             value={d.cell}
-            fullWidth
           />
         </Col>
         <Col md={6}>
@@ -41,7 +39,6 @@ const ContactDetails = ({ d, f }) => {
             helperText="Optional"
             onChange={f}
             value={d.tel}
-            fullWidth
           />
         </Col>
         <Col md={6}>
@@ -54,7 +51,6 @@ const ContactDetails = ({ d, f }) => {
             helperText="Optional"
             onChange={f}
             value={d.insta}
-            fullWidth
           />
         </Col>
         <Col md={6}>
@@ -67,7 +63,6 @@ const ContactDetails = ({ d, f }) => {
             helperText="Optional"
             onChange={f}
             value={d.whatsapp}
-            fullWidth
           />
         </Col>
       </Row>

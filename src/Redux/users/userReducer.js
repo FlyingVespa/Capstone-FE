@@ -1,4 +1,5 @@
 import {
+  CURRENT_USER_DETAILS,
   FETCH_LOGGED_USER_FAILURE,
   FETCH_LOGGED_USER_REQUEST,
   FETCH_LOGGED_USER_SUCCESS,
@@ -12,11 +13,12 @@ import {
 const intitialState = {
   users: [],
   loggedin: false,
-  loggedUser: null,
+  loggedUser: {},
   loading: false,
   loadingSingle: false,
   error: "",
-  registerBusiness:"",
+  registerBusiness: "",
+  user: {},
 };
 
 const userReducer = (state = intitialState, action) => {
@@ -49,13 +51,17 @@ const userReducer = (state = intitialState, action) => {
     case FETCH_LOGGED_USER_FAILURE:
       return {
         loadingSingle: false,
-        loggedUser: "",
+        loggedUser: {},
         error: action.payload,
       };
     case REGISTER_BUSINESS_USER:
       return { ...state, registerBusiness: action.payload };
-    case USER_LOGGEDIN:
-      return { ...state, loggedin: action.payload };
+   
+    case CURRENT_USER_DETAILS:
+      return {
+        ...state,
+        user: action.payload,
+      };
     default:
       return state;
   }

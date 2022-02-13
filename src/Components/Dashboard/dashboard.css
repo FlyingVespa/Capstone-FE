@@ -1,0 +1,58 @@
+.dasboard_page {
+  width: 30%;
+}
+
+.ag-row .ag-cell {
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center;
+}
+
+#grid-ag-image {
+  height: fit-content;
+  border: black solid 2px;
+  border-radius: 5px;
+  overflow: hidden;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#grid-product-image {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ag-row-hover {
+  background-color: rgb(230, 245, 223) !important;
+}
+.ag-column-hover {
+  background-color: #94ce89 !;
+}
+
+.table-container {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70vw;
+  /* border: black solid 2px; */
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.generaldata-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70vw;
+  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+  /* border-radius: 15px; */
+  overflow: hidden;}
+  .rrr{
+    display: flex;
+    margin-left: auto;
+    margin-right: 0;
+    
+  }

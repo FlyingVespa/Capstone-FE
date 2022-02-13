@@ -61,7 +61,6 @@
 }
 .carousel-control-prev-icon {
   visibility: visible !important;
-  font-weight: ;
 }
 .carousel-control-prev {
   color: red !important;
@@ -73,4 +72,37 @@
   max-width: 150px;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.shop-card p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 175ch;
+}
+
+.shop-card {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  /* min-width: 200px; */
+}
+
+.category-pill {
+  border: 1px rgb(69, 126, 32) solid;
+  border-radius: 5px;
+}
+.category-pill p {
+  color: rgb(69, 126, 32);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.category-badge {
+  position: absolute;
+  /* bottom: 0; */
+  /* right: 0; */
+  text-transform: uppercase;
+}
+
+.map{
+  border-radius: 10px;
 }

@@ -9,7 +9,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 
-const AccDetails = ({ datas, handleChange }) => {
+const AccDetails = ({ datas, handleChange, f }) => {
   const dispatch = useDispatch();
   const vpassword = useSelector((s) => s.helper.password_visible);
   const handleClickShowPassword = () => {
@@ -20,31 +20,29 @@ const AccDetails = ({ datas, handleChange }) => {
   return (
     <div className="my-5">
       <TextField
-        id="businessname"
+        name="businessname"
         className="my-1"
         variant="standard"
         placeholder="Enter Your Business Name"
         label="Business Name"
         value={businessname}
         onChange={handleChange}
-        fullWidth
       />
 
       <TextField
-        id="email"
+        name="email"
         className="my-1"
         variant="standard"
         placeholder="Enter Your email used for login"
         label="Account Email"
         value={email}
         onChange={handleChange}
-        fullWidth
         helperText="*Required - not shared with public"
       />
       <Row>
         <Col>
           <TextField
-            id="username"
+            name="username"
             className="my-1"
             variant="standard"
             placeholder="Your preffered nickname?"
@@ -59,8 +57,7 @@ const AccDetails = ({ datas, handleChange }) => {
           </InputLabel>
           <Input
             label="password"
-            name="pasword"
-            id="password"
+            name="password"
             type={vpassword ? "text" : "password"}
             value={password}
             onChange={handleChange}
@@ -80,42 +77,36 @@ const AccDetails = ({ datas, handleChange }) => {
       <Row>
         <Col>
           <TextField
-            name="basic"
-            id="url"
+            name="url"
             className="my-1"
             variant="standard"
             placeholder="Enter Your preffered"
             label="Choose Custom Url"
             value={url}
             onChange={handleChange}
-            fullWidth
             helperText="*Required - an address online where customers can find your business"
           />
         </Col>
         <Col>
           <TextField
-            id="category"
-            name="basic"
+            name="category"
             label="Bussines Category"
             variant="standard"
             placeholder="Tell us about you business"
             value={category}
             onChange={handleChange}
             multiline
-            fullWidth
           />
         </Col>
       </Row>
       <TextField
-        id="bio"
-        name="info"
+        name="bio"
         label="Describe the business"
         variant="standard"
         placeholder="Tell us about you business"
         value={bio}
         onChange={handleChange}
         multiline
-        fullWidth
       />
     </div>
   );

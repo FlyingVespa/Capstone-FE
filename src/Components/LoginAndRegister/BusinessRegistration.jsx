@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -39,7 +39,7 @@ const BusinessRegistration = () => {
   });
 
   const dispatch = useDispatch();
-  let history = useHistory();
+  let navigate = useNavigate();
   const dispatchData = () =>
     dispatch({
       type: "REGISTER_BUSINESS_USER",
@@ -105,10 +105,11 @@ const BusinessRegistration = () => {
   const handleChange = ({ target }) => {
     setData({
       ...datas,
-      [target.id]: target.value,
+      [target.name]: target.value,
     });
     dispatchData();
   };
+
   const handleTimeChange = ({ target }) => {
     setData({
       ...datas,
@@ -144,39 +145,10 @@ const BusinessRegistration = () => {
   const regsiterBusiness = () => {
     axios
       .post(`${URL}/register`, datas)
-
-      .then(
-        swalWithBootstrapButtons
-          .fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, Register Me!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: true,
-          })
-          .then((result) => {
-            if (result.isConfirmed) {
-              swalWithBootstrapButtons
-                .fire("Registered!", "Your file has been deleted.", "success")
-                .then((res) => JSON.stringify(res.datas));
-            } else if (
-              /* Read more about handling dismissals below */
-              result.dismiss === Swal.DismissReason.cancel
-            ) {
-              swalWithBootstrapButtons.fire(
-                "Cancelled",
-                "Your imaginary file is safe :)",
-                "error"
-              );
-            }
-          })
-      )
-      // .then((res) => {
-      //   JSON.stringify(res.data);
-      //   console.log("Success, Regsitered Business Account", res);
-      // })
+      .then((res) => {
+        JSON.stringify(res.data);
+        console.log("Success, Regsitered Business Account", res);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -212,15 +184,6 @@ const BusinessRegistration = () => {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          // add validity check if form is missing something to indicate where
-          // if (isStepFailed(index)) {
-          //   labelProps.optional = (
-          //     <Typography variant="caption" color="error">
-          //       Alert message
-          //     </Typography>
-          //   );
-          //   labelProps.error = true;
-          // }
 
           return (
             <Step key={label} {...stepProps}>
@@ -246,7 +209,7 @@ const BusinessRegistration = () => {
               className="mx-auto"
               variant="danger"
               onClick={() => {
-                history.push("/");
+                navigate("/");
               }}
             >
               Cancel
@@ -262,15 +225,7 @@ const BusinessRegistration = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        "Sure everything is correct?, Operation hours, location can be changed later details can be changed later."
-                      )
-                    ) {
-                      handleNext();
-                    }
-                  }}
+                  onClick={handleNext}
                 >
                   Confirm
                 </Button>

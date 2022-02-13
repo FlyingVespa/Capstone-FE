@@ -1,105 +1,74 @@
 // Libraries
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
 // Styling
-import { Container, Row, Col } from "react-bootstrap";
-import * as React from "react";
-import PropTypes from "prop-types";
-import { Tabs, Tab, Typography, Box, TabPanel } from "@mui/material/";
-
-import { FcAlarmClock } from "react-icons/fc";
+import { Box, Tab } from "@mui/material/";
+import { TabList, TabPanel, TabContext } from "@mui/lab";
+// import { Row, Nav, Col, Tab } from "react-bootstrap";
+import "./Dashboard/dashboard.css";
 // Components
+import LoaderSpinner from "./Loaders/LoaderSpinner";
+import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
-import ProductList from "./Dashboard/ProductList";
-const DashboardPage = ({URL}) => {
-  const [value, setValue] = React.useState(0);
+// import { getBusinessUser } from "../network/lib/businessUsers";
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+const DashboardPages = () => {
+  const [userData, setUserData] = useState({});
+  let dispatch = useDispatch();
+
+  useEffect(() => {
+    const getBusinessUser = (userId) => {
+      try {
+        axios
+          .get(`${URL}/business/${userId}`, { withCredentials: true })
+          .then((result) => {
+            setUserData(result.data);
+          });
+      } catch (error) {
+        console.error();
+      }
+    };
+    getBusinessUser("me");
+  }, []);
+
+  const [value, setvalue] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setvalue(newValue);
   };
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
 
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`vertical-tabpanel-${index}`}
-        aria-labelledby={`vertical-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  return (
+  return userData.loadingSingle ? (
+    <LoaderSpinner />
+  ) : userData.error ? (
+    <h1>{userData.error}</h1>
+  ) : (
     <>
-      <Box
-        sx={{
-          flexGrow: 1,
-          display: "flex",
-        }}
-      >
-        <Tabs
-          className="mt-5 mx-5"
-          orientation="vertical"
-          variant="scrollable"
-          value={value}
-          onChange={handleChange}
-          aria-label="Vertical tabs example"
-          sx={{ borderRight: 1, borderColor: "divider" }}
-        >
-          <p>General Details</p>
-          <Tab label="GENERAL DETAILS" {...a11yProps(0)}></Tab>
-          <Tab label="PRODUCT DETAILS" {...a11yProps(1)} />
-          <p>Products</p>
-          <Tab label="ALL PRODUCTS" {...a11yProps(2)} />
-          <Tab label="PROMOTIONS" {...a11yProps(3)} />
-          <p>Business Profile</p>
-          <Tab label="TRADING HOURS" {...a11yProps(4)} />
-          <Tab label="GENERAL INFO" {...a11yProps(5)} />
-          <Tab label="" {...a11yProps(6)} />
-        </Tabs>
-        <TabPanel value={value} index={0}>
-          A
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <GeneralData URL={URL} />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          Trading Hours
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <ProductList />
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          Item Six
-        </TabPanel>
-        <TabPanel value={value} index={6}>
-          Item Seven
-        </TabPanel>
+      <Box sx={{ display: "flex", height: "65vh" }}>
+        <TabContext value={value} orientation="vertical">
+          <TabList
+            onChange={handleTabChange}
+            aria-label="lab API tabs example"
+            centered
+            className="m-5"
+            orientation="vertical"
+            sx={{ borderRight: 1, borderColor: "divider" }}
+          >
+            <Tab label="Item One" value="1" />
+            <Tab label="Item Two" value="2" />
+            <Tab label="Item Three" value="3" />
+          </TabList>
+          <TabPanel value="1">
+            <GridData userData={userData} />
+          </TabPanel>
+          <TabPanel value="2">
+            <GeneralData />
+          </TabPanel>
+          <TabPanel value="3">Item Three</TabPanel>
+        </TabContext>
       </Box>
     </>
   );
-
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-
-  function a11yProps(index) {
-    return {
-      id: `vertical-tab-${index}`,
-      "aria-controls": `vertical-tabpanel-${index}`,
-    };
-  }
 };
 
-export default DashboardPage;
+export default DashboardPages;

@@ -1,7 +1,7 @@
 // Libraries
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -24,10 +24,9 @@ const getSteps = () => {
   return ["Account Details", "Location Details", "Confirm Details"];
 };
 
-const ClientRegistration = ({URL}) => {
-  let history = useHistory();
+const ClientRegistration = ({ URL }) => {
+  let navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const helper = useSelector((s) => s.helper.activeStep);
   const steps = getSteps();
@@ -78,7 +77,7 @@ const ClientRegistration = ({URL}) => {
             "Regsitered Sucessfully!",
             "You will be able to login in a few moments",
             "success"
-          ).then(history.push("/"));
+          ).then(navigate("/"));
         }
       })
       .catch((err) => {
@@ -142,7 +141,7 @@ const ClientRegistration = ({URL}) => {
               className="mx-auto"
               variant="danger"
               onClick={() => {
-                history.push("/");
+                navigate("/");
               }}
             >
               Cancel

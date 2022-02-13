@@ -1,30 +1,46 @@
-import React from "react";
-import { Container, Col, Row, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Container, Col, Row, Button, Accordion } from "react-bootstrap";
 import { FiInfo } from "react-icons/fi";
 
-function About({ about }) {
+import {
+  FaFacebookSquare,
+  FaWhatsappSquare,
+  FaPhoneSquareAlt,
+} from "react-icons/fa";
+
+function About({ data }) {
+  const [showTradingHours, setShowTradingHours] = useState(false);
+
+  const handleCloseTradingHours = () => setShowTradingHours(false);
+  const handleShowTradingHours = () => setShowTradingHours(true);
+
+  const today = new Date();
+  const days = today.getDay();
+
   return (
-    <Container className="m-1 -p1">
-      <p>
-        <FiInfo /> ABOUT
-      </p>
-      <Container>
+    <>
+      <Col sm={12} md={7}>
         <Row>
-          <Col md={8}>
-            <p>{about}</p>
+          <p>
+            <FiInfo className="mx-2" />
+            ABOUT US
+          </p>
+          <p>{data.bio}</p>
+        </Row>
+        <Row className="my-1">
+          <Col>
+            <FaWhatsappSquare className="fa-icon whatsapp" />
           </Col>
           <Col>
-            <Row></Row>
-            <Col className="m-2">
-              <Button>Contact Us</Button>
-            </Col>
-            <Col className="m-2">
-              <Button disabled>TEL 2354 35 4352</Button>
-            </Col>
+            <FaPhoneSquareAlt className="fa-icon phone" />
+          </Col>
+          <Col>
+            <FaFacebookSquare className="fa-icon facebook" />
           </Col>
         </Row>
-      </Container>
-    </Container>
+      </Col>
+    </>
   );
 }
 
