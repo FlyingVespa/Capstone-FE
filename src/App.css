@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@600&family=Work+Sans:wght@700&display=swap");
 
 body {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
 }
@@ -10,38 +10,49 @@ body {
 /* LANDING PAGE */
 
 .landing.page {
+  position: relative;
   background-color: #94ce89;
-  display: flex;
+  bottom: 0;
+  height: 100%;
+  position: block;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
-.landing.page .image {
+.landing.page .row > div:nth-child(1),
+.landing.page .row > div:nth-child(2),
+.landing.page .row > div:nth-child(3) {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
+
 .landing.page img {
   margin: 0 auto;
   height: 250px;
-  margin-bottom: 20px;
+  transform: scaleX(-1);
+  filter: drop-shadow(0px 10px 15px rgb(65, 65, 65));
 }
-
 .landing.page h1 {
   font-family: "Work Sans", sans-serif;
   color: #fff;
-  font-size: 4rem;
+  font-size: 3.1rem;
   padding: 0;
   margin: 0;
+  text-align: center;
 }
 
 .landing.page .main-text p {
   font-family: "Work Sans", sans-serif;
   color: #084426;
-  text-transform: uppercase;
-  font-size: 1.8rem;
-  /* text-align: right; */
+  font-size: 2.4rem;
+  padding: 0;
   margin-top: -1rem !important;
 }
-.landing.page .description p {
+.landing.page .description {
   text-align: center;
+  display: none;
 }
 
 .landing.page .btn-explore {
@@ -50,6 +61,21 @@ body {
   border: #fff solid 5px;
   padding: 10px;
   width: fit-content;
+}
+#wave {
+  position: absolute;
+  /* opacity: 0.6; */
+  bottom: 0px;
+  z-index: 1;
+}
+
+#wave1 {
+  position: absolute;
+  bottom: 0px;
+}
+#wave2 {
+  position: absolute;
+  bottom: 0px;
 }
 
 /* NAVBAR--------------------------------------- */
@@ -80,8 +106,9 @@ body {
 }
 
 #login-signup {
+  font-weight: 700;
   width: 100%;
-  min-width: 150px;
+  min-width: 100px;
 }
 /* NAVBAR END */
 
@@ -207,14 +234,6 @@ footer a {
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .landing.page {
-    background-color: #134b9e;
-    display: flex;
-  }
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  .landing.page {
     background-color: #4842c9;
     display: flex;
   }
@@ -223,13 +242,110 @@ footer a {
     height: 300px;
     display: block;
   }
-  .landing.page .main-text h1 {
-    font-size: 3rem;
+
+  .landing.page .row > div:nth-child(1),
+  .landing.page .row > div:nth-child(2),
+  .landing.page .row > div:nth-child(3) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .landing.page .main-text p {
-    font-size: 2rem;
-    margin: 0;
-    padding: 0;
+
+  .navbar-top {
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .navbar-top {
+    height: 60px;
+  }
+
+  .landing.page {
+    padding: 100px 0;
+    background-color: #4842c9;
+    display: flex;
+    height: 80vh;
+  }
+
+  .landing.page img {
+    height: 25rem;
+    display: block;
+  }
+
+  .landing.page .row > div:nth-child(1),
+  .landing.page .row > div:nth-child(2),
+  .landing.page .row > div:nth-child(3) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .landing.page h1 {
+    margin: 30px 0;
+  }
+
+  #btn-landing {
+    font-family: "Work Sans", sans-serif !important;
+    font-weight: 600 !important;
+    margin-bottom: 20px;
+  }
+
+  #aaa {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #js,
+  #html,
+  #css,
+  #react,
+  #redux,
+  #firebase,
+  #leaflet,
+  #nodejs,
+  #mongodb {
+    font-size: 30px;
+    filter: drop-shadow(0px 3px 7px rgb(58, 58, 58));
+  }
+
+  #js {
+    color: rgb(255, 222, 33);
+  }
+  #html {
+    color: rgb(226, 109, 0);
+  }
+  #css {
+    color: #0008ff;
+  }
+  #react {
+    color: #1a99fa;
+  }
+  #redux {
+    color: rgb(93, 55, 196);
+  }
+  #firebase {
+    color: rgb(192, 100, 13);
+  }
+  #leaflet {
+    color: rgb(84, 119, 32);
+  }
+  #nodejs {
+    color: green;
+  }
+  #mongodb {
+    color: #2e5e37;
+  }
+
+  footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+  }
+
+  footer p {
+    text-align: center;
   }
 }
 
@@ -237,7 +353,6 @@ footer a {
 @media only screen and (min-width: 992px) {
   .landing.page {
     background-color: #a3a2bb;
-    display: flex;
   }
 
   .landing.page img {
@@ -246,12 +361,10 @@ footer a {
   }
 
   .landing.page .main-text h1 {
-    font-size: 5rem;
+    font-size: 4rem;
   }
   .landing.page .main-text p {
     font-size: 2.7rem;
-    /* margin: 0; */
-    /* padding: 0; */
   }
 
   .landing.page .row > div {
@@ -259,18 +372,17 @@ footer a {
     justify-content: center;
     align-items: center;
   }
+  .landing.page .row > div:nth-child(3) {
+    left: 0;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   .navbar-top {
-    height: 10vh;
+    height: 70px;
   }
-  .landing.page .description p {
-    font-size: 1.2rem;
-    padding: 0;
-    margin: 0;
-  }
+
   .landing.page {
     display: flex;
     align-items: center;
@@ -282,23 +394,30 @@ footer a {
     padding-top: 50px;
     padding-bottom: 50px;
   }
-
-  .landing.page .main-text h1 {
-    font-size: 7rem;
-  }
-  .landing.page .main-text p {
-    font-size: 4rem;
-    margin: 0;
+  .landing.page .description p {
+    font-size: 1.2rem;
     padding: 0;
+    margin: 0;
+  }
+
+  .landing.page h1 {
+    text-align: left;
+    font-size: 4rem;
   }
 
   .landing.page img {
-    height: 450px;
-    display: block;
+    height: 550px;
+    /* display: block; */
+    z-index: 2;
   }
-  .landing.page .btn-explore {
-    left: 0;
-    margin: 0;
+  .landing.page #btn-landing {
+    text-transform: uppercase;
+    margin: 40px 0;
+    width: 300px;
+    z-index: 2;
+    padding: 10px;
+    font-size: 1.2rem;
+    color: #2e5e37;
   }
 
   footer {

@@ -113,7 +113,7 @@ const NavBar = ({ URL }) => {
                 <>
                   <Row>
                     <Col>
-                      <Button
+                      <Nav.Link
                         id="login-signup"
                         className="mx-2"
                         variant="contained"
@@ -123,10 +123,10 @@ const NavBar = ({ URL }) => {
                         exact
                       >
                         Login
-                      </Button>
+                      </Nav.Link>
                     </Col>
                     <Col>
-                      <Button
+                      <Nav.Link
                         id="login-signup"
                         href="/register"
                         className="mx-2"
@@ -134,8 +134,8 @@ const NavBar = ({ URL }) => {
                         color="success"
                         size="medium"
                       >
-                        Sign Up Free
-                      </Button>
+                        Register Free
+                      </Nav.Link>
                     </Col>
                   </Row>
                 </>

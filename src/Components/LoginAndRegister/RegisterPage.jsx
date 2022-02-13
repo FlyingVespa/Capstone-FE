@@ -15,8 +15,6 @@ function RegsiterPage({ routerProps, URL }) {
     setValue(newValue);
   };
 
-  let urlPath = routerProps.location.pathname;
-
   return (
     <div>
       <Container>
@@ -25,7 +23,6 @@ function RegsiterPage({ routerProps, URL }) {
             <Image src={reg} style={{ width: "100%" }} />
           </Col>
           <Col md={7}>
-            <div>You are now at {urlPath}</div>
             <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <TabList
