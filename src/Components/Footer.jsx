@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Tooltip, OverlayTrigger } from "react-bootstrap";
 import {
   SiJavascript,
   SiHtml5,
@@ -27,8 +27,19 @@ function Footer() {
             </p>
           </Row>
           <Col id="aaa">
-            <SiJavascript id="js" />
-            <SiHtml5 id="html" />
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip>JavaScript</Tooltip>}
+            >
+              <SiJavascript id="js" />
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip>JavaScript</Tooltip>}
+            >
+              <SiHtml5 id="html" />
+            </OverlayTrigger>
+
             <SiCss3 id="css" />
             <SiReact id="react" />
             <SiRedux id="redux" />

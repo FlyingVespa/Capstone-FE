@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Navbar, Nav, Row, Col } from "react-bootstrap";
+import { Container, Navbar, Nav, Row, Col, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Avatar } from "@mui/material";
 
+import { FiPower, FiHome, FiTool, FiUser } from "react-icons/fi";
+
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
+import DropDownSettings from "./Navigation/DropDownSettings";
+import StandardNav from "./Navigation/StandardNav";
+
 let initialState = { email: "test@business.com", password: "1234" };
 
-const NavBar = ({ URL }) => {
+const NavBar = ({ URL, user }) => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const helper = useSelector((s) => s.helper);
@@ -73,12 +78,21 @@ const NavBar = ({ URL }) => {
     }
   };
 
+  useEffect(() => {
+    function handleResize() {
+      window.location.reload();
+    }
+    window.addEventListener("resize", handleResize);
+  }, []);
+
+  let windowWidth = window.innerWidth;
+
   return (
     <>
       <Navbar className="navbar-top" expand="lg">
         <Container>
-          <Navbar.Brand href="/" style={{ fontWeight: "700" }}>
-            <Avatar className="navbar_icon" src={logo} />
+          <Navbar.Brand href="/">
+            <Avatar id="avatar" src={logo} />
             BuyLocal.online
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -88,56 +102,39 @@ const NavBar = ({ URL }) => {
               {helper.loggedin ? (
                 // currentUser && (
                 <>
-                  {currentUser !== null ? (
-                    <>
-                      <Avatar src={currentUser.img_user} />
-                      <p> {currentUser.email}</p>
-                    </>
+                  {windowWidth < 992 ? (
+                    <StandardNav logoutUser={logoutUser} currentUser={user} />
                   ) : (
                     <>
-                      <Avatar src={currentUser.img_user} />{" "}
-                      <p>{currentUser.email}</p>
+                      <Avatar src={user.img_user} className="mx-3" />
+                      <DropDownSettings
+                        logoutUser={logoutUser}
+                        currentUser={user}
+                      />
                     </>
                   )}
-                  <Button
+                </>
+              ) : (
+                <>
+                  <Nav.Link
                     className="mx-2"
                     variant="contained"
                     color="success"
                     size="medium"
-                    onClick={logoutUser}
+                    onClick={handleLoginModal}
+                    exact
                   >
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Row>
-                    <Col>
-                      <Nav.Link
-                        id="login-signup"
-                        className="mx-2"
-                        variant="contained"
-                        color="success"
-                        size="medium"
-                        onClick={handleLoginModal}
-                        exact
-                      >
-                        Login
-                      </Nav.Link>
-                    </Col>
-                    <Col>
-                      <Nav.Link
-                        id="login-signup"
-                        href="/register"
-                        className="mx-2"
-                        variant="contained"
-                        color="success"
-                        size="medium"
-                      >
-                        Register Free
-                      </Nav.Link>
-                    </Col>
-                  </Row>
+                    Login
+                  </Nav.Link>
+                  <Nav.Link
+                    href="/register"
+                    className="mx-2"
+                    variant="contained"
+                    color="success"
+                    size="medium"
+                  >
+                    Register Free
+                  </Nav.Link>
                 </>
               )}
             </Nav>

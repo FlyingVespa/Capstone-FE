@@ -24,45 +24,26 @@ import bannerImgPlaceholder from "../assets/placeholder/banner.jpg";
 
 import "./ProfilePage/profilepage.css";
 
-import ProductItem from "./ProfilePage/ProductItem";
+import Products from "./ProfilePage/Products";
 import Map from "./ProfilePage/Map";
 import About from "./ProfilePage/About";
 import TradingHours from "./ProfilePage/TradingHours";
 import Services from "./ProfilePage/Services";
 import PageLoad from "./Loaders/PageLoad";
 
-const BusinessProfilePage = () => {
+const BusinessProfilePage = (props) => {
   const URL = process.env.REACT_APP_API_URL;
   let params = useParams();
   let dispatch = useDispatch();
   let navigate = useNavigate();
-  const loggedUser = useSelector((s) => s.users.loggedUser);
+
   const loggedInStatus = useSelector((s) => s.helper.loggedin);
+  const user = useSelector((s) => s.users.user);
 
   const userId = params.userId;
   const [profileData, setProfileData] = useState({});
   const [productData, setProductData] = useState();
   const [loading, setLoading] = useState(false);
-
-  const user = useSelector((s) => s.users.user);
-
-  useEffect(() => {
-    const fetchUserData = async (profileId) => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${URL}/business/${profileId}`, {
-          withCredentials: true,
-        });
-        setProfileData(response.data);
-        console.log("ProfileData:", response.data);
-      } catch (error) {
-        console.error(error.message);
-      }
-      setLoading(false);
-    };
-    fetchUserData(userId);
-    verifyMe();
-  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -77,9 +58,32 @@ const BusinessProfilePage = () => {
     }
   };
 
+  const fetchUserData = async (profileId) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${URL}/business/${profileId}`, {
+        withCredentials: true,
+      });
+      setProfileData(response.data);
+      console.log("ProfileData:", response.data);
+    } catch (error) {
+      console.error(error.message);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchUserData(userId);
+  }, []);
+
+  useEffect(() => {
+    props.setUser(profileData);
+  }, [profileData]);
+
   useEffect(() => {
     fetchProducts();
   }, [profileData._id]);
+
   let bannerImg = profileData.img_banner
     ? profileData.img_banner
     : bannerImgPlaceholder;
@@ -90,15 +94,6 @@ const BusinessProfilePage = () => {
     ? profileData.img_user
     : userImgPlaceholder;
 
-  let weekdays = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-  ];
   const verifyMe = () => {
     if (params.userId === "me" && loggedInStatus === false) {
       console.log("its not me");
@@ -112,12 +107,7 @@ const BusinessProfilePage = () => {
   const { businessname, category } = profileData;
   return (
     <>
-      {loading && (
-        // <Spinner animation="border" role="status">
-        //   <span className="visually-hidden">Loading...</span>
-        // </Spinner>
-        <PageLoad />
-      )}
+      {loading && <PageLoad />}
 
       {profileData && !loading && (
         <>
@@ -139,10 +129,10 @@ const BusinessProfilePage = () => {
                 {profileData && <TradingHours data={profileData} />}
               </Row>
             </Container>
-            <hr />
+
             <Services services={profileData.services} />
-            <hr />
-            <ProductItem data={productData} />
+
+            <Products data={productData} />
             <hr />
             <Map location={profileData.location} data={profileData} />
             <hr />

@@ -2,7 +2,7 @@
 // import { PersistGate } from "redux-persist/integration/react";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
 // import { Provider } from "react-redux";
 // Styling
@@ -26,11 +26,12 @@ const App = () => {
   const URL = process.env.REACT_APP_API_URL;
   const auth = useSelector((s) => s.helper.loggedin);
   const loggedInUserData = useSelector((state) => state.helper.loggedin);
+  const [user, setUser] = useState({});
 
   return (
     <div className="App">
       <Fragment>
-        <NavBar URL={URL} />
+        <NavBar URL={URL} user={user} />
         <Routes>
           <Route
             path="/profile/:userId"
@@ -46,7 +47,7 @@ const App = () => {
           <Route
             exact
             path="/business/:userId"
-            element={<BusinessProfilePage />}
+            element={<BusinessProfilePage setUser={setUser} />}
           />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>

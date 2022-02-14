@@ -2,7 +2,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@600&family=Work+Sans:wght@700&display=swap");
 
 body {
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
 }
@@ -33,11 +32,12 @@ body {
   height: 250px;
   transform: scaleX(-1);
   filter: drop-shadow(0px 10px 15px rgb(65, 65, 65));
+  z-index: 1;
 }
 .landing.page h1 {
   font-family: "Work Sans", sans-serif;
   color: #fff;
-  font-size: 3.1rem;
+  font-size: 2.8rem;
   padding: 0;
   margin: 0;
   text-align: center;
@@ -55,16 +55,18 @@ body {
   display: none;
 }
 
-.landing.page .btn-explore {
-  margin: auto;
-  margin-bottom: 20px;
-  border: #fff solid 5px;
+.landing.page #btn-landing {
+  text-transform: uppercase;
+  margin: 40px 0;
+  width: 300px;
+  z-index: 2;
   padding: 10px;
-  width: fit-content;
+  font-size: 1.2rem;
+  color: #2e5e37;
 }
+
 #wave {
   position: absolute;
-  /* opacity: 0.6; */
   bottom: 0px;
   z-index: 1;
 }
@@ -85,6 +87,17 @@ body {
   transition: 0.6s;
   transition: ease-in-out;
   z-index: 1;
+  display: flex;
+}
+
+.navbar-top .navbar-nav {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.navbar-top .navbar-nav a {
+  padding: 10px;
 }
 
 .navbar-top:hover {
@@ -97,19 +110,22 @@ body {
 
 .navbar-brand {
   align-items: center;
+  font-weight: 700;
   display: flex;
-}
-.navbar_icon {
-  padding: 7px !important;
-  background-color: #ffffff;
-  margin: 15px;
+  padding: 0;
+  margin: 0;
 }
 
-#login-signup {
-  font-weight: 700;
-  width: 100%;
-  min-width: 100px;
+#avatar {
+  padding: 7px !important;
+  background-color: #ffffff;
+  margin-right: 1rem;
 }
+
+#navbar-icon {
+  font-weight: 700;
+}
+
 /* NAVBAR END */
 
 .searchField {
@@ -181,6 +197,7 @@ footer {
   background: #eff2f9;
   padding: 20px 0px;
   margin-top: auto;
+  text-align: center;
 }
 
 footer .footer-logo h2 {
@@ -231,6 +248,52 @@ footer a {
   z-index: 9;
 }
 
+#js,
+#html,
+#css,
+#react,
+#redux,
+#firebase,
+#leaflet,
+#nodejs,
+#mongodb {
+  font-size: 30px;
+  filter: drop-shadow(0px 3px 7px rgb(58, 58, 58));
+}
+
+#js {
+  color: rgb(255, 222, 33);
+}
+#html {
+  color: rgb(226, 109, 0);
+}
+#css {
+  color: #0008ff;
+}
+#react {
+  color: #1a99fa;
+}
+#redux {
+  color: rgb(93, 55, 196);
+}
+#firebase {
+  color: rgb(192, 100, 13);
+}
+#leaflet {
+  color: rgb(84, 119, 32);
+}
+#nodejs {
+  color: green;
+}
+#mongodb {
+  color: #2e5e37;
+}
+
+#aaa {
+  display: flex;
+  justify-content: space-around;
+}
+
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .landing.page {
@@ -250,26 +313,19 @@ footer a {
     justify-content: center;
     align-items: center;
   }
-
-  .navbar-top {
-  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  .navbar-top {
-    height: 60px;
-  }
-
   .landing.page {
-    padding: 100px 0;
+    padding: 30px 0;
     background-color: #4842c9;
     display: flex;
     height: 80vh;
   }
 
   .landing.page img {
-    height: 25rem;
+    height: 22em;
     display: block;
   }
 
@@ -288,52 +344,6 @@ footer a {
     font-family: "Work Sans", sans-serif !important;
     font-weight: 600 !important;
     margin-bottom: 20px;
-  }
-
-  #aaa {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  #js,
-  #html,
-  #css,
-  #react,
-  #redux,
-  #firebase,
-  #leaflet,
-  #nodejs,
-  #mongodb {
-    font-size: 30px;
-    filter: drop-shadow(0px 3px 7px rgb(58, 58, 58));
-  }
-
-  #js {
-    color: rgb(255, 222, 33);
-  }
-  #html {
-    color: rgb(226, 109, 0);
-  }
-  #css {
-    color: #0008ff;
-  }
-  #react {
-    color: #1a99fa;
-  }
-  #redux {
-    color: rgb(93, 55, 196);
-  }
-  #firebase {
-    color: rgb(192, 100, 13);
-  }
-  #leaflet {
-    color: rgb(84, 119, 32);
-  }
-  #nodejs {
-    color: green;
-  }
-  #mongodb {
-    color: #2e5e37;
   }
 
   footer {
@@ -378,9 +388,9 @@ footer a {
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1200) {
   .navbar-top {
-    height: 70px;
+    height: fit-content;
   }
 
   .landing.page {
@@ -402,7 +412,7 @@ footer a {
 
   .landing.page h1 {
     text-align: left;
-    font-size: 4rem;
+    font-size: 10vh;
   }
 
   .landing.page img {
@@ -410,16 +420,11 @@ footer a {
     /* display: block; */
     z-index: 2;
   }
-  .landing.page #btn-landing {
-    text-transform: uppercase;
-    margin: 40px 0;
-    width: 300px;
-    z-index: 2;
-    padding: 10px;
-    font-size: 1.2rem;
-    color: #2e5e37;
-  }
 
+  #btn-landing {
+    margin-top: 0 !important;
+    z-index: 3;
+  }
   footer {
     position: relative;
     left: 0;

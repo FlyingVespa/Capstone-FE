@@ -4,7 +4,6 @@ import { Container, Col, Row, Spinner } from "react-bootstrap";
 import "./ClientHomePage/clienthomepage.css";
 
 import SearchBar from "./ClientHomePage/SearchBar";
-import ShopCard from "./BusinessListPage/ShopCard";
 
 const BusinessListPage = ({ props }) => {
   <Container className="homepage">

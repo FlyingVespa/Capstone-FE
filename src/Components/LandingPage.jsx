@@ -5,7 +5,6 @@ import shopping from "../assets/images/shopping.svg";
 import "./ClientHomePage/clienthomepage.css";
 import { Container, Col, Button, Row, Image } from "react-bootstrap";
 // Components
-import ListPageDetails from "./LandingPage/ListPageDetails";
 
 const LandingPage = () => {
   return (
@@ -21,11 +20,17 @@ const LandingPage = () => {
               <h1>Support the area where you live, work and play</h1>
             </Col>
             <Col
+              style={{ marginTop: 0 }}
               xs={{ span: 12, order: 3 }}
               md={{ span: 12, order: 2 }}
-              lg={{ span: 12, order: 3 }}
+              lg={{ span: 6, order: 3 }}
             >
-              <Button href="/business" variant="light" id="btn-landing">
+              <Button
+                href="/business"
+                variant="light"
+                id="btn-landing"
+                className="m-0"
+              >
                 Explore Businesses
               </Button>
             </Col>

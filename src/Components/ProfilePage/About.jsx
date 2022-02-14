@@ -17,28 +17,57 @@ function About({ data }) {
 
   const today = new Date();
   const days = today.getDay();
-
+  let windowWidth = window.innerWidth;
   return (
     <>
       <Col sm={12} md={7}>
-        <Row>
-          <p>
-            <FiInfo className="mx-2" />
-            ABOUT US
-          </p>
-          <p>{data.bio}</p>
-        </Row>
-        <Row className="my-1">
-          <Col>
-            <FaWhatsappSquare className="fa-icon whatsapp" />
-          </Col>
-          <Col>
-            <FaPhoneSquareAlt className="fa-icon phone" />
-          </Col>
-          <Col>
-            <FaFacebookSquare className="fa-icon facebook" />
-          </Col>
-        </Row>
+        {windowWidth < 720 ? (
+          <Accordion>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>
+                <FiInfo className="mx-2" />
+                ABOUT US
+              </Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  <p>{data.bio}</p>
+                </Row>
+                <Row className="my-1">
+                  <Col>
+                    <FaWhatsappSquare className="fa-icon whatsapp" />
+                  </Col>
+                  <Col>
+                    <FaPhoneSquareAlt className="fa-icon phone" />
+                  </Col>
+                  <Col>
+                    <FaFacebookSquare className="fa-icon facebook" />
+                  </Col>
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        ) : (
+          <>
+            <Row>
+              <p>
+                <FiInfo className="mx-2" />
+                ABOUT US
+              </p>
+              <p>{data.bio}</p>
+            </Row>
+            <Row className="my-1">
+              <Col>
+                <FaWhatsappSquare className="fa-icon whatsapp" />
+              </Col>
+              <Col>
+                <FaPhoneSquareAlt className="fa-icon phone" />
+              </Col>
+              <Col>
+                <FaFacebookSquare className="fa-icon facebook" />
+              </Col>
+            </Row>
+          </>
+        )}
       </Col>
     </>
   );
