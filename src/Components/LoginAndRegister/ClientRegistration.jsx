@@ -112,7 +112,7 @@ const ClientRegistration = ({ URL }) => {
   };
   return (
     <>
-      <h1>Regsiter Business Account</h1>
+      <h1>Regsiter Client Account</h1>
       <Stepper activeStep={helper}>
         {steps.map((label, index) => {
           const stepProps = {};

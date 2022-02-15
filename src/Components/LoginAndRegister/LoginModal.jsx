@@ -1,7 +1,4 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import {
   TextField,
   InputAdornment,
@@ -19,9 +16,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-const  LoginModal = ({ handleClose, handleChange, loginDetails, loginUser }) => {
+const LoginModal = ({ handleClose, handleChange, loginDetails, loginUser }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const vpassword = useSelector((s) => s.helper.password_visible);
   const modalStatus = useSelector((s) => s.helper.loginModal);
 

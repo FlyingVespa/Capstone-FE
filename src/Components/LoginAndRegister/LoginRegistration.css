@@ -142,7 +142,6 @@
   text-transform: capitalize;
 }
 
-
 .sb-title {
   position: relative;
   top: -12px;
@@ -215,6 +214,20 @@ input:focus::placeholder {
   font-family: Roboto, sans-serif;
   border: 0;
   border-radius: 3px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.48);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.48);
   cursor: pointer;
+}
+
+.location {
+  font-weight: 700;
+}
+
+.register-modal .row .col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-modal img {
+  width: 100%;
 }

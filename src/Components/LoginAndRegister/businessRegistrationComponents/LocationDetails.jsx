@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 
 import axios from "axios";
 import PlacesAutocomplete, {
@@ -10,7 +10,7 @@ import PlacesAutocomplete, {
 const LocationDetails = ({ f }) => {
   const [input, setInput] = useState("");
   const [selected, setSelected] = useState(false);
-  const [addresss, setAddresss] = useState(null);
+  const [address, setAddress] = useState(null);
   const [addressData, setAddressData] = useState(null);
 
   const [coordinates, setCoordinates] = useState({
@@ -24,7 +24,8 @@ const LocationDetails = ({ f }) => {
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`
       );
       const Data = res.data;
-      return setAddresss(Data.results[0].address_components);
+      console.log(Data);
+      return setAddress(Data.results[0].address_components);
     } catch (error) {
       console.log(error);
     }
@@ -65,11 +66,11 @@ const LocationDetails = ({ f }) => {
   };
 
   useEffect(() => {
-    if (addresss) {
-      putAddressData(addresss, coordinates);
+    if (address) {
+      putAddressData(address, coordinates);
     }
-    console.log(addresss);
-  }, [addresss]);
+    console.log(address);
+  }, [address]);
 
   useEffect(() => {
     console.log(addressData);
@@ -92,7 +93,7 @@ const LocationDetails = ({ f }) => {
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
             <Row className="mt-3">
-              <Col>
+              <Row>
                 <input {...getInputProps({ placeholder: "Type address" })} />
                 <div>
                   {loading ? <div>...loading</div> : null}
@@ -112,57 +113,75 @@ const LocationDetails = ({ f }) => {
                     );
                   })}
                 </div>
-              </Col>
-              <Col>
-                {addresss && (
-                  <>
-                    <p name>Latitude: {selected && coordinates.lat}</p>
-                    <p>Longitude: {selected && coordinates.lng}</p>
-                    <p>
-                      Street:{" "}
-                      {selected &&
-                        addresss
-                          .filter(
-                            (e) =>
-                              e.types[0] === "route" ||
-                              e.types[0] === "neighborhood"
-                          )
-                          .map((e) => {
-                            return e.long_name;
-                          })}
-                    </p>
-                    <p>
-                      City:{" "}
-                      {selected &&
-                        addresss
-                          .filter((e) => e.types[0] === "locality")
-                          .map((e) => {
-                            return e.long_name;
-                          })}
-                    </p>
-                    <p>
-                      State:{" "}
-                      {selected &&
-                        addresss
-                          .filter(
-                            (e) => e.types[0] === "administrative_area_level_1"
-                          )
-                          .map((e) => {
-                            return e.long_name;
-                          })}
-                    </p>
-                    <p>
-                      Country:{" "}
-                      {selected &&
-                        addresss
-                          .filter((e) => e.types[0] === "country")
-                          .map((e) => {
-                            return e.long_name;
-                          })}
-                    </p>
-                  </>
-                )}
-              </Col>
+              </Row>
+              {address && address.length > 0 && (
+                <Card>
+                  <Col className="p-3">
+                    <div>
+                      <span className="p-2 location">Street Number:</span>
+                      <span>
+                        {selected &&
+                          address
+                            .filter((e) => e.types[0] === "street_number")
+                            .map((e) => e.short_name)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="p-2 location">Street:</span>
+                      <span>
+                        {selected &&
+                          address
+                            .filter(
+                              (e) =>
+                                e.types[0] === "route" ||
+                                e.types[0] === "neighborhood"
+                            )
+                            .map((e) => e.long_name)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="p-2 location">City:</span>
+                      <span>
+                        {selected &&
+                          address
+                            .filter((e) => e.types[0] === "locality")
+                            .map((e) => e.long_name)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="p-2 location">State:</span>
+                      <span>
+                        {selected &&
+                          address
+                            .filter(
+                              (e) =>
+                                e.types[0] === "administrative_area_level_1"
+                            )
+                            .map((e) => e.long_name)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="p-2 location">Country:</span>
+                      <span>
+                        {selected &&
+                          address
+                            .filter((e) => e.types[0] === "country")
+                            .map((e) => e.long_name)}
+                      </span>
+                    </div>
+                    <Row>
+                      <Col>
+                        <span className="p-2 location">Latitude:</span>
+                        <span>{selected && coordinates.lat}</span>
+                      </Col>
+                      <Col>
+                        <span className="p-2 location">Longitude:</span>
+                        <span>{selected && coordinates.lng}</span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Card>
+              )}
             </Row>
           </div>
         )}

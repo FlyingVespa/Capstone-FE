@@ -18,6 +18,7 @@ import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
 import LocationDetails from "./businessRegistrationComponents/LocationDetails";
 import AccDetails from "./businessRegistrationComponents/AccDetails";
 import TradingHoursDetails from "./businessRegistrationComponents/TradingHoursDetails";
+import LocationForm from "./LocationForm";
 
 const getSteps = () => {
   return [
@@ -160,6 +161,7 @@ const BusinessRegistration = () => {
         return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
         return <LocationDetails f={handleAddressSelect} />;
+      // return <LocationForm f={handleAddressSelect} />;
 
       case 3:
         return (

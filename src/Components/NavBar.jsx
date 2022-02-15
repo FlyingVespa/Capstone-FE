@@ -3,14 +3,13 @@ import axios from "axios";
 import { Container, Navbar, Nav, Row, Col, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button, Avatar } from "@mui/material";
-
-import { FiPower, FiHome, FiTool, FiUser } from "react-icons/fi";
+import { Avatar } from "@mui/material";
 
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
 import DropDownSettings from "./Navigation/DropDownSettings";
 import StandardNav from "./Navigation/StandardNav";
+import SelectRegisterModal from "./LoginAndRegister/SelectRegisterModal";
 
 let initialState = { email: "test@business.com", password: "1234" };
 
@@ -18,14 +17,13 @@ const NavBar = ({ URL, user }) => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const helper = useSelector((s) => s.helper);
-  const currentUser = useSelector((s) => s.users.user);
   const [loginDetails, setLoginDetails] = useState(initialState);
 
   const logoutUser = () => {
     try {
       axios
         .get(`${URL}/auth/logout`, { withCredentials: true })
-        .then.then(
+        .then(
           dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }) &&
             navigate("/")
         );
@@ -35,6 +33,9 @@ const NavBar = ({ URL, user }) => {
   };
   const handleLoginModal = () => {
     dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
+  };
+  const handleRegisterModal = () => {
+    dispatch({ type: "SET_REGISTER_MODAL", payload: !helper.registerModal });
   };
   const handleChange = ({ target }) => {
     setLoginDetails({ ...loginDetails, [target.name]: target.value });
@@ -78,13 +79,6 @@ const NavBar = ({ URL, user }) => {
     }
   };
 
-  useEffect(() => {
-    function handleResize() {
-      window.location.reload();
-    }
-    window.addEventListener("resize", handleResize);
-  }, []);
-
   let windowWidth = window.innerWidth;
 
   return (
@@ -99,8 +93,16 @@ const NavBar = ({ URL, user }) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" />
             <Nav>
+              <Nav.Link
+                href="/autocomplete"
+                className="mx-2"
+                variant="contained"
+                color="success"
+                size="medium"
+              >
+                GoogleMaps
+              </Nav.Link>
               {helper.loggedin ? (
-                // currentUser && (
                 <>
                   {windowWidth < 992 ? (
                     <StandardNav logoutUser={logoutUser} currentUser={user} />
@@ -126,13 +128,7 @@ const NavBar = ({ URL, user }) => {
                   >
                     Login
                   </Nav.Link>
-                  <Nav.Link
-                    href="/register"
-                    className="mx-2"
-                    variant="contained"
-                    color="success"
-                    size="medium"
-                  >
+                  <Nav.Link onClick={handleRegisterModal}>
                     Register Free
                   </Nav.Link>
                 </>
@@ -147,6 +143,10 @@ const NavBar = ({ URL, user }) => {
         loginDetails={loginDetails}
         handleChange={handleChange}
         loginUser={loginUser}
+      />
+      <SelectRegisterModal
+        show={helper.registerModal}
+        handleClose={handleRegisterModal}
       />
     </>
   );

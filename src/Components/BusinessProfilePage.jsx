@@ -126,13 +126,15 @@ const BusinessProfilePage = (props) => {
             <Container>
               <Row className="my-2">
                 <About data={profileData} />
-                {profileData && <TradingHours data={profileData} />}
+                <TradingHours data={profileData} />
               </Row>
             </Container>
 
             <Services services={profileData.services} />
 
-            <Products data={productData} />
+            {productData && productData.length > 0 && (
+              <Products data={productData} />
+            )}
             <hr />
             <Map location={profileData.location} data={profileData} />
             <hr />

@@ -13,23 +13,24 @@ import LoaderSpinner from "./Loaders/LoaderSpinner";
 import GridData from "./Dashboard/GridData";
 import GeneralData from "./Dashboard/GeneralData";
 // import { getBusinessUser } from "../network/lib/businessUsers";
-
+import ProfileSettings from "./Dashboard/ProfileSettings";
 const DashboardPages = () => {
   const [userData, setUserData] = useState({});
   let dispatch = useDispatch();
 
+  const getBusinessUser = (userId) => {
+    try {
+      axios
+        .get(`${URL}/business/${userId}`, { withCredentials: true })
+        .then((result) => {
+          setUserData(result.data);
+        });
+    } catch (error) {
+      console.error();
+    }
+  };
+
   useEffect(() => {
-    const getBusinessUser = (userId) => {
-      try {
-        axios
-          .get(`${URL}/business/${userId}`, { withCredentials: true })
-          .then((result) => {
-            setUserData(result.data);
-          });
-      } catch (error) {
-        console.error();
-      }
-    };
     getBusinessUser("me");
   }, []);
 
@@ -64,7 +65,9 @@ const DashboardPages = () => {
           <TabPanel value="2">
             <GeneralData />
           </TabPanel>
-          <TabPanel value="3">Item Three</TabPanel>
+          <TabPanel value="3">
+            <ProfileSettings />
+          </TabPanel>
         </TabContext>
       </Box>
     </>

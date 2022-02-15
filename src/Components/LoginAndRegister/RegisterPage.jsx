@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import { Col, Row, Image, Container } from "react-bootstrap";
 import { TabList, TabContext, TabPanel } from "@mui/lab";
 import { Tab, Box } from "@mui/material";
@@ -20,7 +19,7 @@ function RegsiterPage({ routerProps, URL }) {
       <Container>
         <Row>
           <Col md={5} xs={12}>
-            <Image src={reg} style={{ width: "100%" }} />
+            {/* <Image src={reg} style={{ width: "100%" }} /> */}
           </Col>
           <Col md={7}>
             <TabContext value={value}>

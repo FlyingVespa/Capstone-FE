@@ -19,6 +19,12 @@ import ClientHomePage from "./Components/ClientDashboard";
 import BusinessListPage from "./Components/BusinessListPage";
 import BusinessProfilePage from "./Components/BusinessProfilePage";
 
+import LocationForm from "./Components/LoginAndRegister/LocationForm";
+import LocationDetails from "./Components/LoginAndRegister/businessRegistrationComponents/LocationDetails";
+
+import BusinessRegisterPage from "./Components/LoginAndRegister/BusinessRegisterPage";
+import ClientRegisterPage from "./Components/LoginAndRegister/ClientRegisterPage";
+
 import UnAuthorized from "./Components/httpStatuses/401.jsx";
 ///////////////////////////////////////////////////////////////////////////////////////
 const App = () => {
@@ -33,6 +39,7 @@ const App = () => {
       <Fragment>
         <NavBar URL={URL} user={user} />
         <Routes>
+          <Route path="/autocomplete" exact element={<LocationDetails />} />
           <Route
             path="/profile/:userId"
             exact
@@ -50,6 +57,16 @@ const App = () => {
             element={<BusinessProfilePage setUser={setUser} />}
           />
           <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/register/business"
+            exact
+            element={<BusinessRegisterPage />}
+          />
+          <Route
+            path="/register/client"
+            exact
+            element={<ClientRegisterPage />}
+          />
         </Routes>
         <Footer />
       </Fragment>

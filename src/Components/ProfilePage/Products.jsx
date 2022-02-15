@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Container, FormControl, Row, Accordion } from "react-bootstrap";
 import { Avatar } from "@mui/material";
 import { useState } from "react";
@@ -17,18 +17,19 @@ const Products = ({ data }) => {
   let windowWidth = window.innerWidth;
 
   const [filterData, setFilteredData] = useState(data);
-  const [searchQuery, setSearchQuery] = useState("a");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = (event) => {
-    let value = event.target.value.toLowerCase();
-    let result = [];
-    console.log(value);
-    result = data.filter((d) => {
+  const handleSearch = (e) => {
+    let value = e.target.value.toLowerCase();
+    let result = data.filter((d) => {
       return d.product.search(value) != -1;
     });
+    console.log(value);
     setFilteredData(result);
   };
-
+  useEffect(() => {
+    console.log("data props", data);
+  }, []);
   return (
     <>
       {windowWidth < 720 ? (
@@ -50,8 +51,9 @@ const Products = ({ data }) => {
                     onChange={handleSearch}
                   />
 
-                  {data &&
-                    data.map((item, i) => (
+                  {filterData &&
+                    filterData.length > 0 &&
+                    filterData.map((item, i) => (
                       <Product
                         product={item}
                         index={i}
@@ -66,24 +68,25 @@ const Products = ({ data }) => {
           </Accordion>
         </Container>
       ) : (
-        <Container>
-          <p>
-            <BiShoppingBag className="mx-2" />
-            PRODUCT LIST
-          </p>
+        <>
           <Container>
-            <FormControl
-              type="text"
-              placeholder=" 🔍 Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </Container>
-          <Row>
-            {data &&
-              data
-                // .filter(searchQuery)
-                .map((item, i) => (
+            <hr />
+            <p>
+              <BiShoppingBag className="mx-2" />
+              PRODUCT LIST
+            </p>
+            <Container>
+              <FormControl
+                type="text"
+                placeholder=" 🔍 Search products..."
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+            </Container>
+            <Row>
+              {filterData &&
+                filterData.length > 0 &&
+                filterData.map((item, i) => (
                   <Product
                     product={item}
                     index={i}
@@ -92,8 +95,9 @@ const Products = ({ data }) => {
                     handleMouseOut={handleMouseOut}
                   />
                 ))}
-          </Row>
-        </Container>
+            </Row>
+          </Container>
+        </>
       )}
     </>
   );
