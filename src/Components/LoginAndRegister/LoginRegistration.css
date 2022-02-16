@@ -231,3 +231,31 @@ input:focus::placeholder {
 .register-modal img {
   width: 100%;
 }
+#wer {
+  border: 4px solid orange !important;
+  width: 90vw !important;
+}
+@media only screen and (min-width: 600) {
+  #wer {
+    border: 4px solid yellow !important;
+  }
+  #wer .modal-body {
+    width: 90vw;
+  }
+}
+@media only screen and (min-width: 784) {
+  #wer {
+    border: 4px solid red !important;
+  }
+}
+
+@media only screen and (min-width: 1024) {
+  #wer {
+    border: 4px solid blue !important;
+  }
+}
+@media only screen and (min-width: 1200) {
+  #wer {
+    border: 4px solid violet !important;
+  }
+}

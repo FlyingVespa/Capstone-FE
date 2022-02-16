@@ -12,6 +12,7 @@ import StandardNav from "./Navigation/StandardNav";
 import SelectRegisterModal from "./LoginAndRegister/SelectRegisterModal";
 
 let initialState = { email: "test@business.com", password: "1234" };
+let windowLocation = window.location.href;
 
 const NavBar = ({ URL, user }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const NavBar = ({ URL, user }) => {
   };
   const handleRegisterModal = () => {
     dispatch({ type: "SET_REGISTER_MODAL", payload: !helper.registerModal });
+    navigate("/register");
   };
   const handleChange = ({ target }) => {
     setLoginDetails({ ...loginDetails, [target.name]: target.value });
@@ -80,6 +82,7 @@ const NavBar = ({ URL, user }) => {
   };
 
   let windowWidth = window.innerWidth;
+  let ccc = windowLocation.toString();
 
   return (
     <>

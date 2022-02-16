@@ -8,6 +8,7 @@ import {
   SET_UPDATE_MODAL,
   SET_CURRENT_LOCATION,
   SET_REGISTER_MODAL,
+  SET_REGISTER,
 } from "./helpersTypes";
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   loggedin: false,
   loginModal: false,
   registerModal: false,
+  register: "null",
   addProductModal: false,
   updateProductModal: false,
   coords: { latitude: 38.2611553, longitude: 15.6002793 },
@@ -42,6 +44,8 @@ const helperReducer = (state = initialState, action) => {
       return { ...state, updateProductModal: action.payload };
     case SET_REGISTER_MODAL:
       return { ...state, registerModal: action.payload };
+    case SET_REGISTER:
+      return { ...state, register: action.payload };
 
     default:
       return state;
