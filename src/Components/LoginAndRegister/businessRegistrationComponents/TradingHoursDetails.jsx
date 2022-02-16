@@ -14,20 +14,20 @@ const TradingHoursDetails = ({ d, f, days }) => {
   const inputProps = { step: 300 };
 
   return (
-    <div className="tradinghours-details">
+    <div className="tradinghours-details my-5">
       <FormControl component="fieldset" variant="standard">
-        <FormLabel component="legend">Trading Days Open/Closed</FormLabel>
+        <FormLabel component="legend">Trading Hours & Days</FormLabel>
         <FormGroup>
           {days.map((day) => (
             <Row>
-              <Col xs={4}>
+              <Col xs={3}>
                 <FormControlLabel
                   id="trading-day"
-                  label={day}
+                  label={day.slice(0, 3)}
                   control={
                     <Checkbox
                       id="trading"
-                      name={day}
+                      name={day.slice(0, 3)}
                       checked={d[day].trading}
                       onChange={f}
                     />
@@ -41,7 +41,7 @@ const TradingHoursDetails = ({ d, f, days }) => {
                   </div>
                 </Col>
               ) : (
-                <Col xs={7}>
+                <Col xs={8}>
                   <Row className="time-row">
                     <Col xs={5} className="">
                       <TextField
@@ -56,7 +56,9 @@ const TradingHoursDetails = ({ d, f, days }) => {
                         onChange={f}
                       />
                     </Col>
-                    <Col xs={2}>to</Col>
+                    <Col xs={2} className="text-center">
+                      to
+                    </Col>
                     <Col xs={5} className="">
                       <TextField
                         name={day}

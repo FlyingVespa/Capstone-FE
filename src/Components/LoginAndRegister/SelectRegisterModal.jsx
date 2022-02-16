@@ -21,22 +21,23 @@ function SelectRegisterModal({ handleClose }) {
     <>
       <Modal
         show={modalStatus}
+        id="registerModal"
         fullscreen={true}
         onHide={handleClose}
-        className="modal-90w"
       >
+        <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
           <Row>
             <Col xs={12} md={6}>
               <Image src={reg} />
             </Col>
             <Col xs={12} md={6}>
-              <Container>
+              <Container className="p-1">
                 <Row className="text-center">
-                  <h1>Sign Up Now</h1>
-                  <p className="my-5">
+                  <h1>Create An Account Today</h1>
+                  <p className="my-3">
                     It's quick and easy. By creating an account your business
-                    can be found more easily by customers
+                    can be found more easily by customers.
                   </p>
                 </Row>
                 <Row className="my-5">
@@ -45,7 +46,7 @@ function SelectRegisterModal({ handleClose }) {
                       variant="success"
                       onClick={() => handleRegisterType("business")}
                     >
-                      Register A Business
+                      Register Business Account
                     </Button>
                   </Col>
                   <Col>
@@ -53,9 +54,8 @@ function SelectRegisterModal({ handleClose }) {
                       variant="success"
                       onClick={() => handleRegisterType("client")}
                     >
-                      Regsiter As Client
+                      Register Client Account
                     </Button>
-                    <p>{registerType}</p>
                   </Col>
                 </Row>
               </Container>

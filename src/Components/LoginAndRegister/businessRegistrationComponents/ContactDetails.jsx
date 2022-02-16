@@ -1,9 +1,10 @@
-import { TextField } from "@mui/material";
+import { TextField, FormLabel } from "@mui/material";
 import { Row, Col } from "react-bootstrap";
 
 const ContactDetails = ({ d, f }) => {
   return (
-    <>
+    <div className="contact-details my-5">
+      <FormLabel component="legend">Contact Details</FormLabel>
       <TextField
         placeholder="Enter email visible for customers"
         id="pub_email"
@@ -14,10 +15,11 @@ const ContactDetails = ({ d, f }) => {
         onChange={f}
         value={d.pub_email}
         required
+        fullWidth
       />
 
       <Row>
-        <Col md={6}>
+        <Col sm={12} md={6}>
           <TextField
             id="cell"
             name="contact"
@@ -27,9 +29,10 @@ const ContactDetails = ({ d, f }) => {
             helperText="Required"
             onChange={f}
             value={d.cell}
+            fullWidth
           />
         </Col>
-        <Col md={6}>
+        <Col sm={12} md={6}>
           <TextField
             id="tel"
             name="contact"
@@ -39,9 +42,10 @@ const ContactDetails = ({ d, f }) => {
             helperText="Optional"
             onChange={f}
             value={d.tel}
+            fullWidth
           />
         </Col>
-        <Col md={6}>
+        <Col sm={12} md={6}>
           <TextField
             id="insta"
             name="contact"
@@ -51,9 +55,10 @@ const ContactDetails = ({ d, f }) => {
             helperText="Optional"
             onChange={f}
             value={d.insta}
+            fullWidth
           />
         </Col>
-        <Col md={6}>
+        <Col sm={12} md={6}>
           <TextField
             id="whatsapp"
             name="contact"
@@ -63,10 +68,11 @@ const ContactDetails = ({ d, f }) => {
             helperText="Optional"
             onChange={f}
             value={d.whatsapp}
+            fullWidth
           />
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

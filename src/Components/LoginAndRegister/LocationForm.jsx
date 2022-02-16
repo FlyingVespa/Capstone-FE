@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 
 import { useEffect } from "react";
-import "./maps.css";
 
 function LocationForm() {
   let autocomplete;

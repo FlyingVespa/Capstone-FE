@@ -18,7 +18,6 @@ import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
 import LocationDetails from "./businessRegistrationComponents/LocationDetails";
 import AccDetails from "./businessRegistrationComponents/AccDetails";
 import TradingHoursDetails from "./businessRegistrationComponents/TradingHoursDetails";
-import LocationForm from "./LocationForm";
 
 const getSteps = () => {
   return [
@@ -49,6 +48,7 @@ const BusinessRegistration = () => {
   const URL = process.env.REACT_APP_API_URL;
   const helper = useSelector((s) => s.helper.activeStep);
   const steps = getSteps();
+  // const [datas, setData] = useState({});
   const [datas, setData] = useState({
     password: "1234",
     email: "default@test.com",
@@ -62,18 +62,15 @@ const BusinessRegistration = () => {
     img_log: "",
     img_banner: "",
     img_user: "",
-    address: {
-      street_number: "",
-      street_name: "",
-      city: "",
-      state: "",
-      country: "",
-      lat: "",
-      lng: "",
-    },
+    address: "",
     location: {
       lat: null,
       lng: null,
+      street_number: null,
+      street: null,
+      city: null,
+      state: null,
+      country: null,
     },
     contact: {
       pub_email: "Default@test.com",
@@ -142,27 +139,29 @@ const BusinessRegistration = () => {
   const handlePrev = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
   };
+  const handleStep = (step) => () => {
+    dispatch({ type: "SET_ACTIVE_STEP", payload: step });
+  };
 
-  const regsiterBusiness = () => {
-    axios
-      .post(`${URL}/register`, datas)
-      .then((res) => {
-        JSON.stringify(res.data);
-        console.log("Success, Regsitered Business Account", res);
-      })
-      .catch((err) => console.log(err));
+  const registerBusiness = async () => {
+    console.log("Click");
+    try {
+      const datas = await axios.post(`${URL}/register`, datas);
+      console.log("Success, Regsitered Business Account", datas);
+      console.log("click");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <AccDetails datas={datas} handleChange={handleChange} />;
+        return <AccDetails d={datas} f={handleChange} />;
       case 1:
         return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
         return <LocationDetails f={handleAddressSelect} />;
-      // return <LocationForm f={handleAddressSelect} />;
-
       case 3:
         return (
           <TradingHoursDetails
@@ -180,30 +179,42 @@ const BusinessRegistration = () => {
   };
 
   return (
-    <Container className="my-5">
+    <Container className="my-4" id="stepper-business">
       <h1>Regsiter Business Account</h1>
-      <Stepper activeStep={helper}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
+      <div>
+        <Stepper activeStep={helper} className="my-3">
+          {steps.map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
 
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
+            return (
+              <Step
+                id="sss"
+                key={label}
+                {...stepProps}
+                onClick={handleStep(index)}
+              >
+                {window.innerWidth > 990 ? (
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                ) : (
+                  <StepLabel {...labelProps}></StepLabel>
+                )}
+              </Step>
+            );
+          })}
+        </Stepper>
+      </div>
       <div>
         {helper === steps.length ? (
-          <div>
+          <>
             <Typography>
               All steps completed - ready to finalize registration
             </Typography>
+
             <Button
               className="mx-auto"
               variant="primary"
-              onClick={regsiterBusiness}
+              onClick={registerBusiness}
             >
               REGISTER
             </Button>
@@ -216,10 +227,11 @@ const BusinessRegistration = () => {
             >
               Cancel
             </Button>
-          </div>
+          </>
         ) : (
-          <div>
-            <Container className="float-right my-4">
+          <>
+            <Typography>{getStepContent(helper)}</Typography>
+            <div className="my-3" id="stepper-btn">
               <Button disabled={helper === 0} onClick={handlePrev}>
                 Back
               </Button>
@@ -240,9 +252,8 @@ const BusinessRegistration = () => {
                   Next
                 </Button>
               )}
-              <Typography>{getStepContent(helper)}</Typography>
-            </Container>
-          </div>
+            </div>
+          </>
         )}
       </div>
     </Container>

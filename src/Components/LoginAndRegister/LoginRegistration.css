@@ -1,37 +1,90 @@
-.register {
-  background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-  margin-top: 3%;
-  padding: 3%;
+.register.page > .row > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.register-left {
+
+.register.page img {
+  width: 80%;
+}
+
+.register .register-form {
+  padding: 10%;
+  margin-top: 10%;
+}
+
+#trading-day {
+  text-transform: capitalize;
+}
+
+.confirm-details p {
+  margin: 5px;
+}
+.confirm-details .card {
+  box-shadow: rgba(29, 24, 24, 0.24) 0px 3px 8px !important;
+}
+.location {
+  font-weight: 700;
+}
+
+#registerModal img {
+  width: 100%;
+}
+
+#registerModal .row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#registerModal h1 {
+  font-size: 2rem;
+}
+#registerModal p {
+  font-size: 1.2rem;
+}
+
+#registerModal .row .col {
+  display: flex;
+  justify-content: space-around;
+}
+
+#stepper-business {
+  width: 100% !important;
+  object-fit: contain !important;
+  /* margin: 10px; */
+  /* border: red 10px solid !important; */
+}
+
+#stepper-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* TRADINGHOURS DETAILS */
+
+.tradinghours-details {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tradinghours-details legend,
+.acc-details legend,
+.contact-details legend,
+.address-details legend,
+.confirm-details legend {
+  font-size: 1.5rem;
   text-align: center;
-  color: #fff;
-  margin-top: 4%;
 }
-.register-left input {
-  border: none;
-  border-radius: 1.5rem;
-  padding: 2%;
-  width: 60%;
-  background: #f8f9fa;
-  font-weight: bold;
-  color: #383d41;
-  margin-top: 30%;
-  margin-bottom: 3%;
-  cursor: pointer;
-}
-.register-right {
-  background: #f8f9fa;
-  border-top-left-radius: 10% 50%;
-  border-bottom-left-radius: 10% 50%;
-}
-.register-left img {
-  margin-top: 15%;
-  margin-bottom: 5%;
-  width: 25%;
-  -webkit-animation: mover 2s infinite alternate;
-  animation: mover 1s infinite alternate;
-}
+
+/* LOCATION DETAILS */
+/* CONTACT DETAILS */
+
+/* ACC DETAILS */
+/* SUCCESS DETAILS */
+/* CONFIRM DETAILS */
+
 @-webkit-keyframes mover {
   0% {
     transform: translateY(0);
@@ -48,205 +101,9 @@
     transform: translateY(-20px);
   }
 }
-.register-left p {
-  font-weight: lighter;
-  padding: 12%;
-  margin-top: -9%;
-}
-.register .register-form {
-  padding: 10%;
-  margin-top: 10%;
-}
-.btnRegister {
-  float: right;
-  margin-top: 10%;
-  border: none;
-  border-radius: 1.5rem;
-  padding: 2%;
-  background: #0062cc;
-  color: #fff;
-  font-weight: 600;
-  width: 50%;
-  cursor: pointer;
-}
-.register .nav-tabs {
-  margin-top: 3%;
-  border: none;
-  background: #0062cc;
-  border-radius: 1.5rem;
-  width: 28%;
-  float: right;
-}
-.register .nav-tabs .nav-link {
-  padding: 2%;
-  height: 34px;
-  font-weight: 600;
-  color: #fff;
-  border-top-right-radius: 1.5rem;
-  border-bottom-right-radius: 1.5rem;
-}
-.register .nav-tabs .nav-link:hover {
-  border: none;
-}
-.register .nav-tabs .nav-link.active {
-  width: 100px;
-  color: #0062cc;
-  border: 2px solid #0062cc;
-  border-top-left-radius: 1.5rem;
-  border-bottom-left-radius: 1.5rem;
-}
-.register-heading {
-  text-align: center;
-  margin-top: 8%;
-  margin-bottom: -15%;
-  color: #495057;
-}
-#confirm-times .row:nth-child(even) {
-  background-color: rgb(202, 202, 226);
-  color: rgb(0, 0, 0);
-}
-
-#confirm-times {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: center;
-  font-size: 14px;
-  width: 200px;
-  padding: 1px !important;
-  overflow: hidden;
-  margin: 5px !important;
-  border: 5px solid black;
-  text-align: center;
-}
-#times-open {
-  padding: 0 !important;
-  color: red;
-  margin: none;
-  vertical-align: center;
-}
-#confirm-times .row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-/* CONTACT */
-.time-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-#trading-day {
-  text-transform: capitalize;
-}
-
-.sb-title {
-  position: relative;
-  top: -12px;
-  font-family: Roboto, sans-serif;
-  font-weight: 500;
-}
-
-.sb-title-icon {
-  position: relative;
-  top: -5px;
-}
-
-.card-container {
-  display: flex;
-  height: 500px;
-  width: 600px;
-}
-
-.panel {
-  background: white;
-  width: 300px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.half-input-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.half-input {
-  max-width: 120px;
-}
-
-.map {
-  width: 300px;
-}
-
-h2 {
-  margin: 0;
-  font-family: Roboto, sans-serif;
-}
-
-input {
-  height: 30px;
-}
-
-input {
-  border: 0;
-  border-bottom: 1px solid black;
-  font-size: 14px;
-  font-family: Roboto, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-}
-
-input:focus::placeholder {
-  color: white;
-}
-
-.button-cta {
-  height: 40px;
-  width: 40%;
-  background: #3367d6;
-  color: white;
-  font-size: 15px;
-  text-transform: uppercase;
-  font-family: Roboto, sans-serif;
-  border: 0;
-  border-radius: 3px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.48);
-  cursor: pointer;
-}
-
-.location {
-  font-weight: 700;
-}
-
-.register-modal .row .col {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.register-modal img {
-  width: 100%;
-}
-#wer {
-  border: 4px solid orange !important;
-  width: 90vw !important;
-}
 @media only screen and (min-width: 600) {
-  #wer {
-    border: 4px solid yellow !important;
-  }
-  #wer .modal-body {
-    width: 90vw;
-  }
 }
 @media only screen and (min-width: 784) {
-  #wer {
-    border: 4px solid red !important;
-  }
 }
 
 @media only screen and (min-width: 1024) {

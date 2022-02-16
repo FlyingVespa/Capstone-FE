@@ -4,21 +4,23 @@ import {
   Input,
   IconButton,
   InputLabel,
+  FormLabel,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 
-const AccDetails = ({ datas, handleChange, f }) => {
+const AccDetails = ({ d, f }) => {
   const dispatch = useDispatch();
   const vpassword = useSelector((s) => s.helper.password_visible);
   const handleClickShowPassword = () => {
     dispatch({ type: "SHOW_PASSWORD", payload: !vpassword });
   };
 
-  const { bio, category, businessname, email, username, url, password } = datas;
+  const { bio, category, businessname, email, username, url, password } = d;
   return (
-    <div className="my-5">
+    <div className="acc-details my-5">
+      <FormLabel component="legend">Basic Account Details</FormLabel>
       <TextField
         name="businessname"
         className="my-1"
@@ -26,7 +28,8 @@ const AccDetails = ({ datas, handleChange, f }) => {
         placeholder="Enter Your Business Name"
         label="Business Name"
         value={businessname}
-        onChange={handleChange}
+        onChange={f}
+        fullWidth
       />
 
       <TextField
@@ -36,11 +39,12 @@ const AccDetails = ({ datas, handleChange, f }) => {
         placeholder="Enter Your email used for login"
         label="Account Email"
         value={email}
-        onChange={handleChange}
+        onChange={f}
         helperText="*Required - not shared with public"
+        fullWidth
       />
       <Row>
-        <Col>
+        <Col md={12}>
           <TextField
             name="username"
             className="my-1"
@@ -48,19 +52,21 @@ const AccDetails = ({ datas, handleChange, f }) => {
             placeholder="Your preffered nickname?"
             label="Username"
             value={username}
-            onChange={handleChange}
+            onChange={f}
+            fullWidth
           />
         </Col>
-        <Col>
+        <Col md={12}>
           <InputLabel htmlFor="standard-adornment-password">
             Password
           </InputLabel>
           <Input
+            fullWidth
             label="password"
             name="password"
             type={vpassword ? "text" : "password"}
             value={password}
-            onChange={handleChange}
+            onChange={f}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -75,7 +81,7 @@ const AccDetails = ({ datas, handleChange, f }) => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col md={12}>
           <TextField
             name="url"
             className="my-1"
@@ -83,19 +89,21 @@ const AccDetails = ({ datas, handleChange, f }) => {
             placeholder="Enter Your preffered"
             label="Choose Custom Url"
             value={url}
-            onChange={handleChange}
+            onChange={f}
             helperText="*Required - an address online where customers can find your business"
+            fullWidth
           />
         </Col>
-        <Col>
+        <Col md={12}>
           <TextField
             name="category"
             label="Bussines Category"
             variant="standard"
             placeholder="Tell us about you business"
             value={category}
-            onChange={handleChange}
+            onChange={f}
             multiline
+            fullWidth
           />
         </Col>
       </Row>
@@ -105,8 +113,9 @@ const AccDetails = ({ datas, handleChange, f }) => {
         variant="standard"
         placeholder="Tell us about you business"
         value={bio}
-        onChange={handleChange}
+        onChange={f}
         multiline
+        fullWidth
       />
     </div>
   );
