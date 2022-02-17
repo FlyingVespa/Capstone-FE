@@ -1,16 +1,11 @@
-import React from "react";
+import { useState, useEffect } from "react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  StepLabel,
-  Step,
-  Typography,
-  Stepper,
-  Container,
-  Button,
-} from "@mui/material";
+import { StepLabel, Step, Typography, Stepper, Container } from "@mui/material";
+
+import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "./LoginRegistration.css";
 import ContactDetails from "./businessRegistrationComponents/ContactDetails";
@@ -92,6 +87,11 @@ const BusinessRegistration = () => {
     },
   });
 
+  const handleClearFromData = async () => {
+    await setData({});
+    await dispatchData();
+    navigate("/");
+  };
   const handleContactChange = ({ target }) => {
     setData({
       ...datas,
@@ -115,7 +115,7 @@ const BusinessRegistration = () => {
         ...datas.times,
         [target.name]: {
           ...datas.times[target.name],
-          [target.id]: target.value || target.checked,
+          [target.id]: target.checked,
         },
       },
     });
@@ -132,7 +132,7 @@ const BusinessRegistration = () => {
     dispatchData();
     console.log(datas);
   }, []);
-  // datas.address in []
+
   const handleNext = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
   };
@@ -146,8 +146,8 @@ const BusinessRegistration = () => {
   const registerBusiness = async () => {
     console.log("Click");
     try {
-      const datas = await axios.post(`${URL}/register`, datas);
-      console.log("Success, Regsitered Business Account", datas);
+      const res = await axios.post(`${URL}/register`, datas);
+      console.log("Success, Regsitered Business Account", res.data);
       console.log("click");
     } catch (error) {
       console.error(error);
@@ -163,13 +163,7 @@ const BusinessRegistration = () => {
       case 2:
         return <LocationDetails f={handleAddressSelect} />;
       case 3:
-        return (
-          <TradingHoursDetails
-            f={handleTimeChange}
-            d={datas.times}
-            days={Object.keys(datas.times)}
-          />
-        );
+        return <TradingHoursDetails f={handleTimeChange} d={datas.times} />;
       case 4:
         return <ConfirmDetails details={datas} />;
 
@@ -179,8 +173,8 @@ const BusinessRegistration = () => {
   };
 
   return (
-    <Container className="my-4" id="stepper-business">
-      <h1>Regsiter Business Account</h1>
+    <Container className="my-2 p-0" id="stepper-business">
+      <h2>Regsiter Business Account</h2>
       <div>
         <Stepper activeStep={helper} className="my-3">
           {steps.map((label, index) => {
@@ -210,7 +204,6 @@ const BusinessRegistration = () => {
             <Typography>
               All steps completed - ready to finalize registration
             </Typography>
-
             <Button
               className="mx-auto"
               variant="primary"
@@ -221,9 +214,7 @@ const BusinessRegistration = () => {
             <Button
               className="mx-auto"
               variant="danger"
-              onClick={() => {
-                navigate("/");
-              }}
+              onClick={handleClearFromData}
             >
               Cancel
             </Button>

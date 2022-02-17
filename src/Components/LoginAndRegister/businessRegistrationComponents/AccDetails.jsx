@@ -19,7 +19,7 @@ const AccDetails = ({ d, f }) => {
 
   const { bio, category, businessname, email, username, url, password } = d;
   return (
-    <div className="acc-details my-5">
+    <div className="acc-details">
       <FormLabel component="legend">Basic Account Details</FormLabel>
       <TextField
         name="businessname"
@@ -44,7 +44,7 @@ const AccDetails = ({ d, f }) => {
         fullWidth
       />
       <Row>
-        <Col md={12}>
+        <Col md={12} lg={6}>
           <TextField
             name="username"
             className="my-1"
@@ -56,7 +56,7 @@ const AccDetails = ({ d, f }) => {
             fullWidth
           />
         </Col>
-        <Col md={12}>
+        <Col md={12} lg={6}>
           <InputLabel htmlFor="standard-adornment-password">
             Password
           </InputLabel>
@@ -81,7 +81,7 @@ const AccDetails = ({ d, f }) => {
         </Col>
       </Row>
       <Row>
-        <Col md={12}>
+        <Col md={12} lg={6}>
           <TextField
             name="url"
             className="my-1"
@@ -94,7 +94,7 @@ const AccDetails = ({ d, f }) => {
             fullWidth
           />
         </Col>
-        <Col md={12}>
+        <Col md={12} lg={6}>
           <TextField
             name="category"
             label="Bussines Category"

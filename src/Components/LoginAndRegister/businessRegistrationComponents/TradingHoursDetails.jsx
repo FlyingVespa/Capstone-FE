@@ -6,32 +6,29 @@ import {
   FormLabel,
   FormControlLabel,
   FormGroup,
+  Switch,
 } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 
-const TradingHoursDetails = ({ d, f, days }) => {
+const TradingHoursDetails = ({ d, f }) => {
   const inputLProps = { shrink: true };
   const inputProps = { step: 300 };
 
   return (
-    <div className="tradinghours-details my-5">
+    <div className="tradinghours-details">
       <FormControl component="fieldset" variant="standard">
         <FormLabel component="legend">Trading Hours & Days</FormLabel>
         <FormGroup>
-          {days.map((day) => (
+          {d.map((day) => (
             <Row>
               <Col xs={3}>
-                <FormControlLabel
-                  id="trading-day"
+                <Switch
+                  type="switch"
+                  id="trading"
+                  name={day}
                   label={day.slice(0, 3)}
-                  control={
-                    <Checkbox
-                      id="trading"
-                      name={day.slice(0, 3)}
-                      checked={d[day].trading}
-                      onChange={f}
-                    />
-                  }
+                  checked={d[day].trading}
+                  onChange={f}
                 />
               </Col>
               {!d[day].trading ? (
@@ -79,6 +76,7 @@ const TradingHoursDetails = ({ d, f, days }) => {
           ))}
         </FormGroup>
       </FormControl>
+      W
     </div>
   );
 };

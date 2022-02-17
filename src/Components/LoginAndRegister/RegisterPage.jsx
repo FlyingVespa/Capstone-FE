@@ -13,22 +13,20 @@ function RegsiterPage({ routerProps }) {
   let typeOfRegistration = useSelector((s) => s.helper.register);
 
   return (
-    <div>
-      <Container className="register page">
-        <Row>
-          <Col md={{ span: 5, order: 1 }} xs={{ span: 12, order: 2 }}>
-            <Image src={fillout} />
-          </Col>
-          <Col md={{ span: 7, order: 1 }} xs={{ span: 12, order: 1 }}>
-            {typeOfRegistration === "business" ? (
-              <BusinessRegistration prop={routerProps} />
-            ) : (
-              <ClientRegistration prop={routerProps} />
-            )}
-          </Col>
-        </Row>
-      </Container>
-    </div>
+    <Container className="register page">
+      <Row>
+        <Col md={{ span: 5, order: 1 }} xs={{ span: 12, order: 2 }}>
+          <Image src={fillout} />
+        </Col>
+        <Col md={{ span: 7, order: 1 }} xs={{ span: 12, order: 1 }}>
+          {typeOfRegistration === "business" ? (
+            <BusinessRegistration prop={routerProps} />
+          ) : (
+            <ClientRegistration prop={routerProps} />
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 export default RegsiterPage;

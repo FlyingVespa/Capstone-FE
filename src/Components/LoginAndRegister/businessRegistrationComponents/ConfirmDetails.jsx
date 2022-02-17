@@ -14,19 +14,31 @@ const ConfirmDetails = ({ details }) => {
     category,
     contact,
   } = regBusiness;
+
+  const arr = [
+    email,
+    username,
+    shipping,
+    businessname,
+    password,
+    category,
+    contact,
+  ];
   return (
     <>
-      <div className="confirm-details my-5">
-        <FormLabel component="legend">Confrim Details</FormLabel>
+      <div className="confirm-details">
+        <FormLabel component="legend" className="m-0">
+          Confrim Details
+        </FormLabel>
         <Row>
-          <Col xs={12} md={6}>
-            <Card className="p-3 my-3">
+          <Col xs={12} md={6} className="p-2">
+            <Card className="p-2">
               <p className="text-center fw-bold">Operating Hours</p>
               {operatingHours.map((day) => (
                 <>
                   <Row>
                     <Col xs={6}>
-                      <p id="times-day" style={{ textTransform: "capitalize" }}>
+                      <p id="times-day" className="p-0">
                         {day}
                       </p>
                     </Col>
@@ -37,10 +49,10 @@ const ConfirmDetails = ({ details }) => {
                       </Col>
                     ) : (
                       <>
-                        <Col xs={3}>
+                        <Col xs={3} md={3} className="p-0">
                           <p id="times-open">{details.times[day].open}</p>
                         </Col>
-                        <Col xs={3}>
+                        <Col xs={3} md={3} className="p-0">
                           <p id="times-closed">{details.times[day].closed}</p>
                         </Col>
                       </>
@@ -51,12 +63,12 @@ const ConfirmDetails = ({ details }) => {
               ))}
             </Card>
           </Col>
-          <Col xs={12} md={6}>
-            <Card className="p-3 my-3">
+          <Col xs={12} md={6} className="p-2">
+            <Card className="p-2">
               <p className="text-center fw-bold">Account Details</p>
               <Row>
                 <Col>
-                  <p>Account Login Email</p>
+                  <p>Account Email</p>
                 </Col>
                 <Col>
                   <p>{email}</p>
@@ -107,12 +119,11 @@ const ConfirmDetails = ({ details }) => {
                   <p>{shipping}</p>
                 </Col>
               </Row>
-              <hr className="m-0 p-0" />
             </Card>
           </Col>
 
-          <Col xs={12} md={6}>
-            <Card className="p-3 my-3">
+          <Col xs={12} className="px-2">
+            <Card className="p-2">
               <p className="text-center fw-bold">Contact Details</p>
               <Row>
                 <Col>
@@ -140,7 +151,6 @@ const ConfirmDetails = ({ details }) => {
                   <p>{contact?.tel}</p>
                 </Col>
               </Row>
-              <hr className="m-0 p-0" />
             </Card>
           </Col>
         </Row>

@@ -88,6 +88,7 @@ body {
   transition: ease-in-out;
   z-index: 1;
   display: flex;
+  height: 70px;
 }
 
 .navbar-top .navbar-nav {
@@ -390,9 +391,8 @@ footer a {
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200) {
   .navbar-top {
-    height: fit-content;
+    height: 180px;
   }
-
   .landing.page {
     display: flex;
     align-items: center;

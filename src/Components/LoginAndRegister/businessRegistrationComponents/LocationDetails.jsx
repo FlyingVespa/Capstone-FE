@@ -88,7 +88,7 @@ const LocationDetails = ({ f }) => {
   }, [addressData]);
 
   return (
-    <div className="address-details my-5">
+    <div className="address-details my-1">
       <FormLabel component="legend">Address Details</FormLabel>
       <PlacesAutocomplete
         fullWidth

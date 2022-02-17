@@ -31,9 +31,8 @@ function TradingHours({ data, t }) {
               TRADING HOURS
             </p>
             <Card>
-              {/* {operatingHours?.map((time, i) => (
-                <p>{time.trading}</p>
-              ))} */}
+              <p>{data.times[1].open}</p>
+              <p>{data.times[2].open}</p>
             </Card>
           </>
         )}

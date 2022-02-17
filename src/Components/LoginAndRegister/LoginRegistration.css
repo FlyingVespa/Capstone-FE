@@ -1,3 +1,11 @@
+.register.page {
+  height: calc(100vh - 180px);
+}
+.register.page.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .register.page > .row > div {
   display: flex;
   justify-content: center;
@@ -18,7 +26,7 @@
 }
 
 .confirm-details p {
-  margin: 5px;
+  margin: 0px;
 }
 .confirm-details .card {
   box-shadow: rgba(29, 24, 24, 0.24) 0px 3px 8px !important;
@@ -52,8 +60,9 @@
 #stepper-business {
   width: 100% !important;
   object-fit: contain !important;
-  /* margin: 10px; */
-  /* border: red 10px solid !important; */
+}
+#stepper-business h2 {
+  text-align: center;
 }
 
 #stepper-btn {
@@ -107,12 +116,14 @@
 }
 
 @media only screen and (min-width: 1024) {
-  #wer {
-    border: 4px solid blue !important;
+  .tradinghours-details legend,
+  .acc-details legend,
+  .contact-details legend,
+  .address-details legend,
+  .confirm-details legend {
+    font-size: 1.5rem;
+    text-align: center;
   }
 }
 @media only screen and (min-width: 1200) {
-  #wer {
-    border: 4px solid violet !important;
-  }
 }
