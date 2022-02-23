@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { StepLabel, Step, Typography, Stepper, Container } from "@mui/material";
 
 import { Button } from "react-bootstrap";
-import Swal from "sweetalert2";
 import "./LoginRegistration.css";
 import ContactDetails from "./businessRegistrationComponents/ContactDetails";
 import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
@@ -25,16 +24,9 @@ const getSteps = () => {
 };
 
 const BusinessRegistration = () => {
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger",
-    },
-    buttonsStyling: false,
-  });
-
   const dispatch = useDispatch();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+
   const dispatchData = () =>
     dispatch({
       type: "REGISTER_BUSINESS_USER",
@@ -43,10 +35,9 @@ const BusinessRegistration = () => {
   const URL = process.env.REACT_APP_API_URL;
   const helper = useSelector((s) => s.helper.activeStep);
   const steps = getSteps();
-  // const [datas, setData] = useState({});
   const [datas, setData] = useState({
     password: "1234",
-    email: "default@test.com",
+    email: "default@business.com",
     businessname: "Default",
     category: "Default",
     shipping: false,
@@ -54,7 +45,7 @@ const BusinessRegistration = () => {
     url: "Default",
     services: "Default",
     bio: "Default Default Default Default",
-    img_log: "",
+    img_logo: "",
     img_banner: "",
     img_user: "",
     address: "",
@@ -68,23 +59,23 @@ const BusinessRegistration = () => {
       country: null,
     },
     contact: {
-      pub_email: "Default@test.com",
-      tel: "12325435",
-      cell: "154351343",
-      insta: "125334252",
-      whatsapp: "1534543",
-      twitter: "12543@gs",
+      pub_email: "",
+      tel: "",
+      cell: "",
+      insta: "",
+      whatsapp: "",
+      twitter: "",
     },
-    times: {
-      monday: { trading: true, open: "09:15", closed: "16:00" },
-      tuesday: { trading: true, open: "09:15", closed: "16:00" },
-      wednesday: { trading: true, open: "09:15", closed: "16:00" },
-      thursday: { trading: true, open: "09:15", closed: "16:00" },
-      friday: { trading: true, open: "09:00", closed: "17:00" },
-      saturday: { trading: true, open: "09:15", closed: "16:00" },
-      sunday: { trading: true, open: "09:15", closed: "16:00" },
-      public: { trading: true, open: "09:15", closed: "16:00" },
-    },
+    times: [
+      { day: 0, trading: true, open: "09:15", closed: "16:00" },
+      { day: 1, trading: true, open: "09:15", closed: "16:00" },
+      { day: 2, trading: true, open: "09:15", closed: "16:00" },
+      { day: 3, trading: true, open: "09:15", closed: "16:00" },
+      { day: 4, trading: true, open: "09:00", closed: "17:00" },
+      { day: 5, trading: true, open: "09:15", closed: "16:00" },
+      { day: 6, trading: true, open: "09:15", closed: "16:00" },
+      { day: 7, trading: true, open: "09:15", closed: "16:00" },
+    ],
   });
 
   const handleClearFromData = async () => {
@@ -107,16 +98,26 @@ const BusinessRegistration = () => {
     });
     dispatchData();
   };
-
-  const handleTimeChange = ({ target }) => {
+  const handleChecked = ({ target }) => {
     setData({
       ...datas,
       times: {
         ...datas.times,
-        [target.name]: {
-          ...datas.times[target.name],
-          [target.id]: target.checked,
-        },
+        trading: target.checked,
+      },
+    });
+    dispatchData();
+  };
+
+  const toggleChecked = (day) => {
+    datas.times[day].trading = !datas.times[day].trading;
+  };
+  const handleTimeChange = ({ target }) => {
+    setData({
+      ...datas,
+      [target.name]: {
+        ...datas[target.name],
+        [target.id]: target.value,
       },
     });
     dispatchData();
@@ -159,16 +160,26 @@ const BusinessRegistration = () => {
       case 0:
         return <AccDetails d={datas} f={handleChange} />;
       case 1:
-        return <ContactDetails f={handleContactChange} d={datas.contact} />;
+        return (
+          <ContactDetails
+            f={handleContactChange}
+            d={datas.contact}
+            t={toggleChecked}
+          />
+        );
       case 2:
         return <LocationDetails f={handleAddressSelect} />;
       case 3:
-        return <TradingHoursDetails f={handleTimeChange} d={datas.times} />;
-      case 4:
-        return <ConfirmDetails details={datas} />;
+        return (
+          <TradingHoursDetails
+            f={handleTimeChange}
+            d={datas.times}
+            c={handleChecked}
+          />
+        );
 
       default:
-        return "Unknown step";
+        return <ConfirmDetails details={datas} />;
     }
   };
 

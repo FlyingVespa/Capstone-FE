@@ -22,7 +22,6 @@ import BusinessProfilePage from "./Components/BusinessProfilePage";
 import LocationForm from "./Components/LoginAndRegister/LocationForm";
 import LocationDetails from "./Components/LoginAndRegister/businessRegistrationComponents/LocationDetails";
 
-
 import UnAuthorized from "./Components/httpStatuses/401.jsx";
 ///////////////////////////////////////////////////////////////////////////////////////
 const App = () => {
@@ -54,8 +53,7 @@ const App = () => {
             path="/business/:userId"
             element={<BusinessProfilePage setUser={setUser} />}
           />
-          <Route path="/register" element={<RegisterPage />} />
-
+          <Route path="/register" element={<RegisterPage />} />8 
         </Routes>
         <Footer />
       </Fragment>

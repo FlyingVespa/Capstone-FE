@@ -31,8 +31,7 @@ function TradingHours({ data, t }) {
               TRADING HOURS
             </p>
             <Card>
-              <p>{data.times[1].open}</p>
-              <p>{data.times[2].open}</p>
+              {data && data.map((d, i) => <p key={i + "-day"}>{d.day}</p>)}
             </Card>
           </>
         )}

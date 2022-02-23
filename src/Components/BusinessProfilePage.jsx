@@ -126,7 +126,7 @@ const BusinessProfilePage = (props) => {
             <Container>
               <Row className="my-2">
                 <About data={profileData} />
-                <TradingHours data={profileData} />
+                <TradingHours data={profileData.times} />
               </Row>
             </Container>
 

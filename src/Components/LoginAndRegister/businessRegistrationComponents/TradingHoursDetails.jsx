@@ -1,4 +1,5 @@
 // Styling
+import { useState } from "react";
 import {
   FormControl,
   Checkbox,
@@ -8,30 +9,35 @@ import {
   FormGroup,
   Switch,
 } from "@mui/material";
-import { Col, Row } from "react-bootstrap";
-
-const TradingHoursDetails = ({ d, f }) => {
+import { Col, Row, ToggleButton } from "react-bootstrap";
+const TradingHoursDetails = ({ d, f, c, t }) => {
   const inputLProps = { shrink: true };
   const inputProps = { step: 300 };
-
+  const [checked, setChecked] = useState(false);
   return (
     <div className="tradinghours-details">
-      <FormControl component="fieldset" variant="standard">
-        <FormLabel component="legend">Trading Hours & Days</FormLabel>
-        <FormGroup>
-          {d.map((day) => (
+      <FormLabel component="legend">Trading Hours & Days</FormLabel>
+      <FormGroup>
+        {d &&
+          d.map((item, i) => (
             <Row>
               <Col xs={3}>
-                <Switch
-                  type="switch"
-                  id="trading"
-                  name={day}
-                  label={day.slice(0, 3)}
-                  checked={d[day].trading}
-                  onChange={f}
-                />
+                <label>
+                  <ToggleButton
+                    day={item.day}
+                    id="toggle-check"
+                    type="checkbox"
+                    variant="outline-primary"
+                    checked={item.trading}
+                    value={item.trading}
+                    onChange={t}
+                  >
+                    <p>{JSON.stringify(item.trading)}</p>
+                  </ToggleButton>
+                  {`${item.trading}`}
+                </label>
               </Col>
-              {!d[day].trading ? (
+              {!item.trading ? (
                 <Col xs={7}>
                   <div>
                     <p>Closed</p>
@@ -42,12 +48,12 @@ const TradingHoursDetails = ({ d, f }) => {
                   <Row className="time-row">
                     <Col xs={5} className="">
                       <TextField
-                        name={day}
+                        name={item}
                         variant="standard"
                         id="open"
                         label="open"
                         type="time"
-                        value={d[day].open}
+                        value={item.open}
                         InputLabelProps={inputLProps}
                         inputProps={inputProps}
                         onChange={f}
@@ -58,12 +64,12 @@ const TradingHoursDetails = ({ d, f }) => {
                     </Col>
                     <Col xs={5} className="">
                       <TextField
-                        name={day}
+                        name={item}
                         variant="standard"
                         id="closed"
                         label="close"
                         type="time"
-                        value={d[day].closed}
+                        value={item.closed}
                         onChange={f}
                         InputLabelProps={inputLProps}
                         inputProps={inputProps}
@@ -74,9 +80,7 @@ const TradingHoursDetails = ({ d, f }) => {
               )}
             </Row>
           ))}
-        </FormGroup>
-      </FormControl>
-      W
+      </FormGroup>
     </div>
   );
 };
