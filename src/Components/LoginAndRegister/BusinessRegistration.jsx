@@ -103,15 +103,12 @@ const BusinessRegistration = () => {
       ...datas,
       times: {
         ...datas.times,
-        trading: target.checked,
+        [target.id]: false,
       },
     });
     dispatchData();
   };
 
-  const toggleChecked = (day) => {
-    datas.times[day].trading = !datas.times[day].trading;
-  };
   const handleTimeChange = ({ target }) => {
     setData({
       ...datas,
@@ -164,7 +161,7 @@ const BusinessRegistration = () => {
           <ContactDetails
             f={handleContactChange}
             d={datas.contact}
-            t={toggleChecked}
+            t={handleChecked}
           />
         );
       case 2:

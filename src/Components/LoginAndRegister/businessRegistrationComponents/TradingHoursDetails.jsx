@@ -25,12 +25,12 @@ const TradingHoursDetails = ({ d, f, c, t }) => {
                 <label>
                   <ToggleButton
                     day={item.day}
-                    id="toggle-check"
+                    id="trading"
                     type="checkbox"
                     variant="outline-primary"
                     checked={item.trading}
                     value={item.trading}
-                    onChange={t}
+                    onChange={c}
                   >
                     <p>{JSON.stringify(item.trading)}</p>
                   </ToggleButton>
