@@ -74,6 +74,7 @@ const BusinessProfilePage = (props) => {
 
   useEffect(() => {
     fetchUserData(userId);
+    console.log(profileData.times);
   }, []);
 
   useEffect(() => {
@@ -126,7 +127,7 @@ const BusinessProfilePage = (props) => {
             <Container>
               <Row className="my-2">
                 <About data={profileData} />
-                <TradingHours data={profileData.times} />
+                <TradingHours data={profileData.times} date={profileData} />
               </Row>
             </Container>
 

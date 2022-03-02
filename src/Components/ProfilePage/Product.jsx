@@ -1,6 +1,6 @@
 import React from "react";
-import { Col } from "react-bootstrap";
-import { Avatar } from "@mui/material";
+import { Col, Image } from "react-bootstrap";
+// import { Image } from "@mui/material";
 
 function Product({
   product,
@@ -20,7 +20,7 @@ function Product({
       onMouseOut={handleMouseOut}
     >
       <div className="product-container">
-        <Avatar
+        <Image
           key={index}
           src={product.image}
           className="avatar-product"
