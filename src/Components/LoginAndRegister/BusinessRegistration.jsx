@@ -68,13 +68,13 @@ const BusinessRegistration = () => {
     },
     times: [
       { day: 0, trading: true, open: "09:15", closed: "16:00" },
-      { day: 1, trading: true, open: "09:15", closed: "16:00" },
+      { day: 1, trading: false, open: "09:15", closed: "16:00" },
       { day: 2, trading: true, open: "09:15", closed: "16:00" },
-      { day: 3, trading: true, open: "09:15", closed: "16:00" },
+      { day: 3, trading: false, open: "09:15", closed: "16:00" },
       { day: 4, trading: true, open: "09:00", closed: "17:00" },
-      { day: 5, trading: true, open: "09:15", closed: "16:00" },
+      { day: 5, trading: false, open: "09:15", closed: "16:00" },
       { day: 6, trading: true, open: "09:15", closed: "16:00" },
-      { day: 7, trading: true, open: "09:15", closed: "16:00" },
+      { day: 7, trading: false, open: "09:15", closed: "16:00" },
     ],
   });
 
@@ -90,7 +90,6 @@ const BusinessRegistration = () => {
     });
     dispatchData();
   };
-  // To change target.id to target.name
   const handleChange = ({ target }) => {
     setData({
       ...datas,
@@ -98,12 +97,12 @@ const BusinessRegistration = () => {
     });
     dispatchData();
   };
-  const handleChecked = ({ target }) => {
+  const handleTrading = ({ target }) => {
     setData({
       ...datas,
-      times: {
-        ...datas.times,
-        [target.id]: false,
+      [target.name]: {
+        ...datas[target.name],
+        [target.id]: target.value,
       },
     });
     dispatchData();
@@ -157,13 +156,7 @@ const BusinessRegistration = () => {
       case 0:
         return <AccDetails d={datas} f={handleChange} />;
       case 1:
-        return (
-          <ContactDetails
-            f={handleContactChange}
-            d={datas.contact}
-            t={handleChecked}
-          />
-        );
+        return <ContactDetails f={handleContactChange} d={datas.contact} />;
       case 2:
         return <LocationDetails f={handleAddressSelect} />;
       case 3:
@@ -171,7 +164,8 @@ const BusinessRegistration = () => {
           <TradingHoursDetails
             f={handleTimeChange}
             d={datas.times}
-            c={handleChecked}
+            datas={datas}
+            handleTrading={handleTrading}
           />
         );
 
