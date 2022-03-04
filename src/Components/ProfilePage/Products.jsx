@@ -30,6 +30,7 @@ const Products = ({ data }) => {
   useEffect(() => {
     console.log("data props", data);
   }, []);
+
   return (
     <>
       {windowWidth < 720 ? (
@@ -87,13 +88,15 @@ const Products = ({ data }) => {
               {filterData &&
                 filterData.length > 0 &&
                 filterData.map((item, i) => (
-                  <Product
-                    product={item}
-                    index={i}
-                    mouseHover={mouseHover}
-                    handleMouseOver={handleMouseOver}
-                    handleMouseOut={handleMouseOut}
-                  />
+                  <>
+                    <Product
+                      product={item}
+                      index={i}
+                      mouseHover={mouseHover}
+                      handleMouseOver={handleMouseOver}
+                      handleMouseOut={handleMouseOut}
+                    />
+                  </>
                 ))}
             </Row>
           </Container>

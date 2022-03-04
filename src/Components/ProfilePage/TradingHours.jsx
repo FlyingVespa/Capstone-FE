@@ -23,21 +23,21 @@ function TradingHours({ data, t, date }) {
   let day = weekday[d.getDay()];
 
   const confirmDay = (i) => {
-    switch (i) {
-      case 1 === date.times[i].day:
+    switch (date.times[i]) {
+      case 0:
         return "Sunday";
-      case 2 === date.times[i].day:
+      case 1:
+        return "Sunday";
+      case 2:
         return "Monday";
-      case 3 === date.times[i].day:
+      case 3:
         return "Tuesday";
-      case 4 === date.times[i].day:
+      case 4:
         return "Wednesday";
-      case 5 === date.times[i].day:
+      case 5:
         return "Thursday";
-      case 6 === date.times[i].day:
+      case 6:
         return "Friday";
-      case 7 === date.times[i].day:
-        return "Saturday";
 
       default:
         return "unknown";
