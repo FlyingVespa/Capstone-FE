@@ -7,29 +7,20 @@ import { BiShoppingBag } from "react-icons/bi";
 import Product from "./Product";
 
 const Products = ({ data }) => {
-  function handleMouseOver() {
-    setTimeout(setMouseOver(true), 700);
-  }
-  function handleMouseOut() {
-    setTimeout(setMouseOver(false), 3000);
-  }
-  const [mouseHover, setMouseOver] = useState(false);
   let windowWidth = window.innerWidth;
 
-  const [filterData, setFilteredData] = useState(data);
+  const [filterData, setFilteredData] = useState([]);
+
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = (e) => {
-    let value = e.target.value.toLowerCase();
-    let result = data.filter((d) => {
-      return d.product.search(value) != -1;
-    });
-    console.log(value);
-    setFilteredData(result);
-  };
   useEffect(() => {
-    console.log("data props", data);
-  }, []);
+    console.log("data props", searchQuery);
+    setFilteredData(
+      data.filter((item) =>
+        item.product.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery, data]);
 
   return (
     <>
@@ -40,28 +31,20 @@ const Products = ({ data }) => {
             <Accordion.Item eventKey="0">
               <Accordion.Header>
                 <BiShoppingBag className="mx-2" />
-                PRODUCT LIST
+                PRODUCT LIST{" "}
+                <FormControl
+                  type="text"
+                  placeholder="Search products"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </Accordion.Header>
               <Accordion.Body>
                 <Container>
-                  <FormControl
-                    type="text"
-                    placeholder="Search products"
-                    className=""
-                    value={searchQuery}
-                    onChange={handleSearch}
-                  />
-
                   {filterData &&
                     filterData.length > 0 &&
-                    filterData.map((item, i) => (
-                      <Product
-                        product={item}
-                        index={i}
-                        mouseHover={mouseHover}
-                        handleMouseOver={handleMouseOver}
-                        handleMouseOut={handleMouseOut}
-                      />
+                    filterData.map((item) => (
+                      <Product product={item} index={item.id} />
                     ))}
                 </Container>
               </Accordion.Body>
@@ -75,27 +58,19 @@ const Products = ({ data }) => {
             <p>
               <BiShoppingBag className="mx-2" />
               PRODUCT LIST
-            </p>
-            <Container>
-              <FormControl
-                type="text"
-                placeholder=" 🔍 Search products..."
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </Container>
+            </p>{" "}
+            <FormControl
+              className="m-2 "
+              placeholder=" 🔍 Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <Row>
               {filterData &&
                 filterData.length > 0 &&
-                filterData.map((item, i) => (
+                filterData.map((item) => (
                   <>
-                    <Product
-                      product={item}
-                      index={i}
-                      mouseHover={mouseHover}
-                      handleMouseOver={handleMouseOver}
-                      handleMouseOut={handleMouseOut}
-                    />
+                    <Product product={item} index={item.id} />
                   </>
                 ))}
             </Row>

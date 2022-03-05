@@ -10,13 +10,6 @@ import {
 } from "react-icons/fa";
 
 function About({ data }) {
-  const [showTradingHours, setShowTradingHours] = useState(false);
-
-  const handleCloseTradingHours = () => setShowTradingHours(false);
-  const handleShowTradingHours = () => setShowTradingHours(true);
-
-  const today = new Date();
-  const days = today.getDay();
   let windowWidth = window.innerWidth;
   return (
     <>
@@ -34,13 +27,19 @@ function About({ data }) {
                 </Row>
                 <Row className="my-1">
                   <Col>
-                    <FaWhatsappSquare className="fa-icon whatsapp" />
+                    <div className="product-container">
+                      <p>{data.contact.whatsapp}</p>
+                    </div>
                   </Col>
                   <Col>
-                    <FaPhoneSquareAlt className="fa-icon phone" />
+                    <div className="product-container">
+                      <p>{data.contact.whatsapp}</p>
+                    </div>
                   </Col>
                   <Col>
-                    <FaFacebookSquare className="fa-icon facebook" />
+                    <div className="product-container">
+                      <p>{data.contact.email}</p>
+                    </div>
                   </Col>
                 </Row>
               </Accordion.Body>
@@ -57,13 +56,19 @@ function About({ data }) {
             </Row>
             <Row className="my-1">
               <Col>
-                <FaWhatsappSquare className="fa-icon whatsapp" />
+                <div>
+                  <p>{data.contact.whatsapp}</p>
+                </div>
               </Col>
               <Col>
-                <FaPhoneSquareAlt className="fa-icon phone" />
+                <div>
+                  <p>{data.contact.whatsapp}</p>
+                </div>
               </Col>
               <Col>
-                <FaFacebookSquare className="fa-icon facebook" />
+                <div>
+                  <p>{data.contact.pub_email}</p>
+                </div>
               </Col>
             </Row>
           </>

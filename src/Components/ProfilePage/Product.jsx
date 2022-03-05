@@ -1,14 +1,34 @@
-import React, { useEffect } from "react";
-import { Col, Image } from "react-bootstrap";
+import { useState } from "react";
+import { Col, Image, Button } from "react-bootstrap";
 // import { Image } from "@mui/material";
+import ProductDetailsModal from "./ProductDetailsModal";
+function Product({ product, index }) {
+  const [show, setShow] = useState(false);
 
-function Product({
-  product,
-  index,
-  handleMouseOver,
-  handleMouseOut,
-  mouseHover,
-}) {
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  let productImage = document.getElementsByClassName("avatar-product");
+
+  // const checkStockLevel = () => {
+  //   switch (product.status) {
+  //     case "medium":
+  //       return;
+  //       update("blue");
+  //     case "low":
+  //       return update("red");
+  //     case "high":
+  //       return update("black");
+  //     case "out-of-stock":
+  //       return update("purple");
+  //     default:
+  //       return update("blue");
+  //   }
+  // };
+
+  // function update(borderColor) {
+  //   let productImage = document.getElementById("avatar-product");
+  //   productImage.style.border = borderColor;
+  // }
   const checkStockLevel = () => {
     switch (product.status) {
       case "medium":
@@ -33,6 +53,7 @@ function Product({
             key={index}
             src={product.image}
             className="avatar-product high"
+            onClick={handleShow}
           />
         );
       case "out-of-stock":
@@ -53,28 +74,34 @@ function Product({
         );
     }
   };
+  if (product !== undefined && product !== null) {
+    checkStockLevel();
+  }
 
   return (
-    <Col
-      key={index}
-      xs={12}
-      sm={6}
-      md={4}
-      xl={3}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-    >
-      <div className="product-container">
-        {/* <Image key={index} src={product.image} className="avatar-product" /> */}
-        {checkStockLevel()}
+    <>
+      <Col xs={12} sm={6} md={4} xl={3}>
+        <div className="product-container" key={index} onClick={handleShow}>
+          {checkStockLevel()}
+          {/* <Image key={index} src={product.image} id="avatar-product" /> */}
 
-        <div className="product-item">
-          <span key={index}>{product.product}</span>
-          <span key={index}>---</span>
-          <span key={index}>$ {product.price}</span>
+          <div className="product-item">
+            <span>{product.product}</span>
+            <span>---</span>
+            {product.status === "out-of-stock" ? (
+              <span>out of stock</span>
+            ) : (
+              <span>$ {product.price}</span>
+            )}
+          </div>
         </div>
-      </div>
-    </Col>
+      </Col>
+      <ProductDetailsModal
+        show={show}
+        handleClose={handleClose}
+        product={product}
+      />
+    </>
   );
 }
 
