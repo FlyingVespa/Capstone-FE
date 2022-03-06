@@ -9,71 +9,69 @@ import {
   FaPhoneSquareAlt,
 } from "react-icons/fa";
 
-function About({ data }) {
+function About({ data, contact }) {
   let windowWidth = window.innerWidth;
   return (
     <>
-      <Col sm={12} md={7}>
-        {windowWidth < 720 ? (
-          <Accordion>
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>
-                <FiInfo className="mx-2" />
-                ABOUT US
-              </Accordion.Header>
-              <Accordion.Body>
-                <Row>
-                  <p>{data.bio}</p>
-                </Row>
-                <Row className="my-1">
-                  <Col>
-                    <div className="product-container">
-                      <p>{data.contact.whatsapp}</p>
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className="product-container">
-                      <p>{data.contact.whatsapp}</p>
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className="product-container">
-                      <p>{data.contact.email}</p>
-                    </div>
-                  </Col>
-                </Row>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-        ) : (
-          <>
-            <Row>
-              <p>
-                <FiInfo className="mx-2" />
-                ABOUT US
-              </p>
-              <p>{data.bio}</p>
-            </Row>
-            <Row className="my-1">
-              <Col>
-                <div>
-                  <p>{data.contact.whatsapp}</p>
-                </div>
-              </Col>
-              <Col>
-                <div>
-                  <p>{data.contact.whatsapp}</p>
-                </div>
-              </Col>
-              <Col>
-                <div>
-                  <p>{data.contact.pub_email}</p>
-                </div>
-              </Col>
-            </Row>
-          </>
-        )}
-      </Col>
+      {data !== undefined && (
+        <Col sm={12} md={7} className="profile-about">
+          {windowWidth < 720 ? (
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  <FiInfo className="mx-2" />
+                  ABOUT US
+                </Accordion.Header>
+                <Accordion.Body>
+                  <Row>
+                    <p>{data.bio}</p>
+                  </Row>
+                  <Row>
+                    <span>Address:</span>
+                    <span>{contact?.cell}</span>
+                  </Row>
+                  <Row>
+                    <span>Phone:</span>
+                    <span>{contact?.cell}</span>
+                  </Row>
+                  <Row>
+                    <span>Email:</span>
+                    <span>{contact?.cell}</span>
+                  </Row>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          ) : (
+            <>
+              <Row>
+                <p>
+                  <FiInfo className="mx-2" />
+                  ABOUT US
+                </p>
+                <p>{data.bio}</p>
+              </Row>
+              <Row>
+                <Col>
+                  <span>Address:</span>
+                  <span className="mx-2">{contact?.cell}</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <span>Phone:</span>
+                  <span className="mx-2">{contact?.cell}</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <span>Email:</span>
+                  <span className="mx-2">{contact?.cell}</span>
+                </Col>
+              </Row>
+            </>
+          )}
+        </Col>
+      )}
     </>
   );
 }

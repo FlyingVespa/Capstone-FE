@@ -115,24 +115,12 @@
   height: 100vh;
 }
 
-.fa-icon {
-  font-size: 3rem;
-  /* height: 200px; */
-}
-
-.fa-icon.whatsapp {
-  color: green;
-}
-.fa-icon.facebook {
-  color: #1b74e4;
-}
-
-.fa-icon.phone {
-  color: grey;
-}
-
 #table-row:nth-child(even) {
   background-color: rgb(241, 241, 241);
+}
+
+.profile-about .col span:nth-child(odd) {
+  font-weight: bold;
 }
 @media only screen and (min-width: 600px) {
 }

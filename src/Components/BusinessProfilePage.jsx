@@ -110,7 +110,7 @@ const BusinessProfilePage = (props) => {
     <>
       {loading && <PageLoad />}
 
-      {profileData && !loading && (
+      {profileData !== undefined && !loading && (
         <>
           <Container className="profile page">
             <Row className="my-4 header">
@@ -126,7 +126,9 @@ const BusinessProfilePage = (props) => {
             <hr />
             <Container>
               <Row className="my-2">
-                <About data={profileData} />
+                {profileData && (
+                  <About data={profileData} contact={profileData.contact} />
+                )}
                 <TradingHours data={profileData.times} date={profileData} />
               </Row>
             </Container>
@@ -134,7 +136,7 @@ const BusinessProfilePage = (props) => {
             <Services services={profileData.services} />
 
             {productData && productData.length > 0 && (
-              <Products data={productData} />
+              <Products data={productData} profileData={profileData} />
             )}
             <hr />
             <Map location={profileData.location} data={profileData} />

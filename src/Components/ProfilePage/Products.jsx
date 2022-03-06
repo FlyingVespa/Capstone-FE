@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
-import { Col, Container, FormControl, Row, Accordion } from "react-bootstrap";
+import {
+  Col,
+  Container,
+  FormControl,
+  Row,
+  Accordion,
+  Button,
+  Spinner,
+} from "react-bootstrap";
 import { Avatar } from "@mui/material";
 import { useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
+import { PDFDownloadLink, Document, Page } from "@react-pdf/renderer";
 
+import BasicDocument from "./BasicDocument";
 import Product from "./Product";
-
-const Products = ({ data }) => {
+const Products = ({ data, profileData }) => {
   let windowWidth = window.innerWidth;
 
   const [filterData, setFilteredData] = useState([]);
@@ -31,7 +40,7 @@ const Products = ({ data }) => {
             <Accordion.Item eventKey="0">
               <Accordion.Header>
                 <BiShoppingBag className="mx-2" />
-                PRODUCT LIST{" "}
+                PRODUCT LIST
                 <FormControl
                   type="text"
                   placeholder="Search products"
@@ -58,7 +67,17 @@ const Products = ({ data }) => {
             <p>
               <BiShoppingBag className="mx-2" />
               PRODUCT LIST
-            </p>{" "}
+            </p>
+            <PDFDownloadLink
+              document={
+                <BasicDocument profileData={profileData} products={data} />
+              }
+              fileName={profileData.businessname + "_price_list.pdf"}
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? "Loading document..." : <Button>Download now!</Button>
+              }
+            </PDFDownloadLink>
             <FormControl
               className="m-2 "
               placeholder=" 🔍 Search products..."
