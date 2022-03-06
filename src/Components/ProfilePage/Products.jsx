@@ -1,25 +1,17 @@
 import React, { useEffect } from "react";
-import {
-  Col,
-  Container,
-  FormControl,
-  Row,
-  Accordion,
-  Button,
-  Spinner,
-} from "react-bootstrap";
-import { Avatar } from "@mui/material";
+import { Col, Container, FormControl, Row, Accordion } from "react-bootstrap";
+
 import { useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
-import { PDFDownloadLink, Document, Page } from "@react-pdf/renderer";
-
-import BasicDocument from "./BasicDocument";
 import Product from "./Product";
+
+import PdfDocument from "./PdfDocument";
+import ProductPriceList from "./ProductPriceList";
+
 const Products = ({ data, profileData }) => {
   let windowWidth = window.innerWidth;
 
   const [filterData, setFilteredData] = useState([]);
-
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -68,22 +60,28 @@ const Products = ({ data, profileData }) => {
               <BiShoppingBag className="mx-2" />
               PRODUCT LIST
             </p>
-            <PDFDownloadLink
-              document={
-                <BasicDocument profileData={profileData} products={data} />
-              }
-              fileName={profileData.businessname + "_price_list.pdf"}
-            >
-              {({ blob, url, loading, error }) =>
-                loading ? "Loading document..." : <Button>Download now!</Button>
-              }
-            </PDFDownloadLink>
-            <FormControl
-              className="m-2 "
-              placeholder=" 🔍 Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            <Row className="my-3 mx-1 justify-content-between">
+              <Col xs={12} md={5}>
+                <FormControl
+                  placeholder=" 🔍 Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={3}>
+                {filterData &&
+                  filterData !== undefined &&
+                  filterData !== null && (
+                    <PdfDocument
+                      title={profileData.businessname + "_price_list"}
+                      document={
+                        <ProductPriceList data={data} profile={profileData} />
+                      }
+                    />
+                  )}
+              </Col>
+            </Row>
+
             <Row>
               {filterData &&
                 filterData.length > 0 &&

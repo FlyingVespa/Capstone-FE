@@ -7,7 +7,7 @@ function Product({ product, index }) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  let productImage = document.getElementsByClassName("avatar-product");
+  // let productImage = document.getElementsByClassName("avatar-product");
 
   // const checkStockLevel = () => {
   //   switch (product.status) {
