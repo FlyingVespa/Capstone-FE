@@ -5,8 +5,9 @@ import { useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import Product from "./Product";
 
-import PdfDocument from "./PdfDocument";
-import ProductPriceList from "./ProductPriceList";
+import PDFDocumentProvider from "./PDFdocument/PDFDocumentProvider";
+import PDFDocumentProducts from "./PDFdocument/PDFDocumentProducts";
+import PDFDocumentRequest from "./PDFdocument/PDFDocumentRequest";
 
 const Products = ({ data, profileData }) => {
   let windowWidth = window.innerWidth;
@@ -69,16 +70,23 @@ const Products = ({ data, profileData }) => {
                 />
               </Col>
               <Col xs={12} md={3}>
-                {filterData &&
+                {/* {filterData &&
                   filterData !== undefined &&
                   filterData !== null && (
-                    <PdfDocument
+                    <PDFDocumentProvider
                       title={profileData.businessname + "_price_list"}
                       document={
-                        <ProductPriceList data={data} profile={profileData} />
+                        <PDFDocumentProducts
+                          data={data}
+                          profile={profileData}
+                        />
                       }
                     />
-                  )}
+                  )} */}
+                <PDFDocumentRequest
+                  productsData={data}
+                  profileData={profileData}
+                />
               </Col>
             </Row>
 

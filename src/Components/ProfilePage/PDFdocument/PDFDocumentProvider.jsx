@@ -3,7 +3,7 @@ import { BlobProvider } from "@react-pdf/renderer";
 import { Spinner, Button } from "react-bootstrap";
 import { GrDocumentPdf } from "react-icons/gr";
 
-const PdfDocument = ({ title, document }) => {
+const PDFDocumentProvider = ({ title, document }) => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -21,7 +21,12 @@ const PdfDocument = ({ title, document }) => {
           if (loading) {
             return (
               <span>
-                <Button variant="primary" disabled className="float-end">
+                <Button
+                  variant="primary"
+                  disabled
+                  className="float-end"
+                  size="sm"
+                >
                   <Spinner
                     as="span"
                     animation="border"
@@ -43,7 +48,11 @@ const PdfDocument = ({ title, document }) => {
           }
           if (error) {
             console.error(error);
-            return <p>An error occurred</p>;
+            return (
+              <Button variant="outline-warning" size="sm" disabled>
+                Error to create <GrDocumentPdf /> Pricelist
+              </Button>
+            );
           }
           return null;
         }}
@@ -52,4 +61,4 @@ const PdfDocument = ({ title, document }) => {
   }
 };
 
-export default PdfDocument;
+export default PDFDocumentProvider;

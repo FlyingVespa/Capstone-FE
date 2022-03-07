@@ -115,7 +115,7 @@ const fontSrc =
   "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf";
 Font.register({ family: "Oswald", src: fontSrc });
 
-const ProductPriceList = ({ data, profile }) => {
+const PDFDocumentProducts = ({ data, profile }) => {
   if (data !== undefined && data != null) {
     return (
       <Document>
@@ -181,4 +181,4 @@ const ProductPriceList = ({ data, profile }) => {
     );
 };
 
-export default ProductPriceList;
+export default PDFDocumentProducts;

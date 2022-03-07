@@ -18,7 +18,6 @@ import DashboardPage from "./Components/DashboardPage";
 import ClientHomePage from "./Components/ClientDashboard";
 import BusinessListPage from "./Components/BusinessListPage";
 import BusinessProfilePage from "./Components/BusinessProfilePage";
-import BasicDocument from "./Components/ProfilePage/BasicDocument";
 import LocationDetails from "./Components/LoginAndRegister/businessRegistrationComponents/LocationDetails";
 
 import UnAuthorized from "./Components/httpStatuses/401.jsx";
@@ -53,7 +52,6 @@ const App = () => {
             element={<BusinessProfilePage setUser={setUser} />}
           />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/business/me/pdfPage" element={<BasicDocument />} />
         </Routes>
         <Footer />
       </Fragment>

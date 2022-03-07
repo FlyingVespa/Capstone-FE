@@ -32,7 +32,6 @@ import Services from "./ProfilePage/Services";
 import PageLoad from "./Loaders/PageLoad";
 
 const BusinessProfilePage = (props) => {
-  const URL = process.env.REACT_APP_API_URL;
   let params = useParams();
   let dispatch = useDispatch();
   let navigate = useNavigate();
