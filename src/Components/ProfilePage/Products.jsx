@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
 import { Col, Container, FormControl, Row, Accordion } from "react-bootstrap";
-import { Avatar } from "@mui/material";
+
 import { useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
-
 import Product from "./Product";
 
-const Products = ({ data }) => {
+import PDFDocumentProvider from "./PDF/PDFDocumentProvider";
+import PDFDocumentProducts from "./PDF/PDFDocumentProducts";
+import PDFDocumentRequest from "./PDF/PDFDocumentRequest";
+
+const Products = ({ data, profileData }) => {
   let windowWidth = window.innerWidth;
 
   const [filterData, setFilteredData] = useState([]);
-
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -21,6 +23,8 @@ const Products = ({ data }) => {
       )
     );
   }, [searchQuery, data]);
+  const getDate = new Date();
+  const currentDate = getDate.toLocaleString();
 
   return (
     <>
@@ -31,16 +35,22 @@ const Products = ({ data }) => {
             <Accordion.Item eventKey="0">
               <Accordion.Header>
                 <BiShoppingBag className="mx-2" />
-                PRODUCT LIST{" "}
+                PRODUCT LIST
+              </Accordion.Header>
+              <Accordion.Body>
                 <FormControl
                   type="text"
                   placeholder="Search products"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-              </Accordion.Header>
-              <Accordion.Body>
                 <Container>
+                  <PDFDocumentRequest
+                    className="justify-space-around center"
+                    profileData={profileData}
+                    productData={data}
+                    date={currentDate}
+                  />
                   {filterData &&
                     filterData.length > 0 &&
                     filterData.map((item) => (
@@ -58,13 +68,28 @@ const Products = ({ data }) => {
             <p>
               <BiShoppingBag className="mx-2" />
               PRODUCT LIST
-            </p>{" "}
-            <FormControl
-              className="m-2 "
-              placeholder=" 🔍 Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            </p>
+            <Row className="my-3 mx-1 justify-content-between">
+              <Col xs={12} md={5}>
+                <FormControl
+                  placeholder=" 🔍 Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={3}>
+                {filterData &&
+                  filterData !== undefined &&
+                  filterData !== null && (
+                    <PDFDocumentRequest
+                      profileData={profileData}
+                      productData={data}
+                      date={currentDate}
+                    />
+                  )}
+              </Col>
+            </Row>
+
             <Row>
               {filterData &&
                 filterData.length > 0 &&

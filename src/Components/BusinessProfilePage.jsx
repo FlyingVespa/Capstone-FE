@@ -52,7 +52,7 @@ const BusinessProfilePage = (props) => {
       );
       let data = await res.data;
       setProductData(data);
-      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: productData });
+      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: data });
     } catch (error) {
       console.log(error);
     }
@@ -61,11 +61,13 @@ const BusinessProfilePage = (props) => {
   const fetchUserData = async (profileId) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${URL}/business/${profileId}`, {
+      const res = await axios.get(`${URL}/business/${profileId}`, {
         withCredentials: true,
       });
-      setProfileData(response.data);
-      console.log("ProfileData:", response.data);
+      let data = await res.data;
+      setProfileData(data);
+      dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
+      console.log("ProfileData:", data);
     } catch (error) {
       console.error(error.message);
     }
@@ -110,7 +112,7 @@ const BusinessProfilePage = (props) => {
     <>
       {loading && <PageLoad />}
 
-      {profileData && !loading && (
+      {profileData !== undefined && !loading && (
         <>
           <Container className="profile page">
             <Row className="my-4 header">
@@ -126,7 +128,9 @@ const BusinessProfilePage = (props) => {
             <hr />
             <Container>
               <Row className="my-2">
-                <About data={profileData} />
+                {profileData && (
+                  <About data={profileData} contact={profileData.contact} />
+                )}
                 <TradingHours data={profileData.times} date={profileData} />
               </Row>
             </Container>
@@ -134,7 +138,7 @@ const BusinessProfilePage = (props) => {
             <Services services={profileData.services} />
 
             {productData && productData.length > 0 && (
-              <Products data={productData} />
+              <Products data={productData} profileData={profileData} />
             )}
             <hr />
             <Map location={profileData.location} data={profileData} />
