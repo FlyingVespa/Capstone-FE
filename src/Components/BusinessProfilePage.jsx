@@ -52,7 +52,7 @@ const BusinessProfilePage = (props) => {
       );
       let data = await res.data;
       setProductData(data);
-      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: productData });
+      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: data });
     } catch (error) {
       console.log(error);
     }
@@ -61,11 +61,13 @@ const BusinessProfilePage = (props) => {
   const fetchUserData = async (profileId) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${URL}/business/${profileId}`, {
+      const res = await axios.get(`${URL}/business/${profileId}`, {
         withCredentials: true,
       });
-      setProfileData(response.data);
-      console.log("ProfileData:", response.data);
+      let data = await res.data;
+      setProfileData(data);
+      dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
+      console.log("ProfileData:", data);
     } catch (error) {
       console.error(error.message);
     }

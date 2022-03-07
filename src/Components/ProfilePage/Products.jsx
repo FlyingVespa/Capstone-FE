@@ -5,8 +5,9 @@ import { useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import Product from "./Product";
 
-import PdfDocument from "./PdfDocument";
-import ProductPriceList from "./ProductPriceList";
+import PDFDocumentProvider from "./PDF/PDFDocumentProvider";
+import PDFDocumentProducts from "./PDF/PDFDocumentProducts";
+import PDFDocumentRequest from "./PDF/PDFDocumentRequest";
 
 const Products = ({ data, profileData }) => {
   let windowWidth = window.innerWidth;
@@ -22,6 +23,8 @@ const Products = ({ data, profileData }) => {
       )
     );
   }, [searchQuery, data]);
+  const getDate = new Date();
+  const currentDate = getDate.toLocaleString();
 
   return (
     <>
@@ -33,15 +36,21 @@ const Products = ({ data, profileData }) => {
               <Accordion.Header>
                 <BiShoppingBag className="mx-2" />
                 PRODUCT LIST
+              </Accordion.Header>
+              <Accordion.Body>
                 <FormControl
                   type="text"
                   placeholder="Search products"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-              </Accordion.Header>
-              <Accordion.Body>
                 <Container>
+                  <PDFDocumentRequest
+                    className="justify-space-around center"
+                    profileData={profileData}
+                    productData={data}
+                    date={currentDate}
+                  />
                   {filterData &&
                     filterData.length > 0 &&
                     filterData.map((item) => (
@@ -72,11 +81,10 @@ const Products = ({ data, profileData }) => {
                 {filterData &&
                   filterData !== undefined &&
                   filterData !== null && (
-                    <PdfDocument
-                      title={profileData.businessname + "_price_list"}
-                      document={
-                        <ProductPriceList data={data} profile={profileData} />
-                      }
+                    <PDFDocumentRequest
+                      profileData={profileData}
+                      productData={data}
+                      date={currentDate}
                     />
                   )}
               </Col>
