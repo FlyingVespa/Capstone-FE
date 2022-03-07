@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Col, Container, FormControl, Row, Accordion } from "react-bootstrap";
-
+import { TextField } from "@mui/material";
 import { useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import Product from "./Product";
@@ -38,6 +38,12 @@ const Products = ({ data, profileData }) => {
                 PRODUCT LIST
               </Accordion.Header>
               <Accordion.Body>
+                <TextField
+                  type="text"
+                  placeholder="Search products"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
                 <FormControl
                   type="text"
                   placeholder="Search products"
@@ -69,15 +75,20 @@ const Products = ({ data, profileData }) => {
               <BiShoppingBag className="mx-2" />
               PRODUCT LIST
             </p>
-            <Row className="my-3 mx-1 justify-content-between">
-              <Col xs={12} md={5}>
-                <FormControl
-                  placeholder=" 🔍 Search products..."
+            <Row className="my-3 justify-content-between mx-1">
+              <Col xs={12} md={7}>
+                <TextField
+                  fullWidth
+                  color="success"
+                  label="Search Products"
+                  type="search"
+                  variant="standard"
+                  size="small"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </Col>
-              <Col xs={12} md={3}>
+              <Col xs={12} md={5}>
                 {filterData &&
                   filterData !== undefined &&
                   filterData !== null && (

@@ -83,6 +83,7 @@ function Product({ product, index }) {
       <Col xs={12} sm={6} md={4} xl={3}>
         <div className="product-container" key={index} onClick={handleShow}>
           {checkStockLevel()}
+
           {/* <Image key={index} src={product.image} id="avatar-product" /> */}
 
           <div className="product-item">
