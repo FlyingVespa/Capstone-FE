@@ -1,6 +1,13 @@
+// Libraries
+import { useEffect } from "react";
+
+// Styling
 import { Col, Row, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { FormLabel } from "@mui/material";
+
+// Component
+import MapDetails from "./MapDetails";
 
 const ConfirmDetails = ({ details }) => {
   const regBusiness = useSelector((s) => s.users.registerBusiness);
@@ -13,17 +20,12 @@ const ConfirmDetails = ({ details }) => {
     businessname,
     category,
     contact,
+    address,
   } = regBusiness;
 
-  const arr = [
-    email,
-    username,
-    shipping,
-    businessname,
-    password,
-    category,
-    contact,
-  ];
+  useEffect(() => {
+    console.log("Confirm details:", details);
+  });
   return (
     <>
       <div className="confirm-details">
@@ -122,7 +124,7 @@ const ConfirmDetails = ({ details }) => {
             </Card>
           </Col>
 
-          <Col xs={12} className="px-2">
+          <Col xs={12} className="p-2">
             <Card className="p-2">
               <p className="text-center fw-bold">Contact Details</p>
               <Row>
@@ -149,6 +151,21 @@ const ConfirmDetails = ({ details }) => {
                 </Col>
                 <Col>
                   <p>{contact?.tel}</p>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+          <Col xs={12} className="p-2">
+            <Card className="p-2">
+              <p className="text-center fw-bold">Address Details</p>
+              <Row>
+                <Col>
+                  <span>{details?.address.street_number} </span>
+                  <span>{details?.address.street_name}, </span>
+                  <span>{details?.address.city}, </span>
+                  <span>{details?.address.state}, </span>
+                  <span>{details?.address.country}</span>
+                  <MapDetails address={details.address} />
                 </Col>
               </Row>
             </Card>

@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Container, Navbar, Nav, Row, Col, Dropdown } from "react-bootstrap";
+// Libraries
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+// Styling
+import { Container, Navbar, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
-
+// Componets
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
 import DropDownSettings from "./Navigation/DropDownSettings";

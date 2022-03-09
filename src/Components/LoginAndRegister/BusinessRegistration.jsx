@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -25,47 +25,30 @@ const getSteps = () => {
 
 const BusinessRegistration = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const dispatchData = () =>
-    dispatch({
-      type: "REGISTER_BUSINESS_USER",
-      payload: datas,
-    });
+  const myForm = useRef(null);
   const URL = process.env.REACT_APP_API_URL;
   const helper = useSelector((s) => s.helper.activeStep);
   const steps = getSteps();
   const [datas, setData] = useState({
-    password: "1234",
-    email: "default@business.com",
-    businessname: "Default",
-    category: "Default",
-    shipping: false,
-    username: "Default",
-    url: "Default",
-    services: "Default",
-    bio: "Default Default Default Default",
-    img_logo: "",
-    img_banner: "",
-    img_user: "",
-    address: "",
-    location: {
-      lat: null,
-      lng: null,
-      street_number: null,
-      street: null,
-      city: null,
-      state: null,
-      country: null,
-    },
-    contact: {
-      pub_email: "",
-      tel: "",
-      cell: "",
-      insta: "",
-      whatsapp: "",
-      twitter: "",
-    },
+    // address: {},
+    // bio: "Default Default Default Default",
+    // businessname: "Default",
+    // category: "Default",
+    // contact: {
+    //   pub_email: "",
+    //   tel: "",
+    //   cell: "",
+    //   insta: "",
+    //   whatsapp: "",
+    //   twitter: "",
+    // },
+    // email: "default@business.com",
+    // img_logo: "",
+    // img_banner: "",
+    // img_user: "",
+    // password: "1234",
+    // services: "Default",
+    // shipping: false,
     times: [
       { day: 0, trading: true, open: "09:15", closed: "16:00" },
       { day: 1, trading: false, open: "09:15", closed: "16:00" },
@@ -74,28 +57,30 @@ const BusinessRegistration = () => {
       { day: 4, trading: true, open: "09:00", closed: "17:00" },
       { day: 5, trading: false, open: "09:15", closed: "16:00" },
       { day: 6, trading: true, open: "09:15", closed: "16:00" },
-      { day: 7, trading: false, open: "09:15", closed: "16:00" },
     ],
+    // ],
+    // url: "Default",
+    // username: "Default",
   });
 
   const handleClearFromData = async () => {
     await setData({});
-    await dispatchData();
-    navigate("/");
+    await dispatch({ type: "SET_ACTIVE_STEP", payload: 0 });
   };
   const handleContactChange = ({ target }) => {
     setData({
       ...datas,
       [target.name]: { ...datas[target.name], [target.id]: target.value },
     });
-    dispatchData();
   };
-  const handleChange = ({ target }) => {
+  const handleAccDetailsChange = (payload) => {
+    setData({ payload });
+  };
+  const handleChange = (payload) => {
     setData({
       ...datas,
-      [target.name]: target.value,
+      contact: payload,
     });
-    dispatchData();
   };
   const handleTrading = ({ target }) => {
     setData({
@@ -105,7 +90,6 @@ const BusinessRegistration = () => {
         [target.id]: target.value,
       },
     });
-    dispatchData();
   };
 
   const handleTimeChange = ({ target }) => {
@@ -116,22 +100,21 @@ const BusinessRegistration = () => {
         [target.id]: target.value,
       },
     });
-    dispatchData();
   };
-  const handleAddressSelect = (addressData) => {
+  const handleAddress = (addressData) => {
     setData({
       ...datas,
       address: addressData,
     });
   };
 
-  useEffect(() => {
-    dispatchData();
-    console.log(datas);
-  }, []);
-
   const handleNext = () => {
+    // if (!myForm.current.checkValidity()) {
+    //   return;
+    // }
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
+    dispatch({ type: "REGISTER_BUSINESS_USER", payload: datas });
+    console.log("DDD", datas);
   };
   const handlePrev = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
@@ -141,10 +124,10 @@ const BusinessRegistration = () => {
   };
 
   const registerBusiness = async () => {
-    console.log("Click");
     try {
       const res = await axios.post(`${URL}/register`, datas);
-      console.log("Success, Regsitered Business Account", res.data);
+      let registration = await res.data;
+      console.log("Success, Regsitered Business Account", registration);
       console.log("click");
     } catch (error) {
       console.error(error);
@@ -154,11 +137,11 @@ const BusinessRegistration = () => {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <AccDetails d={datas} f={handleChange} />;
+        return <AccDetails f={handleAccDetailsChange} />;
       case 1:
-        return <ContactDetails f={handleContactChange} d={datas.contact} />;
+        return <ContactDetails f={handleChange} />;
       case 2:
-        return <LocationDetails f={handleAddressSelect} />;
+        return <LocationDetails f={handleAddress} />;
       case 3:
         return (
           <TradingHoursDetails
@@ -170,7 +153,7 @@ const BusinessRegistration = () => {
         );
 
       default:
-        return <ConfirmDetails details={datas} />;
+      // return <ConfirmDetails details={datas} />;
     }
   };
 
@@ -209,7 +192,7 @@ const BusinessRegistration = () => {
             <Button
               className="mx-auto"
               variant="primary"
-              onClick={registerBusiness}
+              onClick={() => registerBusiness}
             >
               REGISTER
             </Button>

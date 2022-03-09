@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 
 import { Button } from "@mui/material";
@@ -116,7 +116,11 @@ const UpdateProductModal = ({
         <Button onClick={handleUpdateModal} className="mx-1">
           Cancel
         </Button>
-        <Button onClick={()=>handleFormSubmit()} className="mx-1" variant="contained">
+        <Button
+          onClick={() => handleFormSubmit()}
+          className="mx-1"
+          variant="contained"
+        >
           Update
         </Button>
       </Modal.Footer>

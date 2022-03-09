@@ -97,16 +97,6 @@ const BusinessProfilePage = (props) => {
     ? profileData.img_user
     : userImgPlaceholder;
 
-  const verifyMe = () => {
-    if (params.userId === "me" && loggedInStatus === false) {
-      console.log("its not me");
-    } else if (params.userId !== "me") {
-      console.log("its not me sec");
-    }
-  };
-
-  const today = new Date();
-  const days = today.getDay(); /* 4*/
   const { businessname, category } = profileData;
   return (
     <>
@@ -141,7 +131,7 @@ const BusinessProfilePage = (props) => {
               <Products data={productData} profileData={profileData} />
             )}
             <hr />
-            <Map location={profileData.location} data={profileData} />
+            <Map address={profileData.address} data={profileData} />
             <hr />
           </Container>
         </>

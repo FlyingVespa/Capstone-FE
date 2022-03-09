@@ -12,12 +12,9 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { BiMapPin } from "react-icons/bi";
 
-function Map({ location, data }) {
-  const [zoom, setZoom] = useState(11);
-  let latitude = location?.lat || 43;
-  let longitude = location?.lon || -79;
-
-  const [position, setPosition] = useState(null);
+function Map({ address, data }) {
+  let latitude = address?.lat || 43;
+  let longitude = address?.lon || -79;
 
   const defaultZoom = 16;
   const defaultCenter = [latitude, longitude];
@@ -25,19 +22,19 @@ function Map({ location, data }) {
   const mapRef = useRef();
   const { BaseLayer } = LayersControl;
 
-  function handleOnLocationFound(event) {
-    const { current = {} } = mapRef;
-    const { leafletElement: map } = current;
+  // function handleOnLocationFound(event) {
+  //   const { current = {} } = mapRef;
+  //   const { leafletElement: map } = current;
 
-    const latlng = event.latlng;
-    const radius = event.accuracy;
-    const circle = L.circle(latlng, radius);
+  //   const latlng = event.latlng;
+  //   const radius = event.accuracy;
+  //   const circle = L.circle(latlng, radius);
 
-    circle.addTo(map);
-  }
-  function handleOnLocationError(error) {
-    alert(`Unable to determine location: ${error.message}`);
-  }
+  //   circle.addTo(map);
+  // }
+  // function handleOnLocationError(error) {
+  //   alert(`Unable to determine location: ${error.message}`);
+  // }
   return (
     <>
       <Container>
@@ -71,7 +68,14 @@ function Map({ location, data }) {
             </BaseLayer>
           </LayersControl>
           <Marker position={businessLocation}>
-            <Popup>{data.businessname}</Popup>
+            <Popup>
+              <p className="m-0 p-0 text-center fw-bold">{data.businessname}</p>
+              <p className="text-center m-0 p-0">
+                {address?.street_number}
+                {address?.street_name}, {address?.city}, {address?.state},{" "}
+                {address?.country}
+              </p>
+            </Popup>
           </Marker>
           <ZoomControl position="bottomright" />
         </MapContainer>

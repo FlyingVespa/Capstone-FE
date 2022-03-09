@@ -110,9 +110,9 @@ const LocationDetails = ({ f }) => {
                 <div>
                   {loading ? (
                     <Row>
-                      <Spinner animation="grow" />
-                      <Spinner animation="grow" />
-                      <Spinner animation="grow" />
+                      <span>
+                        <Spinner animation="grow" /> Searching address...
+                      </span>
                     </Row>
                   ) : null}
 
@@ -134,7 +134,10 @@ const LocationDetails = ({ f }) => {
               </Row>
               {}
               {input.length > 3 && loadingRedux ? (
-                <Spinner animation="border" />
+                <span>
+                  <Spinner animation="grow" /> Plotting location, wait before
+                  next step..
+                </span>
               ) : (
                 <>
                   {address && address.length > 2 && selected && (

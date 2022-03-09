@@ -1,77 +1,57 @@
+// Libraries
+import { useState } from "react";
+// Styling
 import { TextField, FormLabel } from "@mui/material";
-import { Row, Col } from "react-bootstrap";
+import { FormControl, InputGroup } from "react-bootstrap";
 
-const ContactDetails = ({ d, f }) => {
+import { HiOutlineMail, HiOutlineDeviceMobile } from "react-icons/hi";
+
+const ContactDetails = ({ f }) => {
+  const [contactDetails, setContactDetails] = useState({
+    public_email: "",
+    cell: "",
+  });
+  const handleChange = ({ target }) => {
+    setContactDetails({
+      ...contactDetails,
+      [target.id]: target.value,
+    });
+    f(contactDetails);
+  };
+
   return (
     <div className="contact-details my-5">
       <FormLabel component="legend">Contact Details</FormLabel>
-      <TextField
-        placeholder="Enter email visible for customers"
-        id="pub_email"
-        name="contact"
-        label="Email"
-        variant="standard"
-        helperText="This email will be shared with customers"
-        onChange={f}
-        value={d.pub_email}
-        required
-        fullWidth
-      />
-
-      <Row>
-        <Col sm={12} md={6}>
-          <TextField
-            id="cell"
-            name="contact"
-            placeholder="Enter mobile"
-            label="Mobile number"
-            variant="standard"
-            helperText="Required"
-            onChange={f}
-            value={d.cell}
-            fullWidth
-          />
-        </Col>
-        <Col sm={12} md={6}>
-          <TextField
-            id="tel"
-            name="contact"
-            placeholder="Enter landline"
-            label="Landline number"
-            variant="standard"
-            helperText="Optional"
-            onChange={f}
-            value={d.tel}
-            fullWidth
-          />
-        </Col>
-        <Col sm={12} md={6}>
-          <TextField
-            id="insta"
-            name="contact"
-            placeholder="Enter WhatsApp Number"
-            label="Mobile number"
-            variant="standard"
-            helperText="Optional"
-            onChange={f}
-            value={d.insta}
-            fullWidth
-          />
-        </Col>
-        <Col sm={12} md={6}>
-          <TextField
-            id="whatsapp"
-            name="contact"
-            placeholder="Enter whatsApp number"
-            label="WhatsApp"
-            variant="standard"
-            helperText="Optional"
-            onChange={f}
-            value={d.whatsapp}
-            fullWidth
-          />
-        </Col>
-      </Row>
+      <InputGroup className="mb-3">
+        <InputGroup.Text id="inputGroup-sizing-default">
+          <HiOutlineMail className="mx-2" /> Email
+        </InputGroup.Text>
+        <FormControl
+          placeholder="Enter email visible for customers"
+          id="public_email"
+          variant="standard"
+          helperText="This email will be shared with customers"
+          value={contactDetails.public_email}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+      </InputGroup>
+      <InputGroup className="mb-3">
+        <InputGroup.Text id="inputGroup-sizing-default">
+          <HiOutlineDeviceMobile className="mx-2" /> Mobile
+        </InputGroup.Text>
+        <FormControl
+          placeholder="Enter email visible for customers"
+          id="cell"
+          variant="standard"
+          helperText="This email will be shared with customers"
+          value={contactDetails.cell}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+      </InputGroup>
     </div>
   );
 };

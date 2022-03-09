@@ -1,13 +1,7 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Container, Col, Row, Button, Accordion } from "react-bootstrap";
+// Libraries
+// Styling
+import { Col, Row, Accordion } from "react-bootstrap";
 import { FiInfo } from "react-icons/fi";
-
-import {
-  FaFacebookSquare,
-  FaWhatsappSquare,
-  FaPhoneSquareAlt,
-} from "react-icons/fa";
 
 function About({ data, contact }) {
   let windowWidth = window.innerWidth;
@@ -53,7 +47,11 @@ function About({ data, contact }) {
               <Row>
                 <Col>
                   <span>Address:</span>
-                  <span className="mx-2">{contact?.cell}</span>
+                  <span className="mx-2">
+                    {data?.address.street_number} {data?.address.street_name},{" "}
+                    {data?.address.city}, {data?.address.state},{" "}
+                    {data?.address.country}
+                  </span>
                 </Col>
               </Row>
               <Row>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Image, Button } from "react-bootstrap";
+import { Col, Image } from "react-bootstrap";
 // import { Image } from "@mui/material";
 import ProductDetailsModal from "./ProductDetailsModal";
 function Product({ product, index }) {

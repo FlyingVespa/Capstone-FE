@@ -1,7 +1,8 @@
-import React, { useSelector } from "react";
-import { Col, Row, Accordion, Card, Table } from "react-bootstrap";
+//Libraries
+// Styling
+import { Col, Accordion, Table } from "react-bootstrap";
 import { BiTime } from "react-icons/bi";
-
+// Components
 import LockClockIcon from "@mui/icons-material/LockClock";
 import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 import LockIcon from "@mui/icons-material/Lock";

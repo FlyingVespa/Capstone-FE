@@ -58,7 +58,7 @@ const TradingHoursDetails = ({ d, f, c, datas, handleTrading }) => {
                   <Row className="time-row">
                     <Col xs={5} lg={4} className="p-0 text-center">
                       <TextField
-                        name={item}
+                        name="times"
                         variant="standard"
                         id="open"
                         label="open"

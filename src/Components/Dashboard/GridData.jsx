@@ -1,13 +1,10 @@
 // libraries
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { useParams } from "react-router-dom";
 
-// styling
-import { Col, Row } from "react-bootstrap";
-import { Avatar, Button, IconButton, Chip, Fab } from "@mui/material";
+import { Avatar, IconButton, Chip, Fab } from "@mui/material";
 import { DeleteForever, Edit } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import "ag-grid-community/dist/styles/ag-grid.css";
@@ -211,11 +208,11 @@ const GridData = ({ userData }) => {
 
   return (
     <div className="ag-theme-material m-5">
-        <div className="my-3">
-          <Fab color="primary" variant="extended" onClick={handleAddModal}>
-            <AddIcon /> Add New Item
-          </Fab>
-        </div>
+      <div className="my-3">
+        <Fab color="primary" variant="extended" onClick={handleAddModal}>
+          <AddIcon /> Add New Item
+        </Fab>
+      </div>
       {loading !== true ? (
         <>
           <AddProductModal

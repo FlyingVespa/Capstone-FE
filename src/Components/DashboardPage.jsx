@@ -1,6 +1,6 @@
 // Libraries
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import axios from "axios";
 
 // Styling
@@ -16,7 +16,6 @@ import GeneralData from "./Dashboard/GeneralData";
 import ProfileSettings from "./Dashboard/ProfileSettings";
 const DashboardPages = () => {
   const [userData, setUserData] = useState({});
-  let dispatch = useDispatch();
 
   const getBusinessUser = (userId) => {
     try {

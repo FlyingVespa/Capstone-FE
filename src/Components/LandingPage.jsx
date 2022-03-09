@@ -1,5 +1,5 @@
 // Libraries
-import { useSelector } from "react";
+
 // styling
 import shopping from "../assets/images/shopping.svg";
 import "./ClientHomePage/clienthomepage.css";

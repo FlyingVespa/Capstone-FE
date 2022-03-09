@@ -108,6 +108,7 @@
 #img-logo {
   border: solid 3px rgb(27, 27, 27);
   border-radius: 10px;
+  width: 80px;
 }
 
 .btn-shoppinglist {
