@@ -28,12 +28,35 @@
 .confirm-details p {
   margin: 0px;
 }
+
+.confirm-details .col-4 span {
+  font-weight: 600;
+}
 .confirm-details .card {
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
   box-shadow: rgba(29, 24, 24, 0.24) 0px 3px 8px !important;
 }
-.location {
-  font-weight: 700;
+
+.confirm-details .card .col:nth-child(1) {
+  padding-right: 0px;
 }
+.confirm-details .card .col:nth-child(2) {
+  padding-right: 0px;
+  /* padding-left: 0px; */
+}
+
+.confirm-details .card .col-4 {
+  /* padding: 0 !important; */
+}
+
+.confirm-details .address-details span {
+  font-weight: 0 !important;
+}
+/* .location {
+  font-weight: 700;
+} */
 
 #registerModal img {
   width: 100%;
@@ -92,6 +115,16 @@
   justify-content: center;
 }
 
+.trading-hours > div {
+  display: flex;
+  /* justify-content: center; */
+  height: 50px;
+  align-items: center;
+  margin: 0px;
+}
+.trading-hours > div:nth-child(3) {
+  justify-content: center;
+}
 /* #to {
   display: flex;
   justify-content: center;

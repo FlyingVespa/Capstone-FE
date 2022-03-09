@@ -4,16 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 // Styling
-import {
-  Image,
-  Container,
-  Spinner,
-  Row,
-  Col,
-  Badge,
-  FormControl,
-  Accordian,
-} from "react-bootstrap";
+import { Image, Container, Row, Col, Badge } from "react-bootstrap";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";

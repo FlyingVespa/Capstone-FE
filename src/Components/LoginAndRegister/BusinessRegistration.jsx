@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { StepLabel, Step, Typography, Stepper, Container } from "@mui/material";
 
-import { Button } from "react-bootstrap";
+import { Button, Form, Alert } from "react-bootstrap";
 import "./LoginRegistration.css";
 import ContactDetails from "./businessRegistrationComponents/ContactDetails";
 import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
@@ -29,39 +29,9 @@ const BusinessRegistration = () => {
   const URL = process.env.REACT_APP_API_URL;
   const helper = useSelector((s) => s.helper.activeStep);
   const steps = getSteps();
-  const [datas, setData] = useState({
-    // address: {},
-    // bio: "Default Default Default Default",
-    // businessname: "Default",
-    // category: "Default",
-    // contact: {
-    //   pub_email: "",
-    //   tel: "",
-    //   cell: "",
-    //   insta: "",
-    //   whatsapp: "",
-    //   twitter: "",
-    // },
-    // email: "default@business.com",
-    // img_logo: "",
-    // img_banner: "",
-    // img_user: "",
-    // password: "1234",
-    // services: "Default",
-    // shipping: false,
-    times: [
-      { day: 0, trading: true, open: "09:15", closed: "16:00" },
-      { day: 1, trading: false, open: "09:15", closed: "16:00" },
-      { day: 2, trading: true, open: "09:15", closed: "16:00" },
-      { day: 3, trading: false, open: "09:15", closed: "16:00" },
-      { day: 4, trading: true, open: "09:00", closed: "17:00" },
-      { day: 5, trading: false, open: "09:15", closed: "16:00" },
-      { day: 6, trading: true, open: "09:15", closed: "16:00" },
-    ],
-    // ],
-    // url: "Default",
-    // username: "Default",
-  });
+  const [datas, setData] = useState([]);
+  const [skipped, setSkipped] = useState(new Set());
+  const [show, setShow] = useState(false);
 
   const handleClearFromData = async () => {
     await setData({});
@@ -74,7 +44,10 @@ const BusinessRegistration = () => {
     });
   };
   const handleAccDetailsChange = (payload) => {
-    setData({ payload });
+    setData({
+      ...datas,
+      accdetails: payload,
+    });
   };
   const handleChange = (payload) => {
     setData({
@@ -82,25 +55,7 @@ const BusinessRegistration = () => {
       contact: payload,
     });
   };
-  const handleTrading = ({ target }) => {
-    setData({
-      ...datas,
-      [target.name]: {
-        ...datas[target.name],
-        [target.id]: target.value,
-      },
-    });
-  };
 
-  const handleTimeChange = ({ target }) => {
-    setData({
-      ...datas,
-      [target.name]: {
-        ...datas[target.name],
-        [target.id]: target.value,
-      },
-    });
-  };
   const handleAddress = (addressData) => {
     setData({
       ...datas,
@@ -108,10 +63,18 @@ const BusinessRegistration = () => {
     });
   };
 
+  const handleTime = (times) => {
+    setData({
+      ...datas,
+      times: times,
+    });
+  };
+
   const handleNext = () => {
-    // if (!myForm.current.checkValidity()) {
-    //   return;
-    // }
+    if (!myForm.current.checkValidity()) {
+      setShow(true);
+      return;
+    }
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
     dispatch({ type: "REGISTER_BUSINESS_USER", payload: datas });
     console.log("DDD", datas);
@@ -144,16 +107,11 @@ const BusinessRegistration = () => {
         return <LocationDetails f={handleAddress} />;
       case 3:
         return (
-          <TradingHoursDetails
-            f={handleTimeChange}
-            d={datas.times}
-            datas={datas}
-            handleTrading={handleTrading}
-          />
+          <TradingHoursDetails f={handleTime} d={datas.times} datas={datas} />
         );
 
       default:
-      // return <ConfirmDetails details={datas} />;
+        return <ConfirmDetails details={datas} />;
     }
   };
 
@@ -183,7 +141,7 @@ const BusinessRegistration = () => {
           })}
         </Stepper>
       </div>
-      <div>
+      <Form action="/" method="POST" ref={myForm}>
         {helper === steps.length ? (
           <>
             <Typography>
@@ -207,6 +165,22 @@ const BusinessRegistration = () => {
         ) : (
           <>
             <Typography>{getStepContent(helper)}</Typography>
+            {show ? (
+              <Alert
+                variant="danger"
+                onClose={() => setShow(false)}
+                dismissible
+              >
+                <Alert.Heading>Missing Field(s)</Alert.Heading>
+                <p>
+                  Please review all fields carefully, you might have skipped
+                  one. Once all are filled, then only you can continue
+                </p>
+              </Alert>
+            ) : (
+              ""
+            )}
+            ;
             <div className="my-3" id="stepper-btn">
               <Button disabled={helper === 0} onClick={handlePrev}>
                 Back
@@ -231,7 +205,7 @@ const BusinessRegistration = () => {
             </div>
           </>
         )}
-      </div>
+      </Form>
     </Container>
   );
 };
