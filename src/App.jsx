@@ -15,7 +15,7 @@ import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import DashboardPage from "./Components/DashboardPage";
-import ClientHomePage from "./Components/ClientDashboard";
+import ClientHomePage from "./Components/ClientHomePage";
 import BusinessListPage from "./Components/BusinessListPage";
 import BusinessProfilePage from "./Components/BusinessProfilePage";
 import BasicDocument from "./Components/ProfilePage/BasicDocument";

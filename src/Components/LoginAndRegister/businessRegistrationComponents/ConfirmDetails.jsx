@@ -27,8 +27,8 @@ import {
 // Component
 import MapDetails from "./MapDetails";
 
-const ConfirmDetails = () => {
-  const details = useSelector((s) => s.users.registerBusiness);
+const ConfirmDetails = ({ details }) => {
+  // const details = useSelector((s) => s.users.registerBusiness);
   const weekday = [
     "Sunday",
     "Monday",
@@ -47,7 +47,7 @@ const ConfirmDetails = () => {
       <div className="confirm-details">
         <FormLabel component="legend">Confirm Details</FormLabel>
         <Row>
-          <Col xs={12} md={6} className="m-0 p-0">
+          <Col xs={12} md={6} className="p-1">
             <Card>
               <p className="text-center fw-bold">Account & Contact Details</p>
               <hr className="m-0 p-0" />
@@ -123,20 +123,20 @@ const ConfirmDetails = () => {
               <hr className="m-0 p-0" />
             </Card>
           </Col>
-          <Col xs={12} md={6} className="m-0">
+          <Col xs={12} md={6} className="p-1">
             <Card>
               <span className="text-center fw-bold">Operating Hours</span>
               <hr className="m-0 p-0" />
 
-              {details.times &&
-                details.times.map((item, i) => {
+              {details.tradingtimes &&
+                details.tradingtimes.map((item, i) => {
                   return (
                     <>
-                      <Row>
+                      <Row key={i}>
                         <Col xs={4}>
                           <span>{weekday[i]}</span>
                         </Col>
-                        {item.trading === true ? (
+                        {item.trading === false ? (
                           <>
                             <Col>
                               <span id="times-day">
@@ -171,7 +171,7 @@ const ConfirmDetails = () => {
                 })}
             </Card>
           </Col>
-          <Col xs={12} className="m-0 p-0">
+          <Col xs={12} className="p-1">
             <Card className="address-card">
               <p className="text-center fw-bold">Address Details</p>
 

@@ -22,31 +22,10 @@ function MapDetails({ address }) {
 
   const mapRef = useRef();
   const { BaseLayer } = LayersControl;
-  var century21icon = L.icon({
-    iconUrl: "https://i.ibb.co/sJrMTdz/favicon-32x32.png",
-    iconSize: [20, 20],
-  });
-
-  const iconPerson = new L.Icon({
-    iconUrl: shoplogo,
-    // iconRetinaUrl: shoplogo,
-    iconAnchor: null,
-    popupAnchor: null,
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: new L.Point(30, 30),
-    className: "leaflet-div-icon",
-  });
-  var myIcon = L.icon({
-    iconUrl: "my-icon.png",
-    iconSize: [38, 95],
-    iconAnchor: [22, 94],
-    popupAnchor: [-3, -76],
-    shadowUrl: "my-icon-shadow.png",
-    shadowSize: [68, 95],
-    shadowAnchor: [22, 94],
-  });
+  // var century21icon = L.icon({
+  //   iconUrl: "https://i.ibb.co/sJrMTdz/favicon-32x32.png",
+  //   iconSize: [20, 20],
+  // });
 
   return (
     <>
@@ -74,7 +53,7 @@ function MapDetails({ address }) {
             />
           </BaseLayer>
         </LayersControl>
-        <Marker position={defaultCenter} icon={myIcon}>
+        <Marker position={defaultCenter}>
           <Popup>
             <p className="text-center m-0 p-0">
               {address?.street_number}

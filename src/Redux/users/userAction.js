@@ -6,9 +6,9 @@ import {
   FETCH_USERS_REQUEST,
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAILURE,
-  CURRENT_USER_DETAILS,
 } from "./userTypes";
 
+import { useDispatch } from "react-redux";
 const URL = process.env.REACT_APP_API_URL;
 
 //ALL USERS *********************************//
@@ -31,7 +31,7 @@ export const fetchUsersFailure = (error) => {
 };
 
 // SINGLE USER *******************************//
-export const fetchLoggedUser = () => {
+export const fetchLoggedUserReq = () => {
   return {
     type: FETCH_LOGGED_USER_REQUEST,
   };
@@ -48,37 +48,30 @@ export const fetchLoggedUserFailure = (error) => {
     payload: error,
   };
 };
+// *********************************************///
 
 export const fetchUsers = () => {
   return (dispatch) => {
     dispatch(fetchUsersReq);
-
     axios
       .get(`${URL}/business`)
       .then((res) => {
-        const usersData = res.data;
-        dispatch(fetchUsersSuccess(usersData));
+        dispatch(fetchUsersSuccess(res.data));
       })
       .catch((error) => {
-        const errorMsg = error.message;
-        dispatch(fetchUsersFailure(errorMsg));
+        dispatch(fetchUsersFailure(error.message));
       });
   };
 };
 
-export const fetchLoggedInUser = (userId, callback) => {
+export const fetchLoggedInUser = (userId) => {
   return (dispatch) => {
-    dispatch(fetchLoggedUser);
+    dispatch(fetchLoggedUserReq);
     axios
       .get(`${URL}/business/${userId}`)
       .then((res) => {
-        const userData = res.data;
-        console.log(document.cookie)
-        callback(userData);
-        dispatch(fetchLoggedUserSuccess(userData));
-        dispatch(currentUserDetails(userData));
+        dispatch(fetchLoggedUserSuccess(res.data));
       })
-
       .catch((error) => {
         const errorMsg = error.message;
         console.log(error);
@@ -86,9 +79,34 @@ export const fetchLoggedInUser = (userId, callback) => {
       });
   };
 };
-export const currentUserDetails = (payload) => {
-  return {
-    type: CURRENT_USER_DETAILS,
-    payload: payload,
+
+// export const fetchLoggedInClient = () => {
+
+//     fetchLoggedUserReq();
+//     axios
+//       .get(`${URL}/profile/me`)
+//       .then((res) => {
+//         dispatch(fetchLoggedUserSuccess(res.data));
+//       })
+//       .catch((error) => {
+//         dispatch(fetchLoggedUserFailure(error.message));
+//         console.log(error);
+//       });
+//   };
+
+export const fetchLoggedInClient = () => {
+  return async (dispatch) => {
+    dispatch(fetchLoggedUserReq());
+    try {
+      const response = await axios.get(`${URL}/profile/me`, {
+        withCredentials: true,
+      });
+      let loggedUser = await response.data;
+      await dispatch(fetchLoggedUserSuccess(loggedUser));
+      console.log("fetch logged", loggedUser);
+    } catch (error) {
+      dispatch(fetchLoggedUserFailure(error.message));
+      console.log(error);
+    }
   };
 };

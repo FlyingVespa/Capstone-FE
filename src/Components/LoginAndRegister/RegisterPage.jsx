@@ -5,13 +5,15 @@ import fillout from "../../assets/images/fillout.gif";
 import BusinessRegistration from "./BusinessRegistration";
 import ClientRegistration from "./ClientRegistration";
 
+//
+
 function RegsiterPage({ routerProps }) {
   let typeOfRegistration = useSelector((s) => s.helper.register);
 
   return (
     <Container className="register page">
       <Row>
-        <Col md={{ span: 5, order: 1 }} xs={{ span: 12, order: 2 }}>
+        <Col className="d-md-block d-sm-none" md={{ span: 5, order: 1 }}>
           <Image src={fillout} />
         </Col>
         <Col md={{ span: 7, order: 1 }} xs={{ span: 12, order: 1 }}>

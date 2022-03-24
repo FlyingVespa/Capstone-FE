@@ -62,7 +62,6 @@ const NavBar = ({ URL, user }) => {
           type: "SET_LOGIN_MODAL",
           payload: !helper.loginModal,
         });
-
         await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
         console.log("role", data.role);
         navigate("/profile/me");

@@ -11,18 +11,14 @@ import {
 import { Col, Row, FormControl, Form } from "react-bootstrap";
 
 const TradingHoursDetails = ({ f }) => {
-  const inputLProps = { shrink: true };
-  const inputProps = { step: 300 };
-  const [checked, setChecked] = useState(false);
-
   const [time, setTime] = useState([
-    { day: 0, trading: true, open: "22:20", closed: "17:00" },
-    { day: 1, trading: true, open: "23:20", closed: "17:00" },
-    { day: 2, trading: true, open: "23:20", closed: "17:00" },
-    { day: 3, trading: true, open: "01:20", closed: "17:00" },
-    { day: 4, trading: true, open: "01:20", closed: "17:00" },
-    { day: 5, trading: true, open: "01:20", closed: "17:00" },
-    { day: 6, trading: true, open: "01:20", closed: "17:00" },
+    { day: 0, trading: false, open: "08:20", closed: "17:00" },
+    { day: 1, trading: true, open: "08:20", closed: "17:00" },
+    { day: 2, trading: true, open: "08:20", closed: "17:00" },
+    { day: 3, trading: true, open: "08:20", closed: "17:00" },
+    { day: 4, trading: true, open: "08:20", closed: "17:00" },
+    { day: 5, trading: true, open: "08:20", closed: "17:00" },
+    { day: 6, trading: false, open: "08:20", closed: "17:00" },
   ]);
 
   const handleTimeChange = ({ target }) => {

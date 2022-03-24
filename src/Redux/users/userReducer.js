@@ -1,5 +1,6 @@
 import {
   CURRENT_USER_DETAILS,
+  CURRENT_CLIENT_DETAILS,
   FETCH_LOGGED_USER_FAILURE,
   FETCH_LOGGED_USER_REQUEST,
   FETCH_LOGGED_USER_SUCCESS,
@@ -7,7 +8,6 @@ import {
   FETCH_USERS_REQUEST,
   FETCH_USERS_SUCCESS,
   REGISTER_BUSINESS_USER,
-  USER_LOGGEDIN,
 } from "./userTypes";
 
 const intitialState = {
@@ -15,10 +15,11 @@ const intitialState = {
   loggedin: false,
   loggedUser: {},
   loading: false,
-  loadingSingle: false,
+  loadingSingleUser: false,
   error: "",
   registerBusiness: "",
-  user: {},
+  registerClient: "",
+  business: {},
 };
 
 const userReducer = (state = intitialState, action) => {
@@ -41,9 +42,10 @@ const userReducer = (state = intitialState, action) => {
 
     case FETCH_LOGGED_USER_REQUEST:
       return { ...state, loadingSingle: true };
+
     case FETCH_LOGGED_USER_SUCCESS: {
       return {
-        loadingSingle: false,
+        loadingSingleUser: false,
         loggedUser: action.payload,
         error: "",
       };
@@ -56,12 +58,13 @@ const userReducer = (state = intitialState, action) => {
       };
     case REGISTER_BUSINESS_USER:
       return { ...state, registerBusiness: action.payload };
-   
+
     case CURRENT_USER_DETAILS:
       return {
         ...state,
         user: action.payload,
       };
+
     default:
       return state;
   }

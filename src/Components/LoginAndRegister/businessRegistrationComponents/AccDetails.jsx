@@ -1,7 +1,7 @@
 // Libraries
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FormControl, InputGroup } from "react-bootstrap";
+import { FormControl, InputGroup, Form } from "react-bootstrap";
 
 //  Styling
 import { TextField, IconButton, FormLabel } from "@mui/material";
@@ -22,7 +22,14 @@ import { Row, Col } from "react-bootstrap";
 
 const AccDetails = ({ d, f }) => {
   const dispatch = useDispatch();
-  const [accDetails, setAccDetails] = useState({});
+  const [accDetails, setAccDetails] = useState({
+    businessname: "",
+    password: "",
+    category: "",
+    email: "",
+    username: "",
+    url: "",
+  });
   const vpassword = useSelector((s) => s.helper.password_visible);
   const handleClickShowPassword = () => {
     dispatch({ type: "SHOW_PASSWORD", payload: !vpassword });
@@ -33,6 +40,22 @@ const AccDetails = ({ d, f }) => {
     f(accDetails);
   };
 
+  const shops = [
+    "Automotive",
+    "Electronics",
+    "Home & Garden",
+    "Restaurants & Dining",
+    "Travel",
+    "Sports & Outdoors",
+    "Office & Professional Services",
+    "Personal & Home Services",
+    "Health & Beauty",
+    "Butcher",
+    "Greengrocer",
+    "Baker",
+    "Hardware",
+    "Deli",
+  ];
   return (
     <div className="acc-details">
       <FormLabel component="legend">Basic Account Details</FormLabel>
@@ -58,10 +81,14 @@ const AccDetails = ({ d, f }) => {
             <FormControl
               placeholder="Enter email visible for customers"
               id="email"
+              type="email"
               value={accDetails.email}
               onChange={handleChange}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please choose a username.
+            </Form.Control.Feedback>
           </InputGroup>
         </Col>
         <Col md={12} lg={6}>
@@ -102,7 +129,6 @@ const AccDetails = ({ d, f }) => {
             />
           </InputGroup>
         </Col>
-
         <Col md={12} lg={6}>
           <InputGroup className="mb-3">
             <InputGroup.Text>
@@ -121,24 +147,12 @@ const AccDetails = ({ d, f }) => {
       <InputGroup className="mb-3">
         <InputGroup.Text>
           <BiWindowAlt className="mx-2" />
-          Url
+          https://buylocal.online/business/
         </InputGroup.Text>
         <FormControl
-          placeholder="Choose Unique Url, recommned same as business name"
+          placeholder="Choose Unique Url"
           id="url"
           value={accDetails.url}
-          onChange={handleChange}
-          required
-        />
-      </InputGroup>
-      <InputGroup className="mb-3">
-        <InputGroup.Text>
-          <BiBuildingHouse className="mx-2" /> About
-        </InputGroup.Text>
-        <FormControl
-          placeholder="Give short description of your business"
-          id="bio"
-          value={accDetails.bio}
           onChange={handleChange}
           required
         />
