@@ -27,8 +27,9 @@ const ClientDashboard = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedin = useSelector((s) => s.helper.loggedin);
-  const currentUser = useSelector((s) => s.user.loggedUser);
+  // const currentUser = useSelector((s) => s.user.loggedUser);
   const [show, setShow] = useState(true);
+  const [loggedinUser, setLoggedinUser] = useState({});
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -43,6 +44,7 @@ const ClientDashboard = () => {
         });
         let loggedUser = await response.data;
         await dispatch(fetchLoggedUserSuccess(loggedUser));
+        setLoggedinUser(loggedUser);
 
         console.log("fetch logged", loggedUser);
       } catch (error) {
@@ -61,22 +63,29 @@ const ClientDashboard = () => {
 
   return (
     <div>
-      {currentUser && (
-        <Row>
-          <Col>
-            <Card className="m-1">
-              <div className="profile-client-img">
-                <Image />
-              </div>
-              <h2>{currentUser.firstname}</h2>
-            </Card>
-          </Col>
-          <Col>
-            <Card className="m-1">
-              <h2>eseresr</h2>
-            </Card>
-          </Col>
-        </Row>
+      {loggedinUser && (
+        <Container className="client-profile">
+          <Row>
+            <Image src={loggedinUser.avatar} />
+          </Row>
+          <Row>
+            <Col>
+              <Card className="m-1">
+                <div className="profile-client-img">
+                  <Image />
+                </div>
+                <h2>
+                  {loggedinUser.firstname} {loggedinUser.lastname}
+                </h2>
+              </Card>
+            </Col>
+            <Col>
+              <Card className="m-1">
+                <h2>eseresr</h2>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       )}
     </div>
   );
