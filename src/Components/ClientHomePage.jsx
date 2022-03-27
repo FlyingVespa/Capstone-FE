@@ -5,8 +5,17 @@ import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 // styles
-import { Tabs, Tab, Box, Typography, Avatar } from "@mui/material";
-import { Container, Button, Col, Row, Card, Image } from "react-bootstrap";
+import { Box, Typography, Avatar } from "@mui/material";
+import {
+  Container,
+  Button,
+  Col,
+  Row,
+  Card,
+  Image,
+  Tabs,
+  Tab,
+} from "react-bootstrap";
 
 //components
 import {
@@ -16,7 +25,12 @@ import {
   fetchLoggedInClient,
 } from "../redux/users/userAction";
 
-import SidebarMenu from "./ClientHomePage/SidebarMenu";
+import PhoneIcon from "@mui/icons-material/Phone";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
+
+import SavedStores from "./ClientHomePage/SavedStores";
+import ShoppingList from "./ClientHomePage/ShoppingList";
 import "./ClientHomePage/clienthomepage.css";
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -29,6 +43,7 @@ const ClientDashboard = () => {
   const loggedin = useSelector((s) => s.helper.loggedin);
   // const currentUser = useSelector((s) => s.user.loggedUser);
   const [show, setShow] = useState(true);
+  const [key, setKey] = useState("home");
   const [loggedinUser, setLoggedinUser] = useState({});
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -61,33 +76,39 @@ const ClientDashboard = () => {
     fetchLoggedInClient();
   }, []);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <div>
+    <>
       {loggedinUser && (
         <Container className="client-profile">
-          <Row>
+          <Row className="header">
             <Image src={loggedinUser.avatar} />
+            <div>
+              <h2>
+                {loggedinUser.firstname} {loggedinUser.lastname}
+              </h2>
+              <p></p>
+            </div>
           </Row>
           <Row>
-            <Col>
-              <Card className="m-1">
-                <div className="profile-client-img">
-                  <Image />
-                </div>
-                <h2>
-                  {loggedinUser.firstname} {loggedinUser.lastname}
-                </h2>
-              </Card>
-            </Col>
-            <Col>
-              <Card className="m-1">
-                <h2>eseresr</h2>
-              </Card>
-            </Col>
+            <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
+              <Tab eventKey="home" title="Shopping List">
+                <ShoppingList />
+              </Tab>
+              <Tab eventKey="profile" title="Favorites">
+                <SavedStores />
+              </Tab>
+              <Tab eventKey="contact" title="Settings">
+                <SavedStores />
+              </Tab>
+            </Tabs>
           </Row>
         </Container>
       )}
-    </div>
+    </>
   );
 };
 

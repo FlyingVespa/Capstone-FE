@@ -191,8 +191,9 @@ body {
 }
 /* FOOTER */
 footer {
+  position: absolute;
+  width: 100%;
   clear: both;
-  height: 200px;
   width: 100%;
   bottom: 0;
   background: #eff2f9;
@@ -347,14 +348,6 @@ footer a {
     margin-bottom: 20px;
   }
 
-  footer {
-    position: relative;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    height: 100%;
-  }
-
   footer p {
     text-align: center;
   }
@@ -424,12 +417,5 @@ footer a {
   #btn-landing {
     margin-top: 0 !important;
     z-index: 3;
-  }
-  footer {
-    position: relative;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    height: 20vh;
   }
 }
