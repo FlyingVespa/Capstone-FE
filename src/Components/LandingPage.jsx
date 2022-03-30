@@ -9,7 +9,7 @@ import { Container, Col, Button, Row, Image } from "react-bootstrap";
 const LandingPage = () => {
   return (
     <>
-      <div className="landing page">
+      <div className="landing" id="page">
         <Container>
           <Row>
             <Col

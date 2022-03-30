@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";

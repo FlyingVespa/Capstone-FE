@@ -16,7 +16,7 @@ import Footer from "./Components/Footer";
 import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import DashboardPage from "./Components/DashboardPage";
 import ClientHomePage from "./Components/ClientHomePage";
-import BusinessListPage from "./Components/BusinessListPage";
+import GeneralPage from "./Components/GeneralPage";
 import BusinessProfilePage from "./Components/BusinessProfilePage";
 import BasicDocument from "./Components/ProfilePage/BasicDocument";
 import LocationDetails from "./Components/LoginAndRegister/businessRegistrationComponents/LocationDetails";
@@ -46,14 +46,14 @@ const App = () => {
             element={auth ? <DashboardPage /> : <UnAuthorized />}
           />
           <Route exact path="/" element={<LandingPage />} />
-          <Route exact path="/business" element={<BusinessListPage />} />
+          <Route exact path="/business" element={<GeneralPage />} />
           <Route
             exact
             path="/business/:userId"
             element={<BusinessProfilePage setUser={setUser} />}
           />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/business/me/pdfPage" element={<BasicDocument />} />
+          {/* <Route path="/business/me/pdfPage" element={<BasicDocument />} /> */}
         </Routes>
         <Footer />
       </Fragment>

@@ -24,6 +24,9 @@ import {
   fetchLoggedUserFailure,
   fetchLoggedInClient,
 } from "../redux/users/userAction";
+import { FiSettings, FiStar, FiShoppingCart } from "react-icons/fi";
+import { BsBookmarkHeart } from "react-icons/bs";
+import { RiBookmark3Line } from "react-icons/ri";
 
 import PhoneIcon from "@mui/icons-material/Phone";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -31,6 +34,7 @@ import PersonPinIcon from "@mui/icons-material/PersonPin";
 
 import SavedStores from "./ClientHomePage/SavedStores";
 import ShoppingList from "./ClientHomePage/ShoppingList";
+import ClientSettings from "./ClientHomePage/ClientSettings";
 import "./ClientHomePage/clienthomepage.css";
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -81,7 +85,7 @@ const ClientDashboard = () => {
   };
 
   return (
-    <>
+    <div className="page">
       {loggedinUser && (
         <Container className="client-profile">
           <Row className="header">
@@ -96,19 +100,22 @@ const ClientDashboard = () => {
           <Row>
             <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
               <Tab eventKey="home" title="Shopping List">
+                <FiShoppingCart />
                 <ShoppingList />
               </Tab>
-              <Tab eventKey="profile" title="Favorites">
+              <Tab eventKey="profile" title={"Favorites"}>
+                <RiBookmark3Line />
                 <SavedStores />
               </Tab>
               <Tab eventKey="contact" title="Settings">
-                <SavedStores />
+                <FiSettings />
+                <ClientSettings />
               </Tab>
             </Tabs>
           </Row>
         </Container>
       )}
-    </>
+    </div>
   );
 };
 

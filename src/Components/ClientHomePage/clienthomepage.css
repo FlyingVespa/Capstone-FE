@@ -45,35 +45,6 @@
   height: 100px;
 }
 
-/* CArousel */
-.carousel-item {
-  width: 100%;
-  padding-left: 140px;
-  padding-right: 140px;
-}
-
-.carousel-control-next span {
-  color: rgb(0, 0, 0) !important;
-  visibility: hidden;
-}
-.carousel-control-next-icon {
-  visibility: visible !important;
-}
-.carousel-control-prev-icon {
-  visibility: visible !important;
-}
-.carousel-control-prev {
-  color: red !important;
-  visibility: hidden;
-}
-.carousel-item p {
-  padding-top: 10px;
-  text-overflow: ellipsis;
-  max-width: 150px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 .shop-card p {
   overflow: hidden;
   white-space: nowrap;
@@ -118,10 +89,6 @@
 .client-profile > .row:nth-child(2) {
   margin-top: -50px;
   /* border: blue 25px solid; */
-}
-
-.client-profile > div:nth-child(1) {
-  text-align: center;
 }
 
 .client-profile img {
@@ -191,18 +158,39 @@
   padding: 10px;
   text-align: center;
 }
+
 .client-profile .tab-content > .active {
   visibility: visible;
   border: 2px solid red;
+}
+
+.client-profile .tab-content > .tab-pane .col {
+  text-align: right;
 }
 
 .storeFav h4 {
   text-align: center;
 }
 
-.favStoreCard {
-}
 .favStoreBtn {
   width: fit-content;
   border-radius: 20px;
+}
+
+.settingClient button {
+  border-radius: 50%;
+  background-color: rgb(233, 233, 233);
+  border: transparent;
+  color: black;
+}
+.settingClient button:hover {
+  background-color: rgb(109, 109, 109);
+}
+
+.settingClient .fa-hover-show,
+.settingClient:hover .fa-hover-hidden {
+  display: none;
+}
+.settingClient:hover .fa-hover-show {
+  display: inline-block;
 }

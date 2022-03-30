@@ -4,10 +4,10 @@ import ShoppingItem from "./ShoppingItem";
 
 const ShoppingList = () => {
   return (
-    <Container className="popularStores">
+    <Container className="shoppingList">
       <h4>Shopping List</h4>
       <Row>
-        <ShoppingList />
+        <ShoppingItem />
       </Row>
     </Container>
   );
