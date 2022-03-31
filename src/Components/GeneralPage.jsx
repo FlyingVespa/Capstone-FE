@@ -47,18 +47,6 @@ const GeneralPage = () => {
   useEffect(() => {
     fetchAllBusinessTypes();
   }, []);
-  const d = new Date();
-
-  let time = d.getHours().toString();
-  let minutes = d.getMinutes().toString();
-  let today = d.getDay();
-
-  const now = new Date();
-  // const def = now.toLocaleTimeString("default", {
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  // });
-  // console.log(def);
 
   return (
     <div id="page">
@@ -68,6 +56,7 @@ const GeneralPage = () => {
           <GeneralMap companies={companies} />
         </Row>
 
+        <h4 className="mt-2">Recently Added Businesses</h4>
         {companies && (
           <div className="row_posters">
             {companies.slice(0, 7).map((item, i) => (

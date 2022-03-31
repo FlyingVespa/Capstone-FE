@@ -67,12 +67,7 @@ const BusinessProfilePage = (props) => {
 
   useEffect(() => {
     fetchUserData(userId);
-    console.log(profileData.times);
   }, []);
-
-  useEffect(() => {
-    props.setUser(profileData);
-  }, [profileData]);
 
   useEffect(() => {
     fetchProducts();
@@ -122,7 +117,7 @@ const BusinessProfilePage = (props) => {
               <Products data={productData} profileData={profileData} />
             )}
             <hr />
-            <Map address={profileData.address} data={profileData} />
+            {profileData.address && <Map data={profileData} />}
             <hr />
           </Container>
         </>

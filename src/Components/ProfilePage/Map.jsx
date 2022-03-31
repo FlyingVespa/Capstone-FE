@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
+import { ScaleControl } from "react-leaflet";
 import {
   MapContainer,
   Marker,
@@ -6,35 +7,96 @@ import {
   Popup,
   ZoomControl,
   LayersControl,
+  FeatureGroup,
+  useMap,
+  useMapEvents,
+  useMapEvent,
+  AttributionControl,
 } from "react-leaflet";
 import { Container } from "react-bootstrap";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { BiMapPin } from "react-icons/bi";
+import LocateStore from "./LocateStore";
+import UserLocate from "./UserLocate";
 
-function Map({ address, data }) {
-  let latitude = address?.lat || 43;
-  let longitude = address?.lon || -79;
-
-  const defaultZoom = 16;
-  const defaultCenter = [latitude, longitude];
-  const businessLocation = [latitude, longitude];
-  const mapRef = useRef();
+function Map({ data }) {
+  const [userPosition, setUserPosition] = useState([]);
+  const defaultZoom = 10;
+  const businessLocation = [15, 38];
   const { BaseLayer } = LayersControl;
 
-  // function handleOnLocationFound(event) {
-  //   const { current = {} } = mapRef;
-  //   const { leafletElement: map } = current;
+  function SetBoundsRectangles() {
+    const map = useMap();
 
-  //   const latlng = event.latlng;
-  //   const radius = event.accuracy;
-  //   const circle = L.circle(latlng, radius);
+    let markerOptions1 = {
+      riseOnHover: true,
+      keyboard: true,
+    };
 
-  //   circle.addTo(map);
-  // }
-  // function handleOnLocationError(error) {
-  //   alert(`Unable to determine location: ${error.message}`);
-  // }
+    useEffect(() => {
+      let one = L.marker(businessLocation, markerOptions1)
+        .bindPopup(data.businessname)
+        .openPopup();
+      one.addTo(map);
+    }, []);
+    useEffect(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+
+      function showPosition(position) {
+        setUserPosition([position.coords.latitude, position.coords.longitude]);
+        let two = L.marker([
+          position.coords.latitude,
+          position.coords.longitude,
+        ]).bindTooltip("Your Location", markerOptions1);
+        two.addTo(map);
+      }
+    }, []);
+
+    return null;
+  }
+
+  function MapBounds() {
+    const map = useMap();
+    let bounds = L.latLngBounds(
+      L.latLng(businessLocation),
+      L.latLng(userPosition)
+    );
+    map.fitBounds([bounds]);
+  }
+
+  function LocateBusiness() {
+    const map = useMap();
+    const locateOptions = {
+      drawCircle: true,
+      position: "topleft",
+      setView: "once",
+      flyTo: true,
+      cacheLocation: true,
+      enableHighAccuracy: true,
+      showPopup: true,
+      initialZoomLevel: 12,
+    };
+
+    // L.control.flyTo().addTo(map);
+    let companymarker = L.marker(businessLocation);
+
+    companymarker.addTo(map);
+    map.flyTo(businessLocation, map.getZoom());
+    return null;
+  }
+
+  function MyComponent() {
+    const map = useMapEvent("click", () => {
+      map.setView([50.5, 30.5]);
+    });
+    return null;
+  }
+
   return (
     <>
       <Container>
@@ -43,10 +105,8 @@ function Map({ address, data }) {
           LOCATION
         </p>
         <MapContainer
-          ref={mapRef}
           fullscreenControl={true}
-          className="map"
-          center={defaultCenter}
+          center={businessLocation}
           zoom={defaultZoom}
           scrollWheelZoom={false}
           style={{ height: 400, width: "100%" }}
@@ -67,17 +127,26 @@ function Map({ address, data }) {
               />
             </BaseLayer>
           </LayersControl>
-          <Marker position={businessLocation}>
-            <Popup>
-              <p className="m-0 p-0 text-center fw-bold">{data.businessname}</p>
-              <p className="text-center m-0 p-0">
-                {address?.street_number}
-                {address?.street_name}, {address?.city}, {address?.state},{" "}
-                {address?.country}
-              </p>
-            </Popup>
-          </Marker>
-          <ZoomControl position="bottomright" />
+          {/* <LocateBusiness /> */}
+          {/* <MyComponent /> */}
+          {/* <SetBoundsRectangles /> */}
+          <ZoomControl position="topright" />
+          <ScaleControl position="bottomright" />
+          <Marker
+            position={[50.5, 30.5]}
+            eventHandlers={{
+              click: () => {
+                console.log("marker clicked");
+              },
+            }}
+          />
+          {/* <MapBounds /> */}
+          <UserLocate />
+          <LocateStore
+            title={`Locate Store`}
+            markerPosition={businessLocation}
+            description={data.businessname}
+          />
         </MapContainer>
       </Container>
     </>

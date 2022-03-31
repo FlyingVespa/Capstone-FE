@@ -1,9 +1,13 @@
 // Libraries
 // Styling
 import { Col, Row, Accordion } from "react-bootstrap";
-import { FiInfo } from "react-icons/fi";
+import { FiInfo, FiMapPin, FiPhone, FiMail } from "react-icons/fi";
+import { IoIosPin, IoMdMail, IoMdCall } from "react-icons/io";
 
 function About({ data, contact }) {
+  function sendEmail() {
+    window.location = `mailto:${data.companydetails.public_email}`;
+  }
   let windowWidth = window.innerWidth;
   return (
     <>
@@ -46,24 +50,33 @@ function About({ data, contact }) {
               </Row>
               <Row>
                 <Col>
+                  <IoIosPin />
                   <span>Address:</span>
                   <span className="mx-2">
-                    {data?.address.street_number} {data?.address.street_name},{" "}
-                    {data?.address.city}, {data?.address.state},{" "}
-                    {data?.address.country}
+                    {/* {data.address.street_number && (
+                      <>
+                        {data?.address?.street_number}{" "}
+                        {data?.address?.street_name}, {data?.address?.city},{" "}
+                        {data?.address?.state}, {data?.address?.country}
+                      </>
+                    )} */}
                   </span>
                 </Col>
               </Row>
               <Row>
                 <Col>
+                  <IoMdCall />
                   <span>Phone:</span>
-                  <span className="mx-2">{contact?.cell}</span>
+                  <span className="mx-2">{data?.companydetails?.mobile}</span>
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col onClick={sendEmail}>
+                  <IoMdMail />
                   <span>Email:</span>
-                  <span className="mx-2">{contact?.cell}</span>
+                  <span className="mx-2" on>
+                    {data?.companydetails?.public_email}
+                  </span>
                 </Col>
               </Row>
             </>

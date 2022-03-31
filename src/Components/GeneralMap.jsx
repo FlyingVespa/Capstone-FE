@@ -15,8 +15,17 @@ import {
   useMap,
 } from "react-leaflet";
 import { OpenStreetMapProvider, GeoSearchControl } from "leaflet-geosearch";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+
 import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css";
-import { Container, Button, FormControl, Form, Row } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  FormControl,
+  Form,
+  Row,
+  Nav,
+} from "react-bootstrap";
 import "leaflet/dist/leaflet.css";
 import ffff from "../assets/logo/shop.png";
 import L, { LeafletMouseEvent } from "leaflet";
@@ -55,52 +64,67 @@ function GeneralMap({ companies }) {
       drawCircle: true,
       position: "topleft",
       setView: "once",
+      outOfView: "setView",
       flyTo: true,
       cacheLocation: true,
       enableHighAccuracy: true,
       showPopup: true,
       initialZoomLevel: 15,
     };
-    return null;
     L.control.locate(locateOptions).addTo(map);
+
+    return null;
   }
 
-  const selectSearchCategory = (input) => {
-    const text = e.target.value.toLowerCase();
-    switch (searchCategory) {
-      case "business"
+  // const map = useMap();
+  // function getFeaturesInView() {
+  //   var features = [];
+  //   map.eachLayer(function (layer) {
+  //     if (layer instanceof L.Marker) {
+  //       if (map.getBounds().contains(layer.getLatLng())) {
+  //         features.push(layer.feature);
+  //       }
+  //     }
+  //   });
+  //   return features;
+  // }
 
-      setResult(
+  // const selectSearchCategory = (input) => {
+  //   const text = e.target.value.toLowerCase();
+  //   switch (searchCategory) {
+  //     case "business"
 
-        companies.filter(input).map(item =>{
-          
-        })
-        )
-        break;
-      case "product"
-      function filterProducts(e) {
-     
-        // console.log(productName[0]);
-        productName.forEach(function(product) {
-            const item = product.firstChild.textContent;
-            if (item.toLowerCase().indexOf(text) != -1) {
-                product.parentElement.parentElement.style.display = "block"
-            } else {
-                product.parentElement.parentElement.style.display = "none"
-            }
-        })
-    }
-        
-        break;
-      case "service"
-        
-        break;
-    
-      default:
-        break;
-    }
-   
-  };
+  //     setResult(
+
+  //       companies.filter(input).map(item =>{
+
+  //       })
+  //       )
+  //       break;
+  //     case "product"
+  //     function filterProducts(e) {
+
+  //       // console.log(productName[0]);
+  //       productName.forEach(function(product) {
+  //           const item = product.firstChild.textContent;
+  //           if (item.toLowerCase().indexOf(text) != -1) {
+  //               product.parentElement.parentElement.style.display = "block"
+  //           } else {
+  //               product.parentElement.parentElement.style.display = "none"
+  //           }
+  //       })
+  //   }
+
+  //       break;
+  //     case "service"
+
+  //       break;
+
+  //     default:
+  //       break;
+  //   }
+
+  // };
   function handleChange({ target }) {
     setSearchCategory(target.value);
   }
@@ -153,14 +177,22 @@ function GeneralMap({ companies }) {
             </BaseLayer>
           </LayersControl>
           <LocateMe />
+
           {companies &&
             companies.map((item) =>
               item.address.lat && item.address.lng ? (
                 <Marker position={[item.address.lat, item.address.lng]}>
-                  <Popup>I am here</Popup>
+                  <Popup>
+                    {item.businessname}
+                    {item.category}
+                    <Nav.Link href={`/business/${item._id}`}>
+                      Visit store
+                    </Nav.Link>
+                  </Popup>
                 </Marker>
               ) : null
             )}
+
           <SearchLocation provider={new OpenStreetMapProvider()} />
         </MapContainer>
       </Container>

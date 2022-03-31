@@ -1,10 +1,13 @@
+// libraries
 import React from "react";
-
-import { Card } from "react-bootstrap";
-
+import { useNavigate } from "react-router";
+// styling
+import { Card, Row, Col } from "react-bootstrap";
+// components
+import { TiLocationOutline } from "react-icons/ti";
 function BusinessCard({ item }) {
   const d = new Date();
-
+  let navigate = useNavigate();
   let time = d.getHours().toString();
   let minutes = d.getMinutes().toString();
   let today = d.getDay();
@@ -39,12 +42,20 @@ function BusinessCard({ item }) {
   // console.log(def);
 
   return (
-    <div className="row_poster">
+    <div
+      className="row_poster"
+      onClick={() => navigate(`/business/${item._id}`)}
+    >
       <img key={item._id} src={item.img_logo} />
-      <p className="text-center">{item.businessname}</p>
-      <p>{item.address?.city}</p>
-      <p>{item.tradingtimes[today].closed}</p>
-      <p>{checkifopen(18, 1)}</p>
+      <p>{item.businessname}</p>
+      {item.address.city && (
+        <div className="address">
+          <TiLocationOutline />
+          <p>{item.address?.city}</p>
+        </div>
+      )}
+      {/* <p>{item.tradingtimes[today].closed}</p> */}
+      {/* <p>{checkifopen(18, 1)}</p> */}
       {/* <p> {checkifopen(item, today)}</p>
                 <p> {item.tradingtimes[1].closed}</p>
                 <p> {}</p> */}
