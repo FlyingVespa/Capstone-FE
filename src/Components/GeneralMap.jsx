@@ -16,7 +16,7 @@ import {
 } from "react-leaflet";
 import { OpenStreetMapProvider, GeoSearchControl } from "leaflet-geosearch";
 import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, FormControl, Form, Row } from "react-bootstrap";
 import "leaflet/dist/leaflet.css";
 import ffff from "../assets/logo/shop.png";
 import L, { LeafletMouseEvent } from "leaflet";
@@ -25,41 +25,19 @@ import Locate from "leaflet.locatecontrol";
 
 const URL = process.env.REACT_APP_API_URL;
 
-function GeneralMap() {
+function GeneralMap({ companies }) {
   const defaultZoom = 14;
   const mapRef = useRef();
-
   const { BaseLayer } = LayersControl;
-
   const [defaultPosition, setDefaultPosition] = useState([
     15.6002793, 38.2611553,
   ]);
-  const [browserPosition, setbrowserPosition] = useState(null);
+  const [searchCategory, setSearchCategory] = useState("business");
 
   const loggedInUser = useSelector((s) => s.users.loggedUser);
   const loggedin = useSelector((s) => s.users.loggedin);
 
-  let options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
-
-  function success(pos) {
-    let crd = pos.coords;
-    console.log("Your current position is:");
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
-    console.log(`More or less ${crd.accuracy} meters.`);
-    setDefaultPosition([crd.latitude, crd.longitude]);
-  }
-
-  function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-    alert("Error in locating your location ", err.message);
-  }
-
-  const Search = () => {
+  const SearchLocation = () => {
     const map = useMap();
     useEffect(() => {
       const searchControl = new GeoSearchControl({
@@ -70,40 +48,65 @@ function GeneralMap() {
     }, []);
     return null;
   };
-  function LocationMarker() {
-    const [position, setPosition] = useState(null);
-    const map = useMapEvents({
-      click() {
-        map.locate();
-      },
-      locationfound(e) {
-        setPosition(e.latlng);
-        map.flyTo(e.latlng, map.getZoom(16));
-      },
-    });
 
-    return position === null ? null : (
-      <Marker position={position}>
-        <Popup>You are here</Popup>
-      </Marker>
-    );
-  }
-  function MyLocater() {
+  function LocateMe() {
     const map = useMap();
     const locateOptions = {
-      drawCircle: false,
+      drawCircle: true,
       position: "topleft",
-
       setView: "once",
       flyTo: true,
       cacheLocation: true,
       enableHighAccuracy: true,
+      showPopup: true,
+      initialZoomLevel: 15,
     };
-    L.control.locate(locateOptions).addTo(map);
-    const lc = new Locate(locateOptions);
-    lc.addTo(map);
-
     return null;
+    L.control.locate(locateOptions).addTo(map);
+  }
+
+  const selectSearchCategory = (input) => {
+    const text = e.target.value.toLowerCase();
+    switch (searchCategory) {
+      case "business"
+
+      setResult(
+
+        companies.filter(input).map(item =>{
+          
+        })
+        )
+        break;
+      case "product"
+      function filterProducts(e) {
+     
+        // console.log(productName[0]);
+        productName.forEach(function(product) {
+            const item = product.firstChild.textContent;
+            if (item.toLowerCase().indexOf(text) != -1) {
+                product.parentElement.parentElement.style.display = "block"
+            } else {
+                product.parentElement.parentElement.style.display = "none"
+            }
+        })
+    }
+        
+        break;
+      case "service"
+        
+        break;
+    
+      default:
+        break;
+    }
+   
+  };
+  function handleChange({ target }) {
+    setSearchCategory(target.value);
+  }
+  function handleSubmit(event) {
+    alert("Your favorite flavor is: " + searchCategory);
+    event.preventDefault();
   }
 
   return (
@@ -113,8 +116,22 @@ function GeneralMap() {
           <BiMapPin className="mx-2" />
           LOCATION
         </p>
-
-        <Button>LocateMe</Button>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Row>
+              <Form.Control type="text" />
+              <Form.Select value={searchCategory} onChange={handleChange}>
+                <option default value="product">
+                  Product
+                </option>
+                <option value="service">Service</option>
+                <option value="business">Business</option>
+              </Form.Select>
+              <Button>Search</Button>
+            </Row>
+          </Form.Group>
+        </Form>
+        <p>{searchCategory}</p>
         <MapContainer
           ref={mapRef}
           center={[48.856614, 2.3522219]}
@@ -135,12 +152,17 @@ function GeneralMap() {
               />
             </BaseLayer>
           </LayersControl>
-          <MyLocater />
-          {/* <Search provider={new OpenStreetMapProvider()} /> */}
+          <LocateMe />
+          {companies &&
+            companies.map((item) =>
+              item.address.lat && item.address.lng ? (
+                <Marker position={[item.address.lat, item.address.lng]}>
+                  <Popup>I am here</Popup>
+                </Marker>
+              ) : null
+            )}
+          <SearchLocation provider={new OpenStreetMapProvider()} />
         </MapContainer>
-        {browserPosition !== null && (
-          <p>Browser Positions:{browserPosition.toString()}</p>
-        )}
       </Container>
     </>
   );
