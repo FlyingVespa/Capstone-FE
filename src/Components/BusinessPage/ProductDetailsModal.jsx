@@ -1,14 +1,21 @@
 import React from "react";
-import { Modal, Image, Col, Row } from "react-bootstrap";
+import { Modal, Image, Col, Row, CloseButton } from "react-bootstrap";
 
 function ProductDetailsModal({ show, handleClose, product }) {
+  const s = {
+    width: "250px",
+    // height: "300px",
+    objectFit: "cover",
+    // border: "1px solid red",
+  };
+
   return (
     <Modal show={show} onHide={handleClose} className="product-details-modal">
-      <Row id="">
+      <Row>
+        <Image src={product.image} style={s} />
+
         <Col>
-          <Image src={product.image} />
-        </Col>
-        <Col>
+          <CloseButton onClick={handleClose} className="float-end m-2" />
           <Row>
             <h4>{product.name}</h4>
           </Row>

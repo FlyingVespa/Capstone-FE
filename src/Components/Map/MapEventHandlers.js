@@ -54,16 +54,24 @@ export function LocateStorePosition({ coordinates, businessName }) {
     });
   }, []);
   useEffect(() => {
-    L.easyButton("fa-shopping-basket", function () {
-      map.setView(coordinates, 12);
-      marker.addTo(map);
-    }).addTo(map);
+    L.easyButton(
+      "fa-shopping-basket",
+      function () {
+        map.setView(coordinates, 12);
+        marker.addTo(map);
+      },
+      "Locate Store Position"
+    ).addTo(map);
   }, []);
   useEffect(() => {
     let bb = [coordinates, position];
-    L.easyButton("fa-globe", function () {
-      map.fitBounds(bb);
-    }).addTo(map);
+    L.easyButton(
+      "fa-globe",
+      function () {
+        map.fitBounds(bb);
+      },
+      "Show user & store position"
+    ).addTo(map);
   }, []);
   return null;
 }

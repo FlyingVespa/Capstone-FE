@@ -10,16 +10,16 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // components
 // import { store, persistor } from "./redux/store";
-import LandingPage from "./Components/LandingPage";
-import NavBar from "./Components/NavBar";
-import Footer from "./Components/Footer";
-import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
-import DashboardPage from "./Components/DashboardPage";
-import ClientPage from "./Components/ClientPage";
-import HomePage from "./Components/HomePage";
-import BusinessPage from "./Components/BusinessPage";
-import UnAuthorized from "./Components/httpStatuses/401.jsx";
-import NotFound from "./Components/httpStatuses/404.jsx";
+import LandingPage from "./components/LandingPage";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import RegisterPage from "./components/LoginAndRegister/RegisterPage";
+import DashboardPage from "./components/DashboardPage";
+import ClientPage from "./components/ClientPage";
+import HomePage from "./components/HomePage";
+import BusinessPage from "./components/BusinessPage";
+import UnAuthorized from "./components/httpStatuses/401.jsx";
+import NotFound from "./components/httpStatuses/404.jsx";
 ///////////////////////////////////////////////////////////////////////////////////////
 const App = () => {
   let dispatch = useDispatch();
@@ -32,6 +32,7 @@ const App = () => {
     <div className="App">
       <Fragment>
         <NavBar URL={URL} user={user} />
+
         <Routes>
           <Route
             path="/profile/:userId"
@@ -52,7 +53,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/page_error/404" element={<NotFound />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </Fragment>
     </div>
   );

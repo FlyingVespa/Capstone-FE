@@ -43,8 +43,17 @@ function BusinessCard({ item }) {
 
   return (
     <>
-      <div class="card">
-        <div class="card-body">This is some text within a card body.</div>
+      <div onClick={() => navigate(`/business/${item._id}`)}>
+        <img key={item._id} src={item.img_logo} />
+        <div className="p-2">
+          <p>{item.businessname}</p>
+          {item.address.city && (
+            <div>
+              <TiLocationOutline />
+              <p>{item.address?.city}</p>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
@@ -52,28 +61,16 @@ function BusinessCard({ item }) {
 
 export default BusinessCard;
 
-// <div onClick={() => navigate(`/business/${item._id}`)}>
-//   <img key={item._id} src={item.img_logo} />
-//   <div className="p-2">
-//     <p>{item.businessname}</p>
-//     {item.address.city && (
-//       <div>
-//         <TiLocationOutline />
-//         <p>{item.address?.city}</p>
-//       </div>
-//     )}
-//   </div>
 {
-  /* <p>{item.tradingtimes[today].closed}</p> */
-}
-{
-  /* <p>{checkifopen(18, 1)}</p> */
-}
-{
-  /* <p> {checkifopen(item, today)}</p>
+  /* 
+ <p>{item.tradingtimes[today].closed}</p> 
+
+  <p>{checkifopen(18, 1)}</p>
+
+<p> {checkifopen(item, today)}</p>
                 <p> {item.tradingtimes[1].closed}</p>
-                <p> {}</p> */
-}
-{
-  /* </div> */
+                <p> {}</p> 
+
+ </div> 
+ */
 }

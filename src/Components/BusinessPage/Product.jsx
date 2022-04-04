@@ -16,6 +16,7 @@ function Product({ product, index }) {
             key={index}
             src={product.image}
             className="avatar-product medium"
+            alt={product.name}
           />
         );
       case "low":
@@ -66,13 +67,19 @@ function Product({ product, index }) {
           {/* <Image key={index} src={product.image} id="avatar-product" /> */}
 
           <div className="product-item">
-            <span>{product.name}</span>
-            <span>---</span>
-            {product.status === "out-of-stock" ? (
-              <span>out of stock</span>
-            ) : (
-              <span>$ {product.price}</span>
-            )}
+            <Col xs={7}>
+              <span>{product.name}</span>
+            </Col>
+            <Col xs={2}>
+              <span>---</span>
+            </Col>
+            <Col xs={3}>
+              {product.status === "out-of-stock" ? (
+                <span>out of stock</span>
+              ) : (
+                <span>$ {product.price}</span>
+              )}
+            </Col>
           </div>
         </div>
       </Col>

@@ -41,7 +41,7 @@ const HomePage = () => {
       const res = await axios.get(`${URL}/business`);
       let data = await res.data;
       await setCompanies(data);
-      console.log("companies", companies);
+      console.log("companies", res.data);
     } catch (error) {
       console.log(error);
     }
@@ -51,105 +51,53 @@ const HomePage = () => {
   }, []);
 
   return (
-    <Container className="justify-content-center">
+    <Container className="home page">
       <Row>
         <Col md={4}>
           <Row>
-            {/* <Form onSubmit={handleSubmit}>
-                <Form.Group>
+            *{" "}
+            <Form onSubmit={handleSubmit}>
+              <Form.Group>
                 <Row>
-                    <Col>
+                  <Col>
                     <Form.Control
-                    type="text"
-                    className="mx-2"
-                    id="main-search-input"
+                      type="text"
+                      className="mx-2"
+                      id="main-search-input"
                     />
                     <ButtonGroup className="mx-2">
-                    {radios.map((radio, idx) => (
-                      <ToggleButton
-                            key={idx}
-                            id={`radio-${idx}`}
-                            type="radio"
-                            variant={"outline-success"}
-                            name="radio"
-                            value={radio.value}
-                            checked={radioValue === radio.value}
-                            onChange={(e) =>
-                              setRadioValue(e.currentTarget.value)
-                            }
-                            >
-                            {radio.name}
-                            </ToggleButton>
-                            ))}
-                            </ButtonGroup>
-                            <Button id="main-search-btn">Search</Button>
-                            </Col>
-                            </Row>
-                            </Form.Group>
-                          </Form> */}
+                      {radios.map((radio, idx) => (
+                        <ToggleButton
+                          key={idx}
+                          id={`radio-${idx}`}
+                          type="radio"
+                          variant={"outline-success"}
+                          name="radio"
+                          value={radio.value}
+                          checked={radioValue === radio.value}
+                          onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        >
+                          {radio.name}
+                        </ToggleButton>
+                      ))}
+                    </ButtonGroup>
+                    <Button id="main-search-btn">Search</Button>
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Form>
           </Row>
           <h4 className="mt-2">Recently Added Businesses</h4>
           <Row id="businesscard">
-            {/* {companies && (
-            <>
-            {companies.slice(0, 7).map((item, i) => (
-              <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard item={item} />
-              </Col>
-              ))}
+            {companies && (
+              <>
+                {companies.slice(0, 7).map((item, i) => (
+                  <Col lg={6} md={12} id="buscard" className="p-1">
+                    <BusinessCard item={item} />
+                  </Col>
+                ))}
               </>
-            )} */}
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
-            <Col lg={6} md={12} id="buscard" className="p-1">
-              <BusinessCard />
-            </Col>
+            )}
           </Row>
         </Col>
         <Col md={8}>
@@ -167,6 +115,7 @@ const HomePage = () => {
               <Card.Link href="#">Another Link</Card.Link>
             </Card.Body>
           </Card>
+
           {/* <GeneralMap companies={companies} searchCategory={searchCategory} /> */}
         </Col>
       </Row>

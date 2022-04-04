@@ -3,15 +3,15 @@
 
 html,
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
+  height: calc(100vh - 4rem);
   scroll-behavior: smooth;
-  /* position: relative; */
-  padding: 0;
-  min-height: calc(100vh - 3rem);
   background-color: rgb(232, 232, 232);
+}
+
+body {
+  display: block;
+  justify-content: center;
+  align-items: center;
 }
 /* LANDING PAGE */
 
@@ -95,55 +95,6 @@ body {
 
 /* NAVBAR--------------------------------------- */
 
-.navbar-top {
-  top: 0;
-  position: fixed;
-  width: 100vw;
-  margin: 0;
-  /* background-color: #94ce89;
-  transition: 0.6s;
-  transition: ease-in-out;
-  z-index: 1;
-  display: flex;
-  height: 70px; */
-}
-
-.navbar-top .navbar-nav {
-  display: flex;
-  position: relative;
-  align-items: center;
-}
-
-.navbar-top .navbar-nav a {
-  padding: 10px;
-}
-
-.navbar-top:hover {
-  background-color: #ffffff;
-  -webkit-transition: background-color 0.3s ease-out;
-  -moz-transition: background-color 0.3s ease-out;
-  -o-transition: background-color 0.3s ease-out;
-  transition: background-color 0.3s ease-out;
-}
-
-.navbar-brand {
-  align-items: center;
-  font-weight: 700;
-  display: flex;
-  padding: 0;
-  margin: 0;
-}
-
-#avatar {
-  padding: 7px !important;
-  background-color: #ffffff;
-  margin-right: 1rem;
-}
-
-#navbar-icon {
-  font-weight: 700;
-}
-
 /* NAVBAR END */
 
 .searchField {
@@ -209,12 +160,13 @@ body {
 /* FOOTER */
 
 footer {
+  clear: both;
   position: absolute;
-  bottom: 0;
+  height: 200px;
   width: 100%;
-  height: 2.5rem;
   background: #6cf;
   padding: 15px;
+  bottom: 0;
 }
 
 #js,

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 // Styling
 import { Container, Navbar, Nav, Button, Offcanvas } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 // Componets
 import logo from "../assets/logo/shop.png";
@@ -15,30 +15,6 @@ import SelectRegisterModal from "./LoginAndRegister/SelectRegisterModal";
 
 let initialState = { email: "test@business.com", password: "1234" };
 let windowLocation = window.location.href;
-
-function OffCanvasExample({ name, ...props }) {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  return (
-    <>
-      <Button variant="primary" onClick={handleShow} className="me-2">
-        {name}
-      </Button>
-      <Offcanvas show={show} onHide={handleClose} {...props}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
-        </Offcanvas.Body>
-      </Offcanvas>
-    </>
-  );
-}
 
 const NavBar = ({ URL, user }) => {
   const dispatch = useDispatch();
@@ -115,20 +91,7 @@ const NavBar = ({ URL, user }) => {
 
   return (
     <>
-      <>
-        <OffCanvasExample placement="top" name="top" />
-
-        <Offcanvas show={show}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            Some text as placeholder. In real life you can have the elements you
-            have chosen. Like, text, images, lists, etc.
-          </Offcanvas.Body>
-        </Offcanvas>
-      </>
-      {/* <Navbar className="navbar-top" expand="lg">
+      <Navbar className="navbar-top" expand="lg">
         <Container>
           <Navbar.Brand href="/">
             <Avatar id="avatar" src={logo} />
@@ -147,7 +110,7 @@ const NavBar = ({ URL, user }) => {
               >
                 GoogleMaps
               </Nav.Link>
-              {helper.loggedin ? (
+              {/* {helper.loggedin ? (
                 <>
                   {windowWidth < 992 ? (
                     <StandardNav logoutUser={logoutUser} currentUser={user} />
@@ -161,23 +124,20 @@ const NavBar = ({ URL, user }) => {
                     </>
                   )}
                 </>
-              ) : (
-                <>
-                  <Nav.Link
-                    className="mx-2"
-                    variant="contained"
-                    color="success"
-                    size="medium"
-                    onClick={handleLoginModal}
-                    exact
-                  >
-                    Login
-                  </Nav.Link>
-                  <Nav.Link onClick={handleRegisterModal}>
-                    Register Free
-                  </Nav.Link>
-                </>
-              )}
+              ) : ( */}
+              <>
+                <Nav.Link
+                  className="mx-2"
+                  variant="contained"
+                  color="success"
+                  size="medium"
+                  onClick={handleLoginModal}
+                  exact
+                >
+                  Login
+                </Nav.Link>
+                <Nav.Link onClick={handleRegisterModal}>Register Free</Nav.Link>
+              </>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -192,7 +152,7 @@ const NavBar = ({ URL, user }) => {
       <SelectRegisterModal
         show={helper.registerModal}
         handleClose={handleRegisterModal}
-      /> */}
+      />
     </>
   );
 };

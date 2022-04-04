@@ -31,19 +31,6 @@ const BusinessPage = (props) => {
   const [productData, setProductData] = useState();
   const [loading, setLoading] = useState(false);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get(
-        `${URL}/business/${profileData._id}/products`
-      );
-      let data = await res.data;
-      setProductData(data);
-      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const fetchUserData = async (profileId) => {
     setLoading(true);
     try {
@@ -51,9 +38,10 @@ const BusinessPage = (props) => {
         withCredentials: true,
       });
       let data = await res.data;
-      setProfileData(data);
+      await setProfileData(res.data);
       dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
       console.log("ProfileData:", data);
+      setLoading(false);
     } catch (error) {
       console.error(error.message);
       navigate("/page_error/404");
@@ -61,13 +49,31 @@ const BusinessPage = (props) => {
     setLoading(false);
   };
 
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${URL}/business/${profileData._id}/products`
+      );
+      let data = await res.data;
+      await setProductData(res.data);
+      console.log("products", res.data);
+
+      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: data });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchUserData(userId);
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     fetchProducts();
-  }, [profileData._id]);
+  }, [profileData]);
 
   let logoImg = profileData.img_logo
     ? profileData.img_logo
@@ -105,7 +111,7 @@ const BusinessPage = (props) => {
             </Container>
             {/* SERVICES */}
             <ServicesSection data={profileData} />
-            {productData && productData.length > 0 && (
+            {productData && (
               <ProductsSection data={productData} profileData={profileData} />
             )}
             <hr />
