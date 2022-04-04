@@ -12,6 +12,7 @@ import {
   Button,
   ButtonGroup,
   ToggleButton,
+  Card,
 } from "react-bootstrap";
 import "./carousel.css";
 import GeneralMap from "./HomePage/GeneralMap";
@@ -50,24 +51,22 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div id="page">
-      <Container className="homepage mt-5">
-        <h1></h1>
-        <Row>
-          <Col xs={5}>
-            <Row>
-              <Form onSubmit={handleSubmit}>
+    <Container className="justify-content-center">
+      <Row>
+        <Col md={4}>
+          <Row>
+            {/* <Form onSubmit={handleSubmit}>
                 <Form.Group>
-                  <Row>
+                <Row>
                     <Col>
-                      <Form.Control
-                        type="text"
-                        className="mx-2"
-                        id="main-search-input"
-                      />
-                      <ButtonGroup className="mx-2">
-                        {radios.map((radio, idx) => (
-                          <ToggleButton
+                    <Form.Control
+                    type="text"
+                    className="mx-2"
+                    id="main-search-input"
+                    />
+                    <ButtonGroup className="mx-2">
+                    {radios.map((radio, idx) => (
+                      <ToggleButton
                             key={idx}
                             id={`radio-${idx}`}
                             type="radio"
@@ -78,36 +77,100 @@ const HomePage = () => {
                             onChange={(e) =>
                               setRadioValue(e.currentTarget.value)
                             }
-                          >
+                            >
                             {radio.name}
-                          </ToggleButton>
-                        ))}
-                      </ButtonGroup>
-                      <Button id="main-search-btn">Search</Button>
-                    </Col>
-                  </Row>
-                </Form.Group>
-              </Form>
-            </Row>
-            <h4 className="mt-2">Recently Added Businesses</h4>
-            <Row id="businesscard">
-              {companies && (
-                <>
-                  {companies.slice(0, 7).map((item, i) => (
-                    <Col lg={6} md={12} id="buscard" className="p-1">
-                      <BusinessCard item={item} />
-                    </Col>
-                  ))}
-                </>
-              )}
-            </Row>
-          </Col>
-          <Col xs={7}>
-            {/* <GeneralMap companies={companies} searchCategory={searchCategory} /> */}
-          </Col>
-        </Row>
-      </Container>
-    </div>
+                            </ToggleButton>
+                            ))}
+                            </ButtonGroup>
+                            <Button id="main-search-btn">Search</Button>
+                            </Col>
+                            </Row>
+                            </Form.Group>
+                          </Form> */}
+          </Row>
+          <h4 className="mt-2">Recently Added Businesses</h4>
+          <Row id="businesscard">
+            {/* {companies && (
+            <>
+            {companies.slice(0, 7).map((item, i) => (
+              <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard item={item} />
+              </Col>
+              ))}
+              </>
+            )} */}
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+            <Col lg={6} md={12} id="buscard" className="p-1">
+              <BusinessCard />
+            </Col>
+          </Row>
+        </Col>
+        <Col md={8}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Card Title</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">
+                Card Subtitle
+              </Card.Subtitle>
+              <Card.Text>
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </Card.Text>
+              <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href="#">Another Link</Card.Link>
+            </Card.Body>
+          </Card>
+          {/* <GeneralMap companies={companies} searchCategory={searchCategory} /> */}
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

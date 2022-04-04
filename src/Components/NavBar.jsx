@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 // Styling
-import { Container, Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav, Button, Offcanvas } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
 // Componets
@@ -15,6 +15,30 @@ import SelectRegisterModal from "./LoginAndRegister/SelectRegisterModal";
 
 let initialState = { email: "test@business.com", password: "1234" };
 let windowLocation = window.location.href;
+
+function OffCanvasExample({ name, ...props }) {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <Button variant="primary" onClick={handleShow} className="me-2">
+        {name}
+      </Button>
+      <Offcanvas show={show} onHide={handleClose} {...props}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
+  );
+}
 
 const NavBar = ({ URL, user }) => {
   const dispatch = useDispatch();
@@ -84,10 +108,27 @@ const NavBar = ({ URL, user }) => {
 
   let windowWidth = window.innerWidth;
   let ccc = windowLocation.toString();
+  const [show, setShow] = useState(false);
+
+  const handleCloses = () => setShow(false);
+  const handleShows = () => setShow(true);
 
   return (
     <>
-      <Navbar className="navbar-top" expand="lg">
+      <>
+        <OffCanvasExample placement="top" name="top" />
+
+        <Offcanvas show={show}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            Some text as placeholder. In real life you can have the elements you
+            have chosen. Like, text, images, lists, etc.
+          </Offcanvas.Body>
+        </Offcanvas>
+      </>
+      {/* <Navbar className="navbar-top" expand="lg">
         <Container>
           <Navbar.Brand href="/">
             <Avatar id="avatar" src={logo} />
@@ -151,7 +192,7 @@ const NavBar = ({ URL, user }) => {
       <SelectRegisterModal
         show={helper.registerModal}
         handleClose={handleRegisterModal}
-      />
+      /> */}
     </>
   );
 };
