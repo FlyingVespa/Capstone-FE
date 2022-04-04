@@ -15,13 +15,11 @@ import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
 import DashboardPage from "./Components/DashboardPage";
-import ClientHomePage from "./Components/ClientHomePage";
-import GeneralPage from "./Components/GeneralPage";
-import BusinessProfilePage from "./Components/BusinessProfilePage";
-import BasicDocument from "./Components/ProfilePage/BasicDocument";
-import LocationDetails from "./Components/LoginAndRegister/businessRegistrationComponents/LocationDetails";
-
+import ClientPage from "./Components/ClientPage";
+import HomePage from "./Components/HomePage";
+import BusinessPage from "./Components/BusinessPage";
 import UnAuthorized from "./Components/httpStatuses/401.jsx";
+import NotFound from "./Components/httpStatuses/404.jsx";
 ///////////////////////////////////////////////////////////////////////////////////////
 const App = () => {
   let dispatch = useDispatch();
@@ -35,25 +33,24 @@ const App = () => {
       <Fragment>
         <NavBar URL={URL} user={user} />
         <Routes>
-          <Route path="/autocomplete" exact element={<LocationDetails />} />
           <Route
             path="/profile/:userId"
             exact
-            element={auth ? <ClientHomePage /> : <UnAuthorized />}
+            element={auth ? <ClientPage /> : <UnAuthorized />}
           />
           <Route
             path="/business/me/dashboard"
             element={auth ? <DashboardPage /> : <UnAuthorized />}
           />
           <Route exact path="/" element={<LandingPage />} />
-          <Route exact path="/business" element={<GeneralPage />} />
+          <Route exact path="/business" element={<HomePage />} />
           <Route
             exact
             path="/business/:userId"
-            element={<BusinessProfilePage setUser={setUser} />}
+            element={<BusinessPage setUser={setUser} />}
           />
           <Route path="/register" element={<RegisterPage />} />
-          {/* <Route path="/business/me/pdfPage" element={<BasicDocument />} /> */}
+          <Route path="/page_error/404" element={<NotFound />} />
         </Routes>
         <Footer />
       </Fragment>

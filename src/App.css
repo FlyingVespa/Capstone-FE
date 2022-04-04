@@ -3,10 +3,11 @@
 
 html,
 body {
-  height: 100%;
   margin: 0;
-  border: 2px blue dashed;
   scroll-behavior: smooth;
+  position: relative;
+  min-height: calc(100vh - 3rem);
+  background-color: rgb(232, 232, 232);
 }
 /* LANDING PAGE */
 
@@ -200,10 +201,10 @@ body {
 /* FOOTER */
 
 footer {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
-  height: fit-content;
+  height: 2.5rem;
   background: #6cf;
   padding: 15px;
 }
@@ -255,6 +256,53 @@ footer {
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
+/* ===================================================== */
+/* HOMEPAGE */
+
+#businesscard {
+  display: flex;
+  padding: none !important;
+  height: 100%;
+  overflow-y: scroll;
+}
+#buscard {
+  /* width: 300px; */
+}
+#page > .container > .row {
+  background-color: #fff;
+  border-radius: 10px;
+  margin: 1rem 0;
+  padding: 15px;
+}
+.general-map {
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.homepage > .row:nth-child(2) > form > div > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+#page > div > div:nth-child(2) > form > div > div > div {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+#main-search-btn {
+  width: 10rem;
+}
+#main-search-input {
+  width: 16rem;
+}
+#main-search-input:focus {
+  width: 90%;
+  transition: width 1.5s 0s ease-in-out;
+}
+
 @media only screen and (min-width: 600px) {
   .landing {
     background-color: #4842c9;
@@ -372,4 +420,28 @@ footer {
     margin-top: 0 !important;
     z-index: 3;
   }
+}
+
+#results-list-container {
+  background-color: white;
+  padding: 10px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 300px;
+  max-height: 50%;
+  overflow-y: auto;
+}
+
+#results-list-container h4 {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+#results-list {
+  list-style: none;
+}
+
+#results-list li {
+  margin-bottom: 10px;
 }
