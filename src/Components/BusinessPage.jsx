@@ -6,8 +6,6 @@ import { useParams, useNavigate } from "react-router-dom";
 // Styling
 import { Image, Container, Row, Col, Badge } from "react-bootstrap";
 
-import logoImgPlaceholder from "../assets/placeholder/logo.png";
-
 import "./BusinessPage/businessPage.css";
 
 import ProductsSection from "./BusinessPage/ProductsSection";
@@ -16,6 +14,8 @@ import AboutSection from "./BusinessPage/AboutSection";
 import TradingHoursSection from "./BusinessPage/TradingHoursSection";
 import ServicesSection from "./BusinessPage/ServicesSection";
 import PageLoad from "./Loaders/PageLoad";
+import HeaderSection from "./BusinessPage/HeaderSection";
+import LoaderSpinner from "./Loaders/LoaderSpinner";
 
 const BusinessPage = (props) => {
   const URL = process.env.REACT_APP_API_URL;
@@ -75,47 +75,35 @@ const BusinessPage = (props) => {
     fetchProducts();
   }, [profileData]);
 
-  let logoImg = profileData.img_logo
-    ? profileData.img_logo
-    : logoImgPlaceholder;
-
-  const { businessname, category } = profileData;
   return (
     <>
       {loading && <PageLoad />}
 
       {profileData !== undefined && !loading && (
         <>
+          <HeaderSection data={profileData} />
           <Container className="profile page">
-            <Row className="my-4 header">
-              <Col xs={3} md={2} lg={1}>
-                <Image src={logoImg} id="img-logo" />
-              </Col>
-              <Col xs={9} md={10} lg={11}>
-                <h2 className="text-businessname">{businessname}</h2>
-                <span className="text-category">{category}</span>
-                <Badge className="mx-2">Open</Badge>
-              </Col>
-            </Row>
-            <hr />
-            <Container>
-              <Row className="my-2">
-                {/* ABOUT */}
-                {profileData && <AboutSection data={profileData} />}
-                {/* TRADING HOURS */}
-                <TradingHoursSection
-                  data={profileData.tradingtimes}
-                  date={profileData}
-                />
-              </Row>
-            </Container>
-            {/* SERVICES */}
-            <ServicesSection data={profileData} />
-            {productData && (
-              <ProductsSection data={productData} profileData={profileData} />
+            {profileData && (
+              <>
+                <Container>
+                  <Row>
+                    <AboutSection data={profileData} />
+                    <TradingHoursSection
+                      data={profileData.tradingtimes}
+                      date={profileData}
+                    />
+                  </Row>
+                </Container>
+                <ServicesSection data={profileData} />
+                {productData && (
+                  <ProductsSection
+                    data={productData}
+                    profileData={profileData}
+                  />
+                )}
+              </>
             )}
             <hr />
-            {/* MAP */}
             {profileData.address && <MapSection data={profileData} />}
             <hr />
           </Container>

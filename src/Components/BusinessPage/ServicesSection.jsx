@@ -23,15 +23,11 @@ function ServicesSection({ data }) {
                   {data.companydetails &&
                     data.companydetails.store_services.map((item, i) => {
                       return (
-                        <Col key={i} xs={12} sm={6} md={4} xl={3}>
-                          <Container>
-                            <div className="product-container">
-                              <div className="product-item">
-                                <span>{item}</span>
-                              </div>
-                            </div>
-                          </Container>
-                        </Col>
+                        <div className="service-container">
+                          <div className="service-item">
+                            <span>{item}</span>
+                          </div>
+                        </div>
                       );
                     })}
                 </Row>
@@ -46,19 +42,15 @@ function ServicesSection({ data }) {
               <FiTool className="mx-2" />
               SERVICES
             </p>
-            <Row>
+            <Row style={{ marginLeft: "10px" }}>
               {data.companydetails &&
                 data.companydetails.store_services.map((item, i) => {
                   return (
-                    <Col key={i} xs={6} sm={6} md={4} xl={3}>
-                      <Container>
-                        <div className="product-container">
-                          <div className="product-item">
-                            <span>{item}</span>
-                          </div>
-                        </div>
-                      </Container>
-                    </Col>
+                    <div className="service-container">
+                      <div className="service-item">
+                        <span>{item}</span>
+                      </div>
+                    </div>
                   );
                 })}
             </Row>

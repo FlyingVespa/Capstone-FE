@@ -67,11 +67,11 @@ function Product({ product, index }) {
           {/* <Image key={index} src={product.image} id="avatar-product" /> */}
 
           <div className="product-item">
-            <Col xs={7}>
+            <Col xs={8}>
               <span>{product.name}</span>
             </Col>
-            <Col xs={2}>
-              <span>---</span>
+            <Col xs={1}>
+              <span>-</span>
             </Col>
             <Col xs={3}>
               {product.status === "out-of-stock" ? (

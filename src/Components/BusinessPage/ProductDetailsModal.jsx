@@ -10,10 +10,15 @@ function ProductDetailsModal({ show, handleClose, product }) {
   };
 
   return (
-    <Modal show={show} onHide={handleClose} className="product-details-modal">
+    <Modal
+      show={show}
+      onHide={handleClose}
+      className="product-details-modal"
+      size="lg"
+      centered
+    >
       <Row>
         <Image src={product.image} style={s} />
-
         <Col>
           <CloseButton onClick={handleClose} className="float-end m-2" />
           <Row>
@@ -23,8 +28,10 @@ function ProductDetailsModal({ show, handleClose, product }) {
             <p>{product.description}</p>
           </Row>
           <Row>
-            <span>{product.price}</span>
-            <span>{product.units}</span>
+            <Col className="text-end">
+              <span>$ {product.price}</span>
+              <span> / {product.units}</span>
+            </Col>
           </Row>
         </Col>
       </Row>
