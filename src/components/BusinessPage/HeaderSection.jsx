@@ -7,19 +7,7 @@ function HeaderSection({ data }) {
 
   let logoImg = data.img_logo ? data.img_logo : logoImgPlaceholder;
 
-  let d = new Date();
-  let today = d.getDay();
-  console.log("today", today);
-
   let trading = data.tradingtimes;
-  const checkIfOpen = () => {
-    let openingHour = data.tradingtimes[today].open;
-    let closingHour = data.tradingtimes[today].close;
-
-    openingHour.split(":");
-    if (data.tradingtimes[today].trading === true) {
-    }
-  };
 
   return (
     <div>

@@ -90,7 +90,7 @@ const BusinessPage = (props) => {
                     <AboutSection data={profileData} />
                     <TradingHoursSection
                       data={profileData.tradingtimes}
-                      date={profileData}
+                      test={profileData}
                     />
                   </Row>
                 </Container>
