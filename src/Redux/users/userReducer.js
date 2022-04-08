@@ -8,6 +8,7 @@ import {
   FETCH_USERS_REQUEST,
   FETCH_USERS_SUCCESS,
   REGISTER_BUSINESS_USER,
+  STORE_TRADING_STATUS,
 } from "./userTypes";
 
 const intitialState = {
@@ -20,6 +21,7 @@ const intitialState = {
   registerBusiness: "",
   registerClient: "",
   business: {},
+  storeTradingStatus: false,
 };
 
 const userReducer = (state = intitialState, action) => {
@@ -63,6 +65,11 @@ const userReducer = (state = intitialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case STORE_TRADING_STATUS:
+      return {
+        ...state,
+        storeTradingStatus: action.payload,
       };
 
     default:

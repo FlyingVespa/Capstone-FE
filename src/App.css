@@ -3,15 +3,35 @@
 
 html,
 body {
-  height: calc(100vh - 4rem);
+  height: calc(100vh -4rem);
   scroll-behavior: smooth;
-  background-color: rgb(232, 232, 232);
+  background: linear-gradient(
+      245deg,
+      rgba(147, 183, 190, 1) 0%,
+      rgba(241, 255, 250, 1) 90%
+    )
+    no-repeat;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 body {
   display: block;
   justify-content: center;
   align-items: center;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.561);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #dfdfdf;
+  border-radius: 10px;
 }
 /* LANDING PAGE */
 
@@ -218,15 +238,28 @@ footer {
 /* Small devices (portrait tablets and large phones, 600px and up) */
 /* ===================================================== */
 /* HOMEPAGE */
+#tsts {
+  width: max-content;
+  object-fit: cover;
+}
+.business_card {
+  width: 100%;
+  border: none;
+}
 
+.business_card_image {
+  /* width: 100px; */
+  /* height: 100px; */
+  object-fit: cover;
+}
 #businesscard {
   display: flex;
   padding: none !important;
   height: 100%;
   overflow-y: scroll;
 }
-#buscard {
-  /* width: 300px; */
+#trading_status_img {
+  width: 50px;
 }
 #page > .container > .row {
   background-color: #fff;
@@ -282,6 +315,10 @@ footer {
 #main-search-input:focus {
   width: 90%;
   transition: width 1.5s 0s ease-in-out;
+}
+.card-horizontal {
+  display: flex;
+  flex: 1 1 auto;
 }
 
 @media only screen and (min-width: 600px) {

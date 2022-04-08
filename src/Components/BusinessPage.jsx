@@ -81,13 +81,14 @@ const BusinessPage = (props) => {
 
       {profileData !== undefined && !loading && (
         <>
-          <HeaderSection data={profileData} />
           <Container className="profile page">
+            <HeaderSection data={profileData} />
             {profileData && (
               <>
                 <Container>
                   <Row>
                     <AboutSection data={profileData} />
+
                     <TradingHoursSection
                       data={profileData.tradingtimes}
                       test={profileData}
@@ -95,7 +96,7 @@ const BusinessPage = (props) => {
                   </Row>
                 </Container>
                 <ServicesSection data={profileData} />
-                {productData && (
+                {productData && productData.length > 0 && (
                   <ProductsSection
                     data={productData}
                     profileData={profileData}
@@ -103,9 +104,7 @@ const BusinessPage = (props) => {
                 )}
               </>
             )}
-            <hr />
             {profileData.address && <MapSection data={profileData} />}
-            <hr />
           </Container>
         </>
       )}

@@ -13,15 +13,18 @@ import {
   ButtonGroup,
   ToggleButton,
   Card,
+  Spinner,
 } from "react-bootstrap";
 import "./carousel.css";
 import GeneralMap from "./HomePage/GeneralMap";
 import BusinessCard from "./HomePage/BusinessCard";
+import BusinessCardLoader from "./Loaders/BusinessCardLoader";
 const HomePage = () => {
   const URL = process.env.REACT_APP_API_URL;
   const [companies, setCompanies] = useState([]);
   const [searchCategory, setSearchCategory] = useState("business");
   const [radioValue, setRadioValue] = useState("1");
+  const [loading, setLoading] = useState(false);
 
   const radios = [
     { name: "Product", value: "product" },
@@ -37,13 +40,16 @@ const HomePage = () => {
   }
 
   const fetchAllBusinessTypes = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(`${URL}/business`);
       let data = await res.data;
       await setCompanies(data);
+      setLoading(false);
       console.log("companies", res.data);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -89,14 +95,18 @@ const HomePage = () => {
           </Row>
           <h4 className="mt-2">Recently Added Businesses</h4>
           <Row id="businesscard">
-            {companies && (
-              <>
-                {companies.slice(0, 7).map((item, i) => (
-                  <Col lg={6} md={12} id="buscard" className="p-1">
-                    <BusinessCard item={item} />
-                  </Col>
-                ))}
-              </>
+            {loading ? (
+              <BusinessCardLoader />
+            ) : (
+              companies && (
+                <>
+                  {companies.slice(0, 7).map((item, i) => (
+                    <Col id="tsts">
+                      <BusinessCard item={item} />
+                    </Col>
+                  ))}
+                </>
+              )
             )}
           </Row>
         </Col>

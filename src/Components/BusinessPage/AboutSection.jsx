@@ -27,7 +27,7 @@ function About({ data, contact }) {
                   <Row>
                     <Col xs={5}>
                       <Image src={phoneIcon} alt="map-icon" id="about-icon" />{" "}
-                      <span>Phone:</span>
+                      <span id="about-info">Phone:</span>
                     </Col>
                     <Col xs={7}>
                       <span>{data?.companydetails?.mobile}</span>
@@ -40,7 +40,7 @@ function About({ data, contact }) {
                         alt="map-icon"
                         id="about-icon"
                       />{" "}
-                      <span>Email:</span>
+                      <span id="about-info">Email:</span>
                     </Col>
                     <Col xs={7}>
                       <span>{data?.companydetails?.public_email}</span>
@@ -49,7 +49,7 @@ function About({ data, contact }) {
                   <Row>
                     <Col xs={5}>
                       <Image src={mapIcon} alt="map-icon" id="about-icon" />
-                      <span>Address:</span>
+                      <span id="about-info">Address:</span>
                     </Col>
                     <Col xs={7}>
                       {data.address !== undefined ? (
@@ -71,7 +71,7 @@ function About({ data, contact }) {
               </Accordion.Item>
             </Accordion>
           ) : (
-            <>
+            <div className="about-section">
               <Row>
                 <p>
                   <FiInfo className="mx-2" />
@@ -79,39 +79,45 @@ function About({ data, contact }) {
                 </p>
                 <p>{data.companydetails?.bio}</p>
               </Row>
-              <Row>
-                <Col>
-                  <Image src={mapIcon} alt="map-icon" id="about-icon" />
-                  <span>Address:</span>
-                  {data.address !== undefined ? (
-                    <span className="mx-2">
-                      {data?.address?.street_number}{" "}
-                      {data?.address?.street_name}, {data?.address?.city},{" "}
-                      {data?.address?.state}, {data?.address?.country}
+              <div className="about-section-info">
+                <Row>
+                  <Col>
+                    <Image src={mapIcon} alt="map-icon" id="about-icon" />
+                    <span id="about-info">Address:</span>
+                    {data.address !== undefined ? (
+                      <span className="mx-2">
+                        {data?.address?.street_number}{" "}
+                        {data?.address?.street_name}, {data?.address?.city},{" "}
+                        {data?.address?.state}, {data?.address?.country}
+                      </span>
+                    ) : (
+                      <span>unknown</span>
+                    )}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Image src={phoneIcon} alt="phone-icon" id="about-icon" />
+                    <span id="about-info">Phone:</span>
+                    <span className="mx-2">{data?.companydetails?.mobile}</span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col onClick={sendEmail}>
+                    <Image
+                      src={envelopeIcon}
+                      alt="email-icon"
+                      id="about-icon"
+                    />
+                    <span id="about-info">Email:</span>
+                    <span className="mx-2" on>
+                      {data?.companydetails?.public_email}
                     </span>
-                  ) : (
-                    <span>unknown</span>
-                  )}
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Image src={phoneIcon} alt="phone-icon" id="about-icon" />
-                  <span>Phone:</span>
-                  <span className="mx-2">{data?.companydetails?.mobile}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col onClick={sendEmail}>
-                  <Image src={envelopeIcon} alt="email-icon" id="about-icon" />
-                  <span>Email:</span>
-                  <span className="mx-2" on>
-                    {data?.companydetails?.public_email}
-                  </span>
-                </Col>
-              </Row>
-              {/* <hr /> */}
-            </>
+                  </Col>
+                </Row>
+                {/* <hr /> */}
+              </div>
+            </div>
           )}
         </Col>
       )}

@@ -18,7 +18,7 @@ function MapSection({ data }) {
 
   return (
     <>
-      <Container>
+      <Container className="map-section">
         <p>
           <BiMapPin className="mx-2" />
           LOCATION

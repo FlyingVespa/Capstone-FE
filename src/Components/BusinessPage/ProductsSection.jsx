@@ -81,7 +81,6 @@ const ProductsSection = ({ data, profileData }) => {
       ) : (
         <>
           <Container className="product-section">
-            <hr />
             <p>
               <BiShoppingBag className="mx-2" />
               PRODUCT LIST
@@ -117,6 +116,7 @@ const ProductsSection = ({ data, profileData }) => {
                   </>
                 ))}
             </Row>
+            <hr />
           </Container>
         </>
       )}
