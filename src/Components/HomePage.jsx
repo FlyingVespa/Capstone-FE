@@ -22,9 +22,12 @@ import BusinessCardLoader from "./Loaders/BusinessCardLoader";
 const HomePage = () => {
   const URL = process.env.REACT_APP_API_URL;
   const [companies, setCompanies] = useState([]);
+  const [showOpen, setShowOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState("business");
-  const [radioValue, setRadioValue] = useState("1");
+  const [filterData, setFilteredData] = useState([]);
+  const [radioValue, setRadioValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checkValue, setCheckValue] = useState(false);
 
   const radios = [
     { name: "Product", value: "product" },
@@ -56,54 +59,113 @@ const HomePage = () => {
     fetchAllBusinessTypes();
   }, []);
 
+  async function handleClick(checkbox) {
+    if (checkbox.checked) {
+      await setShowOpen(true);
+      // companies.filter( item => )
+    } else {
+      await setShowOpen(false);
+    }
+  }
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // const selectSet = (item) => {
+  //   let value
+  //   switch (radioValue) {
+  //     case 'business':
+  //      value = item.businessname
+
+  //       break;
+  //     case 'product':
+  //       value = item.products.name
+  //     case 'service':
+
+  //       value = item.companydetails.services
+  //       break;
+  //     default:
+
+  //   }
+
+  const checkService = async (item) => {
+    setFilteredData(
+      companies.filter(
+        item.companydetails.store_services.map((service) =>
+          service.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      )
+    );
+  };
+
+  useEffect(() => {
+    console.log("data props", searchQuery);
+    // setFilteredData(
+    //   companies.filter((item) =>
+    //     item.businessname.toLowerCase().includes(searchQuery.toLowerCase())
+    //   )
+    // );
+
+    setFilteredData(
+      companies.filter((item) =>
+        item.companydetails.store_services.map((service) =>
+          service.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      )
+    );
+  }, [searchQuery, companies]);
+
   return (
-    <Container className="home page">
+    <Container className="homepage">
+      <Row>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group>
+            <Row>
+              <Col>
+                <Form.Control
+                  type="text"
+                  className="mx-2"
+                  id="main-search-input"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <ButtonGroup className="mx-2">
+                  {radios.map((radio, idx) => (
+                    <ToggleButton
+                      key={idx}
+                      id={`radio-${idx}`}
+                      type="radio"
+                      variant={"outline-success"}
+                      name="radio"
+                      value={radio.value}
+                      checked={radioValue === radio.value}
+                      onChange={(e) => setRadioValue(e.currentTarget.value)}
+                    >
+                      {radio.name}
+                    </ToggleButton>
+                  ))}
+                </ButtonGroup>
+                <Button id="main-search-btn">Search</Button>
+              </Col>
+            </Row>
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check
+                type="checkbox"
+                value={showOpen}
+                onClick={(e) => handleClick(e.target)}
+              />
+            </Form.Group>
+          </Form.Group>
+        </Form>
+      </Row>
       <Row>
         <Col md={4}>
-          <Row>
-            *{" "}
-            <Form onSubmit={handleSubmit}>
-              <Form.Group>
-                <Row>
-                  <Col>
-                    <Form.Control
-                      type="text"
-                      className="mx-2"
-                      id="main-search-input"
-                    />
-                    <ButtonGroup className="mx-2">
-                      {radios.map((radio, idx) => (
-                        <ToggleButton
-                          key={idx}
-                          id={`radio-${idx}`}
-                          type="radio"
-                          variant={"outline-success"}
-                          name="radio"
-                          value={radio.value}
-                          checked={radioValue === radio.value}
-                          onChange={(e) => setRadioValue(e.currentTarget.value)}
-                        >
-                          {radio.name}
-                        </ToggleButton>
-                      ))}
-                    </ButtonGroup>
-                    <Button id="main-search-btn">Search</Button>
-                  </Col>
-                </Row>
-              </Form.Group>
-            </Form>
-          </Row>
-          <h4 className="mt-2">Recently Added Businesses</h4>
           <Row id="businesscard">
             {loading ? (
               <BusinessCardLoader />
             ) : (
               companies && (
                 <>
-                  {companies.slice(0, 7).map((item, i) => (
-                    <Col id="tsts">
-                      <BusinessCard item={item} />
-                    </Col>
+                  {filterData.map((item, i) => (
+                    <BusinessCard item={item} checked={showOpen} />
                   ))}
                 </>
               )
@@ -111,22 +173,7 @@ const HomePage = () => {
           </Row>
         </Col>
         <Col md={8}>
-          <Card>
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                Card Subtitle
-              </Card.Subtitle>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-              <Card.Link href="#">Another Link</Card.Link>
-            </Card.Body>
-          </Card>
-
-          {/* <GeneralMap companies={companies} searchCategory={searchCategory} /> */}
+          <GeneralMap companies={companies} searchCategory={searchCategory} />
         </Col>
       </Row>
     </Container>

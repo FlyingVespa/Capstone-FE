@@ -2,12 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 // styling
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Badge, Image } from "react-bootstrap";
 // components
 import { TiLocationOutline } from "react-icons/ti";
 import openSign from "../../assets/images/open.png";
 import closeSign from "../../assets/images/closed.png";
-function BusinessCard({ item }) {
+
+function BusinessCard({ item, checked }) {
   const [tradingStatus, setTradingStatus] = useState(false);
 
   let navigate = useNavigate();
@@ -35,77 +36,59 @@ function BusinessCard({ item }) {
       }
     }
   };
+
   useEffect(() => {
     checkIfOpen();
   }, []);
 
   return (
     <>
-      {/* <Card
-        style={{ width: "100%" }}
-        className="business_card"
-        onClick={() => navigate(`/business/${item._id}`)}
-      >
-        <Card.Img variant="top" key={item._id} src={item.img_logo} />
-        <Card.Body>
-          <Card.Title>
-            {" "}
-            <p>{item.businessname}</p>
-          </Card.Title>
-          <Card.Text>
-            <div className="p-2">
-              {item.address.city && (
-                <div>
-                  <TiLocationOutline />
-                  <p>{item.address?.city}</p>
-                </div>
-              )}
+      {!checked ? (
+        <Row className="m-1">
+          <Card id="business_card">
+            <div className="card-horizontal">
               {tradingStatus ? (
-                <img src={openSign} id="trading_status_img" />
+                <Badge id="trading_status_badge" bg="success">
+                  <Image src={openSign} />
+                </Badge>
               ) : (
-                <img src={closeSign} id="trading_status_img" />
+                <Badge id="trading_status_badge" bg="warning">
+                  <Image src={closeSign} />
+                </Badge>
               )}
+              <Col lg={5}>
+                <Image src={item.img_logo} alt={item.businessname + "image"} />
+              </Col>
+              <Col lg={7}>
+                <h5>{item.businessname}</h5>
+                <p>{item.category}</p>
+                <p>{item.address?.city}</p>
+              </Col>
             </div>
-          </Card.Text>
+          </Card>
+        </Row>
+      ) : tradingStatus ? (
+        <Row className="m-1">
+          <Card id="business_card">
+            <div className="card-horizontal">
+              <Badge id="trading_status_badge" bg="success">
+                <Image src={openSign} />
+              </Badge>
 
-        </Card.Body>
-      </Card> */}
-      <div class="row">
-        <div class="card">
-          <div class="card-horizontal">
-            <div class="col-4">
-              <img
-                class=""
-                src="http://via.placeholder.com/300x180"
-                alt="Card image cap"
-              />
+              <Col lg={5}>
+                <Image src={item.img_logo} alt={item.businessname + "image"} />
+              </Col>
+              <Col lg={7}>
+                <h5>{item.businessname}</h5>
+                <p>{item.category}</p>
+                <p>{item.address?.city}</p>
+              </Col>
             </div>
-            <div class="col-8">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+          </Card>
+        </Row>
+      ) : null}
     </>
   );
 }
 
 export default BusinessCard;
-
-{
-  /* 
- <p>{item.tradingtimes[today].closed}</p> 
-
-  <p>{checkifopen(18, 1)}</p>
-
-<p> {checkifopen(item, today)}</p>
-                <p> {item.tradingtimes[1].closed}</p>
-                <p> {}</p> 
-
- </div> 
- */
-}

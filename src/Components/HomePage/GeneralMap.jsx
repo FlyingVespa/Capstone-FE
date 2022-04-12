@@ -21,7 +21,7 @@ import * as MapEventHandlers from "../Map/MapEventHandlers";
 const URL = process.env.REACT_APP_API_URL;
 
 function GeneralMap({ companies, searchCategory }) {
-  const defaultZoom = 14;
+  const defaultZoom = 12;
   const { BaseLayer } = LayersControl;
   const loggedInUser = useSelector((s) => s.users.loggedUser);
   const loggedin = useSelector((s) => s.users.loggedin);
@@ -35,7 +35,7 @@ function GeneralMap({ companies, searchCategory }) {
           animate={true}
           fullscreenControl={true}
           zoomControl={false}
-          style={{ height: 600, width: "100%" }}
+          className="general-map-1"
         >
           <LayersControl>
             <BaseLayer checked name="Standard">
@@ -56,8 +56,8 @@ function GeneralMap({ companies, searchCategory }) {
               item.address.lat && item.address.lng ? (
                 <Marker position={[item.address.lat, item.address.lng]}>
                   <Popup>
-                    {item.businessname}
-                    {item.category}
+                    <span>{item.businessname}</span>
+                    <span>{item.category}</span>
                     <Nav.Link href={`/business/${item._id}`}>
                       Visit store
                     </Nav.Link>
