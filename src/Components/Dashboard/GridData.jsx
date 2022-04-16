@@ -23,14 +23,14 @@ import TableLoader from "../Loaders/TableLoader";
 import { defaultColumnDef, convertDate, chipColor } from "./agGridOptions,";
 const URL = process.env.REACT_APP_API_URL;
 ////////////////////////////////////////////////////////////////////////////////////
-const GridData = ({ userData }) => {
+const GridData = ({ data }) => {
   let params = useParams();
   let dispatch = useDispatch();
 
   const addProductModal = useSelector((s) => s.helper.addProductModal);
   const updateProductModal = useSelector((s) => s.helper.updateProductModal);
 
-  const userId = userData._id;
+  const userId = data._id;
   const [formData, setFormData] = useState({});
   const [rowData, setRowData] = useState([]);
   const [loading, setLoading] = useState();
@@ -152,9 +152,9 @@ const GridData = ({ userData }) => {
       await fd.append("name", selectedFile.name);
       await fd.append("product", formData.product);
       await fd.append("units", formData.units);
-      await fd.append("desc", formData.desc);
+      await fd.append("description", formData.description);
       await fd.append("price", formData.price);
-      await fd.append("stocklevel", formData.stocklevel);
+      await fd.append("status", formData.status);
       await updateProduct(userId, fd);
       // getProductData(userId, setRowData);
       handleUpdateModal();
@@ -172,9 +172,9 @@ const GridData = ({ userData }) => {
       await fd.append("name", selectedFile.name);
       await fd.append("product", formData.product);
       await fd.append("units", formData.units);
-      await fd.append("desc", formData.desc);
+      await fd.append("description", formData.description);
       await fd.append("price", formData.price);
-      await fd.append("stocklevel", formData.stocklevel);
+      await fd.append("status", formData.status);
       await addProduct(userId, fd);
       // getProductData(userId, setRowData);
       handleAddModal();
@@ -213,25 +213,24 @@ const GridData = ({ userData }) => {
           <AddIcon /> Add New Item
         </Fab>
       </div>
-      {loading !== true ? (
-        <>
-          <AddProductModal
-            open={addProductModal}
-            handleAddModal={handleAddModal}
-            data={formData}
-            onChange={onChange}
-            handleFormSubmit={handleAddProduct}
-            fileChangedHandler={fileChangedHandler}
-          />
-          <UpdateProductModal
-            open={updateProductModal}
-            handleUpdateModal={handleUpdateModal}
-            data={formData}
-            onChange={onChange}
-            handleFormSubmit={handleUpdateProduct}
-            fileChangedHandler={fileChangedHandler}
-          />
-
+      <>
+        <AddProductModal
+          open={addProductModal}
+          handleAddModal={handleAddModal}
+          data={formData}
+          onChange={onChange}
+          handleFormSubmit={handleAddProduct}
+          fileChangedHandler={fileChangedHandler}
+        />
+        <UpdateProductModal
+          open={updateProductModal}
+          handleUpdateModal={handleUpdateModal}
+          data={formData}
+          onChange={onChange}
+          handleFormSubmit={handleUpdateProduct}
+          fileChangedHandler={fileChangedHandler}
+        />
+        {data && (
           <div className="table-container">
             <AgGridReact
               rowDragManaged={true}
@@ -240,8 +239,6 @@ const GridData = ({ userData }) => {
               defaultColDef={defaultColumnDef}
               onGridReady={onGridReady}
               enableRangeSelection={true}
-              // pagination={true}
-              // paginationPageSize={12}
               frameworkComponents={{
                 customLoadingOverlay: TableLoader,
               }}
@@ -250,20 +247,18 @@ const GridData = ({ userData }) => {
             >
               <AgGridColumn field="#" rowDrag={true}></AgGridColumn>
               <AgGridColumn field="image"></AgGridColumn>
-              <AgGridColumn field="product"></AgGridColumn>
+              <AgGridColumn field="name"></AgGridColumn>
               <AgGridColumn field="units"></AgGridColumn>
-              <AgGridColumn field="desc"></AgGridColumn>
+              <AgGridColumn field="description"></AgGridColumn>
               <AgGridColumn field="price"></AgGridColumn>
-              <AgGridColumn field="stocklevel"></AgGridColumn>
+              <AgGridColumn field="status"></AgGridColumn>
               <AgGridColumn field="createdAt"></AgGridColumn>
               <AgGridColumn field="updatedAt"></AgGridColumn>
               <AgGridColumn field="actions"></AgGridColumn>
             </AgGridReact>
           </div>
-        </>
-      ) : (
-        <TableLoader />
-      )}
+        )}
+      </>
     </div>
   );
 };

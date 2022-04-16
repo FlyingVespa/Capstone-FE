@@ -12,6 +12,7 @@ import LoginModal from "./LoginAndRegister/LoginModal";
 import DropDownSettings from "./Navigation/DropDownSettings";
 import StandardNav from "./Navigation/StandardNav";
 import SelectRegisterModal from "./LoginAndRegister/SelectRegisterModal";
+import MenuCanvas from "./MenuCanvas";
 
 let initialState = { email: "test@business.com", password: "1234" };
 let windowLocation = window.location.href;
@@ -21,6 +22,11 @@ const NavBar = ({ URL, user }) => {
   let navigate = useNavigate();
   const helper = useSelector((s) => s.helper);
   const [loginDetails, setLoginDetails] = useState(initialState);
+
+  const [showOffCanvasMenu, setShowOffCanvasMenu] = useState(false);
+
+  const handleClose = () => setShowOffCanvasMenu(false);
+  const handleShow = () => setShowOffCanvasMenu(true);
 
   const logoutUser = () => {
     try {
@@ -84,10 +90,6 @@ const NavBar = ({ URL, user }) => {
 
   let windowWidth = window.innerWidth;
   let ccc = windowLocation.toString();
-  const [show, setShow] = useState(false);
-
-  const handleCloses = () => setShow(false);
-  const handleShows = () => setShow(true);
 
   return (
     <>
@@ -101,15 +103,8 @@ const NavBar = ({ URL, user }) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" />
             <Nav>
-              <Nav.Link
-                href="/autocomplete"
-                className="mx-2"
-                variant="contained"
-                color="success"
-                size="medium"
-              >
-                GoogleMaps
-              </Nav.Link>
+              <Button onClick={handleShow}> OffCanvas</Button>
+              <MenuCanvas show={showOffCanvasMenu} handleClose={handleClose} />
               {/* {helper.loggedin ? (
                 <>
                   {windowWidth < 992 ? (
@@ -136,7 +131,9 @@ const NavBar = ({ URL, user }) => {
                 >
                   Login
                 </Nav.Link>
-                <Nav.Link onClick={handleRegisterModal}>Register Free</Nav.Link>
+                <Nav.Link onClick={() => navigate("/register")}>
+                  Register Free
+                </Nav.Link>
               </>
             </Nav>
           </Navbar.Collapse>

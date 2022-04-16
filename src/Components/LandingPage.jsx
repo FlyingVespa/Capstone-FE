@@ -1,7 +1,13 @@
 // Libraries
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import cities from "cities.json";
+import SelectSearch from "react-select-search";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 // styling
+import "react-select-search/style.css";
 import shopping from "../assets/images/shopping.svg";
 import "./ClientHomePage/clienthomepage.css";
 import {
@@ -24,6 +30,8 @@ const LandingPage = () => {
   const [filterData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("messina");
   const [ops, setOptions] = useState([]);
+
+  const searchInput = useRef();
   const style0 = {
     display: "flex",
     border: " 2px solid red",
@@ -71,6 +79,14 @@ const LandingPage = () => {
   }, [searchQuery, data]);
   console.log(filterData);
   console.log(ops);
+
+  let navigate = useNavigate();
+  // const setF = () => {
+  //   if (searchQuery.length > 2) {
+  //     set;
+  //   }
+  // };
+
   return (
     <div style={style0}>
       <Container>
@@ -103,20 +119,18 @@ const LandingPage = () => {
                   className="m-2"
                 />
               </Col>
-              <input
-                list="datalistOptions"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+
               <Form.Select id="datalistOptions">
-                {filterData.length > 0 && filterData.length < 5 ? (
-                  filterData.map((item) => <p>{item.name}</p>)
-                ) : (
-                  <p>null</p>
-                )}
+                {filterData.length > 0 &&
+                  filterData
+                    .slice(0, 8)
+                    .map((item) => <option>{item.name}</option>)}
               </Form.Select>
+
               <Col md>
-                <Button>Shop Locally</Button>
+                <Button onClick={() => navigate("/business")}>
+                  Shop Locally
+                </Button>
               </Col>
             </Row>
           </Col>

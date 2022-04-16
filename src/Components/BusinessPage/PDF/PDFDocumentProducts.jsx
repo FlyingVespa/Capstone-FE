@@ -163,7 +163,7 @@ const quicksandFont =
   "https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap";
 Font.register({ family: "QuickSand", src: quicksandFont });
 
-const PDFDocumentProducts = ({ data, profile, date }) => {
+const PDFDocumentProducts = ({ data, date, products }) => {
   if (data !== undefined && data != null) {
     return (
       <Document>
@@ -172,8 +172,8 @@ const PDFDocumentProducts = ({ data, profile, date }) => {
           <View style={styles.mainheader} wrap={false}>
             <Image src={shoplogo} style={styles.shoplogo}></Image>
             <View style={styles.companyheader}>
-              <Text style={styles.title}>{profile.businessname}</Text>
-              <Text style={styles.subheadertitle}>{profile.category}</Text>
+              <Text style={styles.title}>{data.businessname}</Text>
+              <Text style={styles.subheadertitle}>{data.category}</Text>
             </View>
             <View style={styles.contactcontainer}>
               <View style={styles.contactdetails}>
@@ -183,21 +183,21 @@ const PDFDocumentProducts = ({ data, profile, date }) => {
               </View>
               <View style={styles.contactdetailsinfo}>
                 <Text style={styles.contactdetails}>
-                  {profile.companydetails?.mobile}
+                  {data.companydetails?.mobile}
                 </Text>
-                {profile.address.streetname ? (
+                {data.address.streetname ? (
                   <Text style={styles.contactdetails}>
-                    {profile.companydetails?.address?.street_number}
-                    {profile.companydetails?.address?.street_name}
-                    {profile.companydetails?.address?.city}
-                    {profile.companydetails?.address?.country}
+                    {data.companydetails?.address?.street_number}
+                    {data.companydetails?.address?.street_name}
+                    {data.companydetails?.address?.city}
+                    {data.companydetails?.address?.country}
                   </Text>
                 ) : (
                   <Text style={styles.contactdetails}>Unknown</Text>
                 )}
 
                 <Text style={styles.contactdetails}>
-                  {profile.companydetails?.public_email}
+                  {data.companydetails?.public_email}
                 </Text>
               </View>
             </View>
@@ -213,7 +213,7 @@ const PDFDocumentProducts = ({ data, profile, date }) => {
             </View>
 
             {data &&
-              data.map((item, i) => {
+              products.map((item, i) => {
                 return (
                   <View key={i} style={[styles.row, styles.items]} wrap={false}>
                     <Text style={styles.row1}>{item.name}</Text>
@@ -227,7 +227,7 @@ const PDFDocumentProducts = ({ data, profile, date }) => {
           </View>
           <Text style={styles.border}></Text>
           <Text style={styles.businessstamp}>
-            buylocal.online/business/${profile._id}{" "}
+            buylocal.online/business/${data._id}{" "}
           </Text>
           <Text
             style={styles.pageNumber}

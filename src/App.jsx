@@ -20,6 +20,8 @@ import HomePage from "./components/HomePage";
 import BusinessPage from "./components/BusinessPage";
 import UnAuthorized from "./components/httpStatuses/401.jsx";
 import NotFound from "./components/httpStatuses/404.jsx";
+import BusinessRegistration from "./components/LoginAndRegister/BusinessRegistration";
+import ClientRegistration from "./components/LoginAndRegister/ClientRegistration";
 ///////////////////////////////////////////////////////////////////////////////////////
 const App = () => {
   let dispatch = useDispatch();
@@ -51,6 +53,8 @@ const App = () => {
             element={<BusinessPage setUser={setUser} />}
           />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/register/business" element={<BusinessRegistration />} />
+          <Route path="/register/client" element={<ClientRegistration />} />
           <Route path="/page_error/404" element={<NotFound />} />
         </Routes>
         {/* <Footer /> */}

@@ -10,22 +10,20 @@ import PDFDocumentProducts from "./PDFDocumentProducts";
 import pdfIcon from "../../../assets/icons/file-pdf.svg";
 
 //** Componet **//
-const PDFDocumentRequest = ({ productsData, profileData, date }) => {
+const PDFDocumentRequest = ({ data, products }) => {
   const [error, setError] = useState(false);
   const [requesting, setRequesting] = useState(false);
-  const [pdfData, setPdfData] = useState(productsData);
-  const [profile, setProfileData] = useState(profileData);
+  const [pdfData, setPdfData] = useState(products);
   const [attempts, setAttempts] = useState(0);
 
-  const productDetails = useSelector((s) => s.product.allProducts);
   const currentBusinessProfile = useSelector((s) => s.users.user);
-
+  const getDate = new Date();
+  const date = getDate.toLocaleString();
   const fetchData = () => {
     setRequesting(true);
     try {
       console.log("Requesting DocumentData");
-      setPdfData(productDetails);
-      setProfileData(currentBusinessProfile);
+      setPdfData(products);
       setRequesting(false);
     } catch (error) {
       setError(true);
@@ -57,9 +55,9 @@ const PDFDocumentRequest = ({ productsData, profileData, date }) => {
       {requesting && <span>retrieving document...</span>}
       {pdfData && !requesting && !error && (
         <PDFDocumentProvider
-          title={`"Pricelist" + ${profile.businessname}`}
+          title={`"Pricelist" + ${data.businessname}`}
           document={
-            <PDFDocumentProducts data={pdfData} profile={profile} date={date} />
+            <PDFDocumentProducts data={data} products={pdfData} date={date} />
           }
         />
       )}

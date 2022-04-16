@@ -5,7 +5,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { useSelector, useDispatch } from "react-redux";
 import { StepLabel, Step, Typography, Stepper, Container } from "@mui/material";
 import { SnackbarProvider, useSnackbar } from "notistack";
-import { Button, Form, Alert } from "react-bootstrap";
+import { Button, Form, Alert, Col } from "react-bootstrap";
 import "./LoginRegistration.css";
 import CompanyDetails from "./businessRegistrationComponents/CompanytDetails";
 import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
@@ -145,91 +145,93 @@ const BusinessRegistration = () => {
   };
 
   return (
-    <Container className="my-2 p-0" id="stepper-business">
-      <h2>Regsiter Business Account</h2>
-      <div>
-        <Stepper activeStep={helper} className="my-3">
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
-            return (
-              <Step key={label} {...stepProps} onClick={handleStep(index)}>
-                {window.innerWidth > 990 ? (
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                ) : (
-                  <StepLabel {...labelProps}></StepLabel>
-                )}
-              </Step>
-            );
-          })}
-        </Stepper>
+    <>
+      <Container id="stepper-business">
+        <h2>Regsiter Business Account</h2>
+        <div>
+          <Stepper activeStep={helper} className="my-3">
+            {steps.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+              return (
+                <Step key={label} {...stepProps} onClick={handleStep(index)}>
+                  {window.innerWidth > 990 ? (
+                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  ) : (
+                    <StepLabel {...labelProps}></StepLabel>
+                  )}
+                </Step>
+              );
+            })}
+          </Stepper>
 
-        <Form ref={myForm}>
-          {helper === steps.length ? (
-            <>
-              <Typography>
-                All steps completed - ready to finalize registration
-              </Typography>
-              <Button
-                className="mx-auto"
-                variant="primary"
-                onClick={registerBusiness}
-              >
-                REGISTER
-              </Button>
-              <Button
-                className="mx-auto"
-                variant="danger"
-                onClick={handleClearFromData}
-              >
-                Cancel
-              </Button>
-            </>
-          ) : (
-            <>
-              <Typography>{getStepContent(helper)}</Typography>
-              {show ? (
-                <Alert
-                  variant="danger"
-                  onClose={() => setShow(false)}
-                  dismissible
+          <Form ref={myForm}>
+            {helper === steps.length ? (
+              <>
+                <Typography>
+                  All steps completed - ready to finalize registration
+                </Typography>
+                <Button
+                  className="mx-auto"
+                  variant="primary"
+                  onClick={registerBusiness}
                 >
-                  <Alert.Heading>Missing Field(s)</Alert.Heading>
-                  <p>
-                    Please review all fields carefully, you might have skipped
-                    one. Once all are filled, then only you can continue8
-                  </p>
-                </Alert>
-              ) : (
-                ""
-              )}
-              <div className="my-3" id="stepper-btn">
-                <Button disabled={helper === 0} onClick={handlePrev}>
-                  Back
+                  REGISTER
                 </Button>
-                {helper === 4 ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
+                <Button
+                  className="mx-auto"
+                  variant="danger"
+                  onClick={handleClearFromData}
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Typography>{getStepContent(helper)}</Typography>
+                {show ? (
+                  <Alert
+                    variant="danger"
+                    onClose={() => setShow(false)}
+                    dismissible
                   >
-                    Confirm
-                  </Button>
+                    <Alert.Heading>Missing Field(s)</Alert.Heading>
+                    <p>
+                      Please review all fields carefully, you might have skipped
+                      one. Once all are filled, then only you can continue8
+                    </p>
+                  </Alert>
                 ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                  >
-                    Next
-                  </Button>
+                  ""
                 )}
-              </div>
-            </>
-          )}
-        </Form>
-      </div>
-    </Container>
+                <div className="my-3" id="stepper-btn">
+                  <Button disabled={helper === 0} onClick={handlePrev}>
+                    Back
+                  </Button>
+                  {helper === 4 ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Confirm
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </Button>
+                  )}
+                </div>
+              </>
+            )}
+          </Form>
+        </div>
+      </Container>
+    </>
   );
 };
 

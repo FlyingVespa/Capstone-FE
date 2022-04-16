@@ -118,66 +118,6 @@ body {
 
 /* NAVBAR END */
 
-.searchField {
-  background-color: white;
-  position: sticky;
-  top: 1px;
-  width: auto;
-  max-height: 200px;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  z-index: 2;
-  overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  padding-top: 6px;
-}
-
-.searchField::-webkit-scrollbar {
-  display: none;
-}
-
-.searchCard {
-  padding: 6px 12px 6px 12px;
-}
-
-.searchCard div {
-  font-weight: 600;
-  color: black;
-}
-
-.searchCard img {
-  width: 32px;
-  height: 32px;
-  object-fit: cover;
-  border-radius: 16px;
-  margin-right: 10px;
-}
-
-.searchCard div span {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.searchCard div span::before {
-  content: "\00B7";
-  color: rgba(0, 0, 0, 0.6);
-  margin: 0 3px;
-}
-
-.searchCard:hover {
-  background-color: rgba(0, 0, 0, 0.08);
-}
-
-.product_list_grid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 3px solid green;
-  padding: 10px;
-  width: 90vh;
-  height: 50vh;
-}
 /* FOOTER */
 
 footer {
@@ -253,12 +193,7 @@ footer {
   /* height: 100px; */
   object-fit: cover;
 }
-#businesscard {
-  display: flex;
-  padding: none !important;
-  height: 100%;
-  overflow-y: scroll;
-}
+
 #trading_status_img {
   width: 50px;
 }
@@ -295,7 +230,7 @@ footer {
 
 .homepage > .row:nth-child(2) > .col-md-4 {
   overflow: hidden;
-  overflow-y: scroll;
+
   max-height: 75vh;
 }
 
@@ -315,6 +250,7 @@ footer {
   overflow: hidden;
   /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
   cursor: pointer;
+  margin: 2px;
 }
 
 .card-horizontal {

@@ -1,6 +1,13 @@
 // Libraries
 // Styling
-import { Col, Row, Accordion, Image } from "react-bootstrap";
+import {
+  Col,
+  Row,
+  Accordion,
+  Image,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { FiInfo } from "react-icons/fi";
 import { IoIosPin, IoMdMail, IoMdCall } from "react-icons/io";
 import envelopeIcon from "../../assets/icons/envelope.svg";
@@ -103,17 +110,22 @@ function About({ data, contact }) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col onClick={sendEmail}>
-                    <Image
-                      src={envelopeIcon}
-                      alt="email-icon"
-                      id="about-icon"
-                    />
-                    <span id="about-info">Email:</span>
-                    <span className="mx-2" on>
-                      {data?.companydetails?.public_email}
-                    </span>
-                  </Col>
+                  <OverlayTrigger
+                    placement={"bottom"}
+                    overlay={<Tooltip>Click to email us</Tooltip>}
+                  >
+                    <Col onClick={sendEmail} style={{ cursor: "pointer" }}>
+                      <Image
+                        src={envelopeIcon}
+                        alt="email-icon"
+                        id="about-icon"
+                      />
+                      <span id="about-info">Email:</span>
+                      <span className="mx-2" on>
+                        {data?.companydetails?.public_email}
+                      </span>
+                    </Col>
+                  </OverlayTrigger>
                 </Row>
                 {/* <hr /> */}
               </div>

@@ -28,6 +28,8 @@ const HomePage = () => {
   const [radioValue, setRadioValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkValue, setCheckValue] = useState(false);
+  const [allProducts, setAllProducts] = useState([]);
+  const [filterProducts, setFilterProducts] = useState([]);
 
   const radios = [
     { name: "Product", value: "product" },
@@ -48,8 +50,8 @@ const HomePage = () => {
       const res = await axios.get(`${URL}/business`);
       let data = await res.data;
       await setCompanies(data);
+      console.log("data", data);
       setLoading(false);
-      console.log("companies", res.data);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -69,23 +71,6 @@ const HomePage = () => {
   }
   const [searchQuery, setSearchQuery] = useState("");
 
-  // const selectSet = (item) => {
-  //   let value
-  //   switch (radioValue) {
-  //     case 'business':
-  //      value = item.businessname
-
-  //       break;
-  //     case 'product':
-  //       value = item.products.name
-  //     case 'service':
-
-  //       value = item.companydetails.services
-  //       break;
-  //     default:
-
-  //   }
-
   const checkService = async (item) => {
     setFilteredData(
       companies.filter(
@@ -103,15 +88,34 @@ const HomePage = () => {
     //     item.businessname.toLowerCase().includes(searchQuery.toLowerCase())
     //   )
     // );
+    switch (radioValue) {
+      case "business":
+        setFilteredData(
+          companies.filter((item) =>
+            item.companydetails.store_services.map((service) =>
+              service.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+          )
+        );
+        break;
+      case "product":
+        setFilterProducts(
+          allProducts.filter((item) =>
+            item.name.map((product) =>
+              product.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+          )
+        );
+        break;
 
-    setFilteredData(
-      companies.filter((item) =>
-        item.companydetails.store_services.map((service) =>
-          service.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      )
-    );
+      default:
+        break;
+    }
   }, [searchQuery, companies]);
+
+  useEffect(() => {
+    filterProducts.filter((item) => item.products.tolo);
+  });
 
   return (
     <Container className="homepage">
@@ -173,7 +177,7 @@ const HomePage = () => {
           </Row>
         </Col>
         <Col md={8}>
-          <GeneralMap companies={companies} searchCategory={searchCategory} />
+          <GeneralMap companies={filterData} searchCategory={searchCategory} />
         </Col>
       </Row>
     </Container>

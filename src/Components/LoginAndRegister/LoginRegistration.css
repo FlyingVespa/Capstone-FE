@@ -91,11 +91,17 @@
 }
 
 #stepper-business {
-  width: 100% !important;
-  object-fit: contain !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #fff;
+  border-radius: 10px;
+  flex-flow: column wrap;
 }
 #stepper-business h2 {
   text-align: center;
+  margin: 50px 0;
 }
 
 #stepper-btn {

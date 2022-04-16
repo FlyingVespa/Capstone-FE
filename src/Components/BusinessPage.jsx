@@ -28,7 +28,6 @@ const BusinessPage = (props) => {
 
   const userId = params.userId;
   const [profileData, setProfileData] = useState({});
-  const [productData, setProductData] = useState();
   const [loading, setLoading] = useState(false);
 
   const fetchUserData = async (profileId) => {
@@ -40,7 +39,7 @@ const BusinessPage = (props) => {
       let data = await res.data;
       await setProfileData(res.data);
       dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
-      console.log("ProfileData:", data);
+      // console.log("ProfileData:", data);
       setLoading(false);
     } catch (error) {
       console.error(error.message);
@@ -49,31 +48,9 @@ const BusinessPage = (props) => {
     setLoading(false);
   };
 
-  const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(
-        `${URL}/business/${profileData._id}/products`
-      );
-      let data = await res.data;
-      await setProductData(res.data);
-      console.log("products", res.data);
-
-      dispatch({ type: "FETCH_ALL_PRODUCTS", payload: data });
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     fetchUserData(userId);
   }, []);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [profileData]);
 
   return (
     <>
@@ -96,11 +73,8 @@ const BusinessPage = (props) => {
                   </Row>
                 </Container>
                 <ServicesSection data={profileData} />
-                {productData && productData.length > 0 && (
-                  <ProductsSection
-                    data={productData}
-                    profileData={profileData}
-                  />
+                {profileData.products?.length > 0 && (
+                  <ProductsSection data={profileData} />
                 )}
               </>
             )}

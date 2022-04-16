@@ -14,10 +14,6 @@ function TradingHoursSection({ data, test }) {
   let d = new Date();
   let today = d.getDay();
 
-  console.log("today", today);
-  const [currentTime, setCurrentTime] = useState("20:30");
-  const [shoptradingStatus, setShopTradingStatus] = useState(false);
-
   let tradingStatus = useSelector((s) => s.users.storeTradingStatus);
 
   const weekday = [
@@ -41,21 +37,15 @@ function TradingHoursSection({ data, test }) {
       let closingHour = parseInt(closeH[0] * 60) + parseInt(closeH[1]);
 
       if (data[3].trading === true) {
-        console.log("openH", currentTime);
         if (openHour < currentTime && closingHour > currentTime) {
           console.log("Currently open");
-          // setShopTradingStatus(true);
           dispatch({ type: "STORE_TRADING_STATUS", payload: true });
         } else {
-          // setShopTradingStatus(false);
           dispatch({ type: "STORE_TRADING_STATUS", payload: false });
         }
       } else {
-        // setShopTradingStatus(false);
         dispatch({ type: "STORE_TRADING_STATUS", payload: false });
       }
-      // console.log("openingHours", openingHours);
-      console.log("trading", data[4].day);
     }
   };
 
@@ -149,7 +139,7 @@ function TradingHoursSection({ data, test }) {
                 {data &&
                   data.map((d, i) => (
                     <tr id="table-row">
-                      {today == d.day ? (
+                      {today === d.day ? (
                         <>
                           <td>
                             <strong>
@@ -180,9 +170,11 @@ function TradingHoursSection({ data, test }) {
                           ) : (
                             <td colSpan={2} className="text-center">
                               <LockIcon className="mx-2" />
-                              <em>
-                                <span>Closed</span>
-                              </em>
+                              <strong>
+                                <em>
+                                  <span>Closed</span>
+                                </em>
+                              </strong>
                             </td>
                           )}
                         </>
