@@ -6,11 +6,11 @@ import axios from "axios";
 // Styling
 import { Box, Tab } from "@mui/material/";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
+import DATATABLE from "./Dashboard/muiTable";
 // import { Row, Nav, Col, Tab } from "react-bootstrap";
 import "./Dashboard/dashboard.css";
 // Components
 
-import GridData from "./Dashboard/GridData";
 import ProductSettings from "./Dashboard/ProductSettings";
 
 const DashboardPages = () => {
@@ -39,7 +39,8 @@ const DashboardPages = () => {
     <>
       <div>
         <h2>Dashboard</h2>
-        {data && <ProductSettings userData={data} />}
+        <DATATABLE />
+        {/* {data && <ProductSettings userData={data} />} */}
       </div>
     </>
   );

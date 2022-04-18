@@ -87,10 +87,16 @@
 }
 
 .stocklevel {
+  text-align: center;
+  background-color: #fff;
   width: 100%;
   font-weight: 600;
+  border-radius: 10px;
+  margin: 2px;
+  padding: 0 5px;
   text-transform: capitalize;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  overflow: hidden;
 }
 .stocklevel[data-status="high"] {
   border: rgb(30, 110, 18) solid 2px;
@@ -102,8 +108,10 @@
   border: rgb(255, 231, 48) solid 2px;
 }
 .stocklevel[data-status="out-of-stock"] {
-  /* background: rgb(255, 255, 255); */
-
   border: rgba(168, 0, 0, 1) solid 2px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+#dddd {
+  display: flex;
+  justify-content: flex-end;
 }

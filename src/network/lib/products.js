@@ -69,13 +69,34 @@ export const addProduct = async (userId, formData) => {
     console.log(error);
   }
 };
-export const deleteProduct = (userId, data, setRowData) => {
-  axios
-    .delete(`${URL}/business/${userId}/products/${data.id}`)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+
+export const deleteProduct = (businessId, dataid, callback) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      try {
+        axios
+          .delete(`${URL}/business/${businessId}/products/${dataid}`)
+          .then((res) => {
+            if (res.status == 204) {
+              console.log("deleted");
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            }
+          })
+          .then(setTimeout(() => callback(), 1000))
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        Swal.fire("Error!", "Could not delete Item.", "Error");
+      }
+    }
+  });
 };

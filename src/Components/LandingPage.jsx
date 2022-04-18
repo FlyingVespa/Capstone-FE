@@ -2,12 +2,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import cities from "cities.json";
-import SelectSearch from "react-select-search";
+
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 // styling
-import "react-select-search/style.css";
+
 import shopping from "../assets/images/shopping.svg";
 import "./ClientHomePage/clienthomepage.css";
 import {

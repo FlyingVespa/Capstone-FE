@@ -17,7 +17,7 @@ function MenuCanvas({ show, handleClose }) {
         show={show}
         onHide={handleClose}
         placement={"end"}
-        backdrop={false}
+        backdrop={true}
         scroll={true}
       >
         <Offcanvas.Header closeButton>
