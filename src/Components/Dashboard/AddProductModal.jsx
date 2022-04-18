@@ -11,7 +11,7 @@ const AddProductModal = ({
   fileChangedHandler,
   previewSource,
 }) => {
-  const { product, price, desc } = data;
+  const { name, price, description } = data;
   const modalStatus = useSelector((s) => s.helper.addProductModal);
   const [validated, setValidated] = useState(false);
 
@@ -20,7 +20,7 @@ const AddProductModal = ({
       size="lg"
       show={modalStatus}
       onHide={handleAddModal}
-      className="align-middle"
+      // className="align-middle"
     >
       <Modal.Header closeButton>
         <Modal.Title>Add Product</Modal.Title>
@@ -31,9 +31,9 @@ const AddProductModal = ({
             <Col md>
               <FloatingLabel label="Product">
                 <Form.Control
-                  name="product"
+                  name="name"
                   type="text"
-                  value={product}
+                  value={name}
                   onChange={onChange}
                 />
               </FloatingLabel>
@@ -56,9 +56,9 @@ const AddProductModal = ({
             <Col md>
               <FloatingLabel label="Description">
                 <Form.Control
-                  name="desc"
+                  name="description"
                   type="text"
-                  value={desc}
+                  value={description}
                   onChange={onChange}
                 />
               </FloatingLabel>
@@ -68,14 +68,14 @@ const AddProductModal = ({
           <Row className="g-2">
             <Col md>
               <FloatingLabel label="Select Product Status">
-                <Form.Select onChange={onChange} name="stocklevel">
+                <Form.Select onChange={onChange} name="status">
                   <option selected disabled>
                     Set stock level
                   </option>
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
                   <option value="low">low</option>
-                  <option value="outofstock">Out Of Stock</option>
+                  <option value="out-of-stock">Out Of Stock</option>
                 </Form.Select>
               </FloatingLabel>
             </Col>

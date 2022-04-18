@@ -172,14 +172,13 @@ const DATATABLE = () => {
       sortable: false,
       flex: 1,
       renderCell: (params) => {
-        console.log("test", params);
         return (
           <>
             <IconButton
               aria-label="delete"
               size="small"
               onClick={() =>
-                handleDelete(
+                deleteProduct(
                   params.row.businessId,
                   params.row._id,
                   fetchProducts
@@ -189,7 +188,7 @@ const DATATABLE = () => {
               <DeleteIcon fontSize="small" />
             </IconButton>
             <IconButton aria-label="delete" size="small">
-              <EditIcon fontSize="small" />
+              <EditIcon fontSize="small" onClick={() => passdata(params.row)} />
             </IconButton>
           </>
         );
@@ -197,10 +196,10 @@ const DATATABLE = () => {
     },
   ];
 
-  const handleDelete = async (business, data, callback) => {
-    await deleteProduct(business, data, callback);
+  const passdata = async (params) => {
+    await setFormData(params);
+    handleUpdateModal();
   };
-
   const [formData, setFormData] = useState({});
   const [selectedFile, setSelectedFile] = useState();
   const [selectionModel, setSelectionModel] = useState([]);
@@ -222,18 +221,20 @@ const DATATABLE = () => {
   const handleUpdateProduct = async () => {
     if (selectedFile) {
       let fd = new FormData();
-      await fd.append("image", selectedFile);
+      fd.append("image", selectedFile);
       await fd.append("name", selectedFile.name);
-      await fd.append("product", formData.product);
-      await fd.append("units", formData.units);
-      await fd.append("description", formData.description);
-      await fd.append("price", formData.price);
-      await fd.append("status", formData.status);
-      await updateProduct(userId, fd);
-      handleUpdateModal();
+      fd.append("product", formData.name);
+      fd.append("units", formData.units);
+      fd.append("description", formData.description);
+      fd.append("price", formData.price);
+      fd.append("status", formData.status);
+      await updateProduct(userId, formData._id, formData);
+      await handleUpdateModal();
+      setTimeout(() => fetchProducts(), 1000);
     } else {
-      await updateProduct(userId, formData);
+      await updateProduct(userId, formData._id, formData);
       handleUpdateModal();
+      setTimeout(() => fetchProducts(), 1000);
     }
   };
 
@@ -241,17 +242,19 @@ const DATATABLE = () => {
     if (selectedFile !== undefined && selectedFile !== "") {
       let fd = new FormData();
       await fd.append("image", selectedFile);
-      await fd.append("name", selectedFile.name);
-      await fd.append("product", formData.product);
+      // await fd.append("name", selectedFile.name);
+      await fd.append("name", formData.product);
       await fd.append("units", formData.units);
       await fd.append("description", formData.description);
       await fd.append("price", formData.price);
       await fd.append("status", formData.status);
       await addProduct(userId, fd);
-      handleAddModal();
+      await handleAddModal();
+      setTimeout(() => fetchProducts(), 1000);
     } else {
       await addProduct(userId, formData);
       handleAddModal();
+      setTimeout(() => fetchProducts(), 1000);
     }
   };
 

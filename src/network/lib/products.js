@@ -17,12 +17,14 @@ export const getProductData = async (userId, callback) => {
   }
 };
 
-export const updateProduct = async (userId, formData) => {
+export const updateProduct = async (userId, productId, formData) => {
   try {
-    let res = await axios.patch(
-      `${URL}/business/${userId}/products/${formData.id}`,
-      formData
+    let res = await axios.put(
+      `${URL}/business/${userId}/products/${productId}`,
+      formData,
+      { new: true }
     );
+
     let data = await res.data;
     console.log(data);
   } catch (error) {
@@ -60,11 +62,12 @@ export const getUserProducts = async (userId, callback) => {
 //     .catch((error) => console.log("error", error));
 // };
 
-export const addProduct = async (userId, formData) => {
+export const addProduct = async (userId, formData, fetchData) => {
   try {
     let res = await axios.post(`${URL}/business/${userId}/products`, formData);
     let data = await res.data;
     console.log(data);
+    setTimeout(() => fetchData(), 1000);
   } catch (error) {
     console.log(error);
   }
