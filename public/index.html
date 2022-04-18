@@ -11,23 +11,42 @@
     />
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
+    />
     <title>React App</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
-
   <script
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA12yfB6ij-Ah4dkFD3Cwkdd0BDPvfypRg&callback=initMap"
+  ></script>
+  <!-- <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA12yfB6ij-Ah4dkFD3Cwkdd0BDPvfypRg&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC"
     async
     defer
-  ></script>
+  ></script> -->
 
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
   />
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css"
+  />
+  <script
+    type="text/javascript"
+    src="https://rawgit.com/CliffCloud/Leaflet.EasyButton/master/src/easy-button.js"
+  ></script>
 </html>

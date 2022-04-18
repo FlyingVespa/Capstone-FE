@@ -1,92 +1,99 @@
 // Styling
 import { useState } from "react";
 import {
-  FormControl,
   Checkbox,
   TextField,
   FormLabel,
-  FormControlLabel,
   FormGroup,
   Switch,
 } from "@mui/material";
-import {
-  Col,
-  Row,
-  ToggleButton,
-  ToggleButtonGroup,
-  Form,
-} from "react-bootstrap";
 
-const TradingHoursDetails = ({ d, f, c, datas, handleTrading }) => {
-  const inputLProps = { shrink: true };
-  const inputProps = { step: 300 };
-  const [checked, setChecked] = useState(false);
+import { Col, Row, FormControl, Form } from "react-bootstrap";
 
-  const handleChange = (e) => {
-    setChecked(e.target.value);
+const TradingHoursDetails = ({ f }) => {
+  const [time, setTime] = useState([
+    { day: 0, trading: false, open: "08:20", closed: "17:00" },
+    { day: 1, trading: true, open: "08:20", closed: "17:00" },
+    { day: 2, trading: true, open: "08:20", closed: "17:00" },
+    { day: 3, trading: true, open: "08:20", closed: "17:00" },
+    { day: 4, trading: true, open: "08:20", closed: "17:00" },
+    { day: 5, trading: true, open: "08:20", closed: "17:00" },
+    { day: 6, trading: false, open: "08:20", closed: "17:00" },
+  ]);
+
+  const handleTimeChange = ({ target }) => {
+    const newTime = [...time];
+    newTime[target.name][target.id] = target.value;
+    setTime(newTime);
+    f(time);
+    console.log(time);
   };
+  const handleTrading = ({ target }) => {
+    const newTime = [...time];
+    newTime[target.name][target.id] = target.checked;
+    f(time);
+    console.log(time);
+  };
+
+  const weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
   return (
-    <div className="tradinghours-details" className="m-0">
+    <div className="m-0">
       <FormGroup>
         <FormLabel component="legend" className="text-center">
           Trading Hours & Days
         </FormLabel>
-        {d &&
-          datas.times.map((item, i) => (
-            <Row>
+        {time &&
+          time.map((item, i) => (
+            <Row className="trading-hours">
               <Col xs={3}>
-                <Form.Select name="times" id="trading" onChange={handleTrading}>
-                  <option selected hidden>
-                    Choose here
-                  </option>
-                  <option name="times" id="trading" value="true">
-                    Open
-                  </option>
-                  <option name="times" id="trading" value="false">
-                    Closed
-                  </option>
-                </Form.Select>
+                <Form.Check
+                  type="switch"
+                  label={weekday[i]}
+                  id="trading"
+                  name={i}
+                  checked={time[i].trading}
+                  onChange={handleTrading}
+                />
               </Col>
-              {!item.trading ? (
-                <Col xs={9}>
-                  <div>
-                    <p>Closed</p>
-                  </div>
-                </Col>
+              {item.trading === true ? (
+                <>
+                  <Col xs={3}>
+                    <FormControl
+                      id="open"
+                      name={i}
+                      type="time"
+                      value={time[i].open}
+                      onChange={handleTimeChange}
+                    />
+                  </Col>
+                  <Col xs={1}>
+                    <p>to</p>
+                  </Col>
+                  <Col xs={3}>
+                    <FormControl
+                      id="closed"
+                      name={i}
+                      type="time"
+                      value={time[i].closed}
+                      onChange={handleTimeChange}
+                    />
+                  </Col>
+                </>
               ) : (
-                <Col xs={9}>
-                  <Row className="time-row">
-                    <Col xs={5} lg={4} className="p-0 text-center">
-                      <TextField
-                        name={item}
-                        variant="standard"
-                        id="open"
-                        label="open"
-                        type="time"
-                        value={item.open}
-                        InputLabelProps={inputLProps}
-                        inputProps={inputProps}
-                        onChange={f}
-                      />
-                    </Col>
-                    <Col xs={2} lg={1} id="to">
-                      <p className="m-0">to</p>
-                    </Col>
-                    <Col xs={5} lg={4} className="p-0 text-center">
-                      <TextField
-                        name={item}
-                        variant="standard"
-                        id="closed"
-                        label="close"
-                        type="time"
-                        value={item.closed}
-                        onChange={f}
-                        InputLabelProps={inputLProps}
-                        inputProps={inputProps}
-                      />
-                    </Col>
-                  </Row>
-                </Col>
+                <>
+                  <Col>
+                    <p>Closed</p>
+                  </Col>
+                </>
               )}
             </Row>
           ))}

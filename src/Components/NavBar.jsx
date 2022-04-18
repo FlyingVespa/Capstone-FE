@@ -1,15 +1,18 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Container, Navbar, Nav, Row, Col, Dropdown } from "react-bootstrap";
+// Libraries
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+// Styling
+import { Container, Navbar, Nav, Button, Offcanvas } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
-
+// Componets
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
 import DropDownSettings from "./Navigation/DropDownSettings";
 import StandardNav from "./Navigation/StandardNav";
 import SelectRegisterModal from "./LoginAndRegister/SelectRegisterModal";
+import MenuCanvas from "./MenuCanvas";
 
 let initialState = { email: "test@business.com", password: "1234" };
 let windowLocation = window.location.href;
@@ -19,6 +22,11 @@ const NavBar = ({ URL, user }) => {
   let navigate = useNavigate();
   const helper = useSelector((s) => s.helper);
   const [loginDetails, setLoginDetails] = useState(initialState);
+
+  const [showOffCanvasMenu, setShowOffCanvasMenu] = useState(false);
+
+  const handleClose = () => setShowOffCanvasMenu(false);
+  const handleShow = () => setShowOffCanvasMenu(true);
 
   const logoutUser = () => {
     try {
@@ -60,7 +68,6 @@ const NavBar = ({ URL, user }) => {
           type: "SET_LOGIN_MODAL",
           payload: !helper.loginModal,
         });
-
         await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
         console.log("role", data.role);
         navigate("/profile/me");
@@ -96,16 +103,9 @@ const NavBar = ({ URL, user }) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" />
             <Nav>
-              <Nav.Link
-                href="/autocomplete"
-                className="mx-2"
-                variant="contained"
-                color="success"
-                size="medium"
-              >
-                GoogleMaps
-              </Nav.Link>
-              {helper.loggedin ? (
+              <Button onClick={handleShow}> OffCanvas</Button>
+              <MenuCanvas show={showOffCanvasMenu} handleClose={handleClose} />
+              {/* {helper.loggedin ? (
                 <>
                   {windowWidth < 992 ? (
                     <StandardNav logoutUser={logoutUser} currentUser={user} />
@@ -119,23 +119,22 @@ const NavBar = ({ URL, user }) => {
                     </>
                   )}
                 </>
-              ) : (
-                <>
-                  <Nav.Link
-                    className="mx-2"
-                    variant="contained"
-                    color="success"
-                    size="medium"
-                    onClick={handleLoginModal}
-                    exact
-                  >
-                    Login
-                  </Nav.Link>
-                  <Nav.Link onClick={handleRegisterModal}>
-                    Register Free
-                  </Nav.Link>
-                </>
-              )}
+              ) : ( */}
+              <>
+                <Nav.Link
+                  className="mx-2"
+                  variant="contained"
+                  color="success"
+                  size="medium"
+                  onClick={handleLoginModal}
+                  exact
+                >
+                  Login
+                </Nav.Link>
+                <Nav.Link onClick={() => navigate("/register")}>
+                  Register Free
+                </Nav.Link>
+              </>
             </Nav>
           </Navbar.Collapse>
         </Container>

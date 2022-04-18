@@ -3,25 +3,25 @@
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { Fragment, useState } from "react";
-
+import { SnackbarProvider } from "notistack";
 // import { Provider } from "react-redux";
 // Styling
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // components
 // import { store, persistor } from "./redux/store";
-import LandingPage from "./Components/LandingPage";
-import NavBar from "./Components/NavBar";
-import Footer from "./Components/Footer";
-import RegisterPage from "./Components/LoginAndRegister/RegisterPage";
-import DashboardPage from "./Components/DashboardPage";
-import ClientHomePage from "./Components/ClientDashboard";
-import BusinessListPage from "./Components/BusinessListPage";
-import BusinessProfilePage from "./Components/BusinessProfilePage";
-import BasicDocument from "./Components/ProfilePage/BasicDocument";
-import LocationDetails from "./Components/LoginAndRegister/businessRegistrationComponents/LocationDetails";
-
-import UnAuthorized from "./Components/httpStatuses/401.jsx";
+import LandingPage from "./components/LandingPage";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import RegisterPage from "./components/LoginAndRegister/RegisterPage";
+import DashboardPage from "./components/DashboardPage";
+import ClientPage from "./components/ClientPage";
+import HomePage from "./components/HomePage";
+import BusinessPage from "./components/BusinessPage";
+import UnAuthorized from "./components/httpStatuses/401.jsx";
+import NotFound from "./components/httpStatuses/404.jsx";
+import BusinessRegistration from "./components/LoginAndRegister/BusinessRegistration";
+import ClientRegistration from "./components/LoginAndRegister/ClientRegistration";
 ///////////////////////////////////////////////////////////////////////////////////////
 const App = () => {
   let dispatch = useDispatch();
@@ -31,33 +31,40 @@ const App = () => {
   const [user, setUser] = useState({});
 
   return (
-    <div className="App">
-      <Fragment>
-        <NavBar URL={URL} user={user} />
-        <Routes>
-          <Route path="/autocomplete" exact element={<LocationDetails />} />
-          <Route
-            path="/profile/:userId"
-            exact
-            element={auth ? <ClientHomePage /> : <UnAuthorized />}
-          />
-          <Route
-            path="/business/me/dashboard"
-            element={auth ? <DashboardPage /> : <UnAuthorized />}
-          />
-          <Route exact path="/" element={<LandingPage />} />
-          <Route exact path="/business" element={<BusinessListPage />} />
-          <Route
-            exact
-            path="/business/:userId"
-            element={<BusinessProfilePage setUser={setUser} />}
-          />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/business/me/pdfPage" element={<BasicDocument />} />
-        </Routes>
-        <Footer />
-      </Fragment>
-    </div>
+    <SnackbarProvider maxSnack={3}>
+      <div className="App">
+        <Fragment>
+          <NavBar URL={URL} user={user} />
+
+          <Routes>
+            <Route
+              path="/profile/:userId"
+              exact
+              element={auth ? <ClientPage /> : <UnAuthorized />}
+            />
+            <Route
+              path="/business/me/dashboard"
+              element={auth ? <DashboardPage /> : <UnAuthorized />}
+            />
+            <Route exact path="/" element={<LandingPage />} />
+            <Route exact path="/business" element={<HomePage />} />
+            <Route
+              exact
+              path="/business/:userId"
+              element={<BusinessPage setUser={setUser} />}
+            />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/register/business"
+              element={<BusinessRegistration />}
+            />
+            <Route path="/register/client" element={<ClientRegistration />} />
+            <Route path="/page_error/404" element={<NotFound />} />
+          </Routes>
+          {/* <Footer /> */}
+        </Fragment>
+      </div>
+    </SnackbarProvider>
   );
 };
 

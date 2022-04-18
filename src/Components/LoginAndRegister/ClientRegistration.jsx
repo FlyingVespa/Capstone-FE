@@ -111,7 +111,7 @@ const ClientRegistration = ({ URL }) => {
     }
   };
   return (
-    <>
+    <Container className="my-2 p-0" id="stepper-business">
       <h1>Regsiter Client Account</h1>
       <Stepper activeStep={helper}>
         {steps.map((label, index) => {
@@ -183,7 +183,7 @@ const ClientRegistration = ({ URL }) => {
           </div>
         )}
       </div>
-    </>
+    </Container>
   );
 };
 

@@ -11,10 +11,12 @@ function SelectRegisterModal({ handleClose }) {
   const modalStatus = useSelector((s) => s.helper.registerModal);
   const registerType = useSelector((s) => s.helper.register);
 
-  const handleRegisterType = (type) => {
+  const handleRegisterType = (type, nav) => {
     dispatch({ type: "SET_REGISTER", payload: type });
-    navigate(`/register`);
-    handleClose();
+    handleClose("/register");
+  };
+  const closee = (e) => {
+    handleClose("/");
   };
 
   return (
@@ -23,7 +25,7 @@ function SelectRegisterModal({ handleClose }) {
         show={modalStatus}
         id="registerModal"
         fullscreen={true}
-        onHide={handleClose}
+        onHide={closee}
       >
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>

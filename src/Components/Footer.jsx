@@ -10,7 +10,7 @@ import {
   SiLeaflet,
   SiMongodb,
 } from "react-icons/si";
-import { FcGoogle } from "react-icons/fc";
+
 import { IoLogoNodejs } from "react-icons/io";
 
 function Footer() {

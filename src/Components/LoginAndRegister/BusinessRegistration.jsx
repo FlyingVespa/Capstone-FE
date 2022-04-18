@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
 import { useSelector, useDispatch } from "react-redux";
 import { StepLabel, Step, Typography, Stepper, Container } from "@mui/material";
-
-import { Button } from "react-bootstrap";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import { Button, Form, Alert, Col } from "react-bootstrap";
 import "./LoginRegistration.css";
-import ContactDetails from "./businessRegistrationComponents/ContactDetails";
+import CompanyDetails from "./businessRegistrationComponents/CompanytDetails";
 import ConfirmDetails from "./businessRegistrationComponents/ConfirmDetails";
 import LocationDetails from "./businessRegistrationComponents/LocationDetails";
 import AccDetails from "./businessRegistrationComponents/AccDetails";
@@ -25,126 +25,104 @@ const getSteps = () => {
 
 const BusinessRegistration = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const dispatchData = () =>
-    dispatch({
-      type: "REGISTER_BUSINESS_USER",
-      payload: datas,
-    });
+  const myForm = useRef(null);
   const URL = process.env.REACT_APP_API_URL;
   const helper = useSelector((s) => s.helper.activeStep);
   const steps = getSteps();
   const [datas, setData] = useState({
-    password: "1234",
-    email: "default@business.com",
-    businessname: "Default",
-    category: "Default",
-    shipping: false,
-    username: "Default",
-    url: "Default",
-    services: "Default",
-    bio: "Default Default Default Default",
-    img_logo: "",
-    img_banner: "",
-    img_user: "",
-    address: "",
-    location: {
-      lat: null,
-      lng: null,
-      street_number: null,
-      street: null,
-      city: null,
-      state: null,
-      country: null,
+    accdetails: {
+      email: "defaul@business.com",
+      password: "1234",
+      url: "default",
+      businessname: "",
+      category: "",
+      username: "",
     },
-    contact: {
-      pub_email: "",
-      tel: "",
+    address: {
+      lat: "",
+      lng: "",
+      street_number: "",
+      street_name: "",
+      city: "",
+      state: "",
+      country: "",
+    },
+    companydetails: {
+      bio: "",
       cell: "",
-      insta: "",
-      whatsapp: "",
-      twitter: "",
+      public_email: "",
+      services: "",
+      shipping: false,
     },
-    times: [
-      { day: 0, trading: true, open: "09:15", closed: "16:00" },
-      { day: 1, trading: false, open: "09:15", closed: "16:00" },
-      { day: 2, trading: true, open: "09:15", closed: "16:00" },
-      { day: 3, trading: false, open: "09:15", closed: "16:00" },
-      { day: 4, trading: true, open: "09:00", closed: "17:00" },
-      { day: 5, trading: false, open: "09:15", closed: "16:00" },
-      { day: 6, trading: true, open: "09:15", closed: "16:00" },
-      { day: 7, trading: false, open: "09:15", closed: "16:00" },
+    tradingtimes: [
+      { day: 0, trading: false, open: "08:20", closed: "17:00" },
+      { day: 1, trading: true, open: "08:20", closed: "17:00" },
+      { day: 2, trading: true, open: "08:20", closed: "17:00" },
+      { day: 3, trading: true, open: "08:20", closed: "17:00" },
+      { day: 4, trading: true, open: "08:20", closed: "17:00" },
+      { day: 5, trading: true, open: "08:20", closed: "17:00" },
+      { day: 6, trading: false, open: "08:20", closed: "17:00" },
     ],
   });
+  const [show, setShow] = useState(false);
 
   const handleClearFromData = async () => {
     await setData({});
-    await dispatchData();
-    navigate("/");
-  };
-  const handleContactChange = ({ target }) => {
-    setData({
-      ...datas,
-      [target.name]: { ...datas[target.name], [target.id]: target.value },
-    });
-    dispatchData();
-  };
-  const handleChange = ({ target }) => {
-    setData({
-      ...datas,
-      [target.name]: target.value,
-    });
-    dispatchData();
-  };
-  const handleTrading = ({ target }) => {
-    setData({
-      ...datas,
-      [target.name]: {
-        ...datas[target.name],
-        [target.id]: target.value,
-      },
-    });
-    dispatchData();
+    await dispatch({ type: "SET_ACTIVE_STEP", payload: 0 });
   };
 
-  const handleTimeChange = ({ target }) => {
+  const handleAccDetailsChange = (payload) => {
     setData({
       ...datas,
-      [target.name]: {
-        ...datas[target.name],
-        [target.id]: target.value,
-      },
+      accdetails: payload,
     });
-    dispatchData();
   };
-  const handleAddressSelect = (addressData) => {
+  const handleCompanyDetailsChange = (payload) => {
     setData({
       ...datas,
-      address: addressData,
+      companydetails: payload,
     });
   };
 
-  useEffect(() => {
-    dispatchData();
+  const handleAddressChange = (payload) => {
+    setData({
+      ...datas,
+      address: payload,
+    });
+  };
+
+  const handleTimeChange = (times) => {
+    setData({
+      ...datas,
+      tradingtimes: times,
+    });
     console.log(datas);
-  }, []);
+  };
 
   const handleNext = () => {
+    if (!myForm.current.checkValidity()) {
+      setShow(true);
+      return;
+    }
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper + 1 });
+    dispatch({ type: "REGISTER_BUSINESS_USER", payload: datas });
+    console.log("DDD", datas);
   };
   const handlePrev = () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: helper - 1 });
   };
   const handleStep = (step) => () => {
     dispatch({ type: "SET_ACTIVE_STEP", payload: step });
+    dispatch({ type: "REGISTER_BUSINESS_USER", payload: datas });
   };
+  const ss = useSelector((s) => s.users.registerBusiness);
 
   const registerBusiness = async () => {
-    console.log("Click");
+    console.log(ss);
     try {
       const res = await axios.post(`${URL}/register`, datas);
-      console.log("Success, Regsitered Business Account", res.data);
+      let registration = await res.data;
+      console.log("Success, Regsitered Business Account", registration);
       console.log("click");
     } catch (error) {
       console.error(error);
@@ -154,102 +132,106 @@ const BusinessRegistration = () => {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <AccDetails d={datas} f={handleChange} />;
+        return <AccDetails f={handleAccDetailsChange} />;
       case 1:
-        return <ContactDetails f={handleContactChange} d={datas.contact} />;
+        return <CompanyDetails f={handleCompanyDetailsChange} />;
       case 2:
-        return <LocationDetails f={handleAddressSelect} />;
+        return <LocationDetails f={handleAddressChange} />;
       case 3:
-        return (
-          <TradingHoursDetails
-            f={handleTimeChange}
-            d={datas.times}
-            datas={datas}
-            handleTrading={handleTrading}
-          />
-        );
-
+        return <TradingHoursDetails f={handleTimeChange} />;
       default:
         return <ConfirmDetails details={datas} />;
     }
   };
 
   return (
-    <Container className="my-2 p-0" id="stepper-business">
-      <h2>Regsiter Business Account</h2>
-      <div>
-        <Stepper activeStep={helper} className="my-3">
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
+    <>
+      <Container id="stepper-business">
+        <h2>Regsiter Business Account</h2>
+        <div>
+          <Stepper activeStep={helper} className="my-3">
+            {steps.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+              return (
+                <Step key={label} {...stepProps} onClick={handleStep(index)}>
+                  {window.innerWidth > 990 ? (
+                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  ) : (
+                    <StepLabel {...labelProps}></StepLabel>
+                  )}
+                </Step>
+              );
+            })}
+          </Stepper>
 
-            return (
-              <Step
-                id="sss"
-                key={label}
-                {...stepProps}
-                onClick={handleStep(index)}
-              >
-                {window.innerWidth > 990 ? (
-                  <StepLabel {...labelProps}>{label}</StepLabel>
+          <Form ref={myForm}>
+            {helper === steps.length ? (
+              <>
+                <Typography>
+                  All steps completed - ready to finalize registration
+                </Typography>
+                <Button
+                  className="mx-auto"
+                  variant="primary"
+                  onClick={registerBusiness}
+                >
+                  REGISTER
+                </Button>
+                <Button
+                  className="mx-auto"
+                  variant="danger"
+                  onClick={handleClearFromData}
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Typography>{getStepContent(helper)}</Typography>
+                {show ? (
+                  <Alert
+                    variant="danger"
+                    onClose={() => setShow(false)}
+                    dismissible
+                  >
+                    <Alert.Heading>Missing Field(s)</Alert.Heading>
+                    <p>
+                      Please review all fields carefully, you might have skipped
+                      one. Once all are filled, then only you can continue8
+                    </p>
+                  </Alert>
                 ) : (
-                  <StepLabel {...labelProps}></StepLabel>
+                  ""
                 )}
-              </Step>
-            );
-          })}
-        </Stepper>
-      </div>
-      <div>
-        {helper === steps.length ? (
-          <>
-            <Typography>
-              All steps completed - ready to finalize registration
-            </Typography>
-            <Button
-              className="mx-auto"
-              variant="primary"
-              onClick={registerBusiness}
-            >
-              REGISTER
-            </Button>
-            <Button
-              className="mx-auto"
-              variant="danger"
-              onClick={handleClearFromData}
-            >
-              Cancel
-            </Button>
-          </>
-        ) : (
-          <>
-            <Typography>{getStepContent(helper)}</Typography>
-            <div className="my-3" id="stepper-btn">
-              <Button disabled={helper === 0} onClick={handlePrev}>
-                Back
-              </Button>
-              {helper === 4 ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                >
-                  Confirm
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                >
-                  Next
-                </Button>
-              )}
-            </div>
-          </>
-        )}
-      </div>
-    </Container>
+                <div className="my-3" id="stepper-btn">
+                  <Button disabled={helper === 0} onClick={handlePrev}>
+                    Back
+                  </Button>
+                  {helper === 4 ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Confirm
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </Button>
+                  )}
+                </div>
+              </>
+            )}
+          </Form>
+        </div>
+      </Container>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav, Dropdown, Col } from "react-bootstrap";
+import { Nav, Col } from "react-bootstrap";
 import { FiPower, FiHome, FiTool, FiUser } from "react-icons/fi";
 import { useNavigate } from "react-router";
 

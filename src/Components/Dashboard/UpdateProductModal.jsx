@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 
 import { Button } from "@mui/material";
@@ -12,7 +12,7 @@ const UpdateProductModal = ({
   fileChangedHandler,
   previewSource,
 }) => {
-  const { product, price, desc } = data;
+  const { name, price, description } = data;
   const [validated, setValidated] = useState(false);
   const modalStatus = useSelector((s) => s.helper.updateProductModal);
 
@@ -27,9 +27,9 @@ const UpdateProductModal = ({
             <Col md>
               <FloatingLabel label="Product">
                 <Form.Control
-                  name="product"
+                  name="name"
                   type="text"
-                  value={product}
+                  value={name}
                   onChange={onChange}
                 />
               </FloatingLabel>
@@ -52,9 +52,9 @@ const UpdateProductModal = ({
             <Col md>
               <FloatingLabel label="Description">
                 <Form.Control
-                  name="desc"
+                  name="description"
                   type="text"
-                  value={desc}
+                  value={description}
                   onChange={onChange}
                 />
               </FloatingLabel>
@@ -64,14 +64,14 @@ const UpdateProductModal = ({
           <Row className="g-2">
             <Col md>
               <FloatingLabel label="Select Product Status">
-                <Form.Select onChange={onChange} name="stocklevel">
+                <Form.Select onChange={onChange} name="status">
                   <option selected disabled>
                     Set stock level
                   </option>
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
                   <option value="low">low</option>
-                  <option value="outofstock">Out Of Stock</option>
+                  <option value="out-of-stock">Out Of Stock</option>
                 </Form.Select>
               </FloatingLabel>
             </Col>
@@ -116,7 +116,11 @@ const UpdateProductModal = ({
         <Button onClick={handleUpdateModal} className="mx-1">
           Cancel
         </Button>
-        <Button onClick={()=>handleFormSubmit()} className="mx-1" variant="contained">
+        <Button
+          onClick={() => handleFormSubmit()}
+          className="mx-1"
+          variant="contained"
+        >
           Update
         </Button>
       </Modal.Footer>

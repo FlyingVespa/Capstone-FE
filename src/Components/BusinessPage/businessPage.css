@@ -1,0 +1,313 @@
+/* ============================================================ 
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    INDEX
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. General
+2. Header Section
+3. About section
+4. Service section
+5. Product section
+6. @media screen size
+
+ ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Quicksand:wght@300&family=Viga&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+/* HEADER */
+.profile.page {
+  display: flex;
+
+  padding: 0 40px 50px 40px;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  background-color: white;
+  margin-bottom: 50px;
+  margin-top: 5rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  height: fit-content;
+}
+
+.main {
+  margin-top: -10vh;
+  width: 55vw;
+}
+/* ============================================================ */
+/* HEADER SECTION */
+#img-logo {
+  border: solid 3px rgb(27, 27, 27);
+  object-fit: cover;
+  width: 6rem;
+  height: 6rem;
+}
+
+#image-header-container {
+  border: 2px solid red;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.header {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 15px;
+  width: fit-content;
+  margin-top: -4rem;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+.header hr {
+  height: 2px;
+  opacity: 0.65;
+  box-shadow: rgba(0, 0, 0, 0.24) 1px 2px 4px;
+}
+.header > .row .col:nth-child(1) {
+  display: flex;
+  padding: 0 1rem;
+}
+
+.header > .row > .col:first-of-type > .col {
+  padding: 0 1rem;
+}
+
+.header > .row > .col:first-of-type > .col h2 {
+  font-family: "Oleo Script Swash Caps";
+  font-size: 3rem;
+  margin: 0;
+}
+.header > .row > .col:first-of-type > .col span:nth-child(3) {
+  font-size: 1.3rem;
+  opacity: 0.65;
+}
+
+/* HEADER SECTION END */
+/* ============================================================ */
+/* ABOUT SECTION */
+
+.about-section p:nth-child(1) {
+  font-family: "Viga", "Helvetica Neue", "Helvetica";
+}
+.about-section p:nth-child(2) {
+  /* font-size: 15px; */
+  inline-size: smaller;
+}
+.table.table-borderless {
+  border-radius: 10px;
+  padding: 5px;
+  overflow: hidden;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+  border: rgb(38, 38, 38) solid 5px;
+}
+
+#about-icon {
+  height: 18px;
+  margin: 0 5px;
+  padding: 0px;
+}
+.profile-about > div > div {
+  padding: 0 30px 0 0;
+}
+
+#about-info {
+  font-family: "Viga", "Helvetica Neue", "Helvetica";
+  font-weight: 400;
+}
+.about-section-info {
+  /* border: 2px solid rgb(183, 183, 183); */
+  width: fit-content;
+  border-radius: 10px;
+  background: rgb(250, 250, 250);
+  padding: 10px !important;
+}
+
+/* ABOUT SECTION END */
+/* ============================================================ */
+/* TRADING SECTION */
+
+.trading-section {
+  font-family: "Viga", "Helvetica Neue", "Helvetica";
+}
+
+/* TRADING SECTION END */
+/* ============================================================ */
+/* SERVICE SECTION */
+.service-section p {
+  font-family: "Viga";
+}
+
+.service-container {
+  display: flex;
+  justify-content: center;
+  width: max-content;
+}
+
+.service-item {
+  border: solid 3px rgb(117, 117, 117);
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+/* SERVICE SECTION END */
+/* ============================================================ */
+/* PRODUCT SECTION */
+
+#pdf-button img {
+  height: 23px;
+}
+
+.product-section .row:first-of-type .col {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-item {
+  display: flex;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  border: solid 3px rgb(117, 117, 117);
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  position: relative;
+  z-index: -1;
+  height: 3rem;
+  border-radius: 0 5px 5px 0;
+  padding: 2px 10px;
+}
+
+.product-item span {
+  font: "Poppins";
+  font-weight: bold;
+  text-transform: capitalize;
+  font-size: 0.8rem;
+}
+
+.product-item span:nth-child(2) {
+  color: rgb(136, 38, 38);
+  text-align: right;
+  float: right;
+}
+.product-item span:nth-child(3) {
+  float: right;
+  right: 0;
+  text-align: right;
+}
+
+.product-container {
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between !important;
+  filter: drop-shadow(2px 2px 10px rgba(0, 0, 0, 0)) !important;
+  margin: 2px;
+}
+
+.avatar-product {
+  background-color: #fff;
+  position: relative;
+  border-radius: 5px 0 0 5px;
+  border: solid 3px rgb(117, 117, 117);
+  object-fit: cover;
+  margin: 2px 0 2px 2px;
+  height: 3rem;
+  width: 3rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  z-index: -1;
+}
+.avatar-product.medium {
+  border: solid 3px rgb(240, 226, 100);
+}
+.avatar-product.high {
+  border: solid 3px rgb(62, 168, 0);
+}
+.avatar-product.low {
+  border: solid 3px rgb(179, 62, 7);
+}
+
+.btn-shoppinglist {
+  float: right !important;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100vh;
+}
+
+#table-row:nth-child(even) {
+  background-color: rgb(241, 241, 241);
+}
+
+.profile-about .col-5:nth-child(odd) span {
+  font-weight: bold;
+}
+
+.product-details-modal .modal-content {
+  overflow: hidden;
+}
+.product-details-modal.modal.show > div > div > div > div {
+  padding: 40px;
+}
+.product-details-modal .modal-content .col h4 {
+  margin-top: 10px;
+}
+
+.product-details-modal span:nth-child(1) {
+  font-size: 1.5rem;
+}
+.product-details-modal img {
+  background-color: rgb(150, 150, 150);
+}
+
+/* PRODUCT SECTION END */
+/* ============================================================ */
+/* MAP SECTION */
+
+.map-section p:first-of-type {
+  font-family: "Viga", "Helvetica Neue", "Helvetica";
+}
+
+.leaflet-container {
+  border-radius: 15px;
+  box-shadow: rgba(125, 125, 125, 0.3) 0px 0px 0px 3px;
+}
+/* MAP SECTION END */
+@media only screen and (min-width: 600px) {
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  #table-row span {
+    font-size: 1rem;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .profile.page .header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .profile.page .header h2 {
+    font-size: 30px;
+  }
+
+  .profile.page .card {
+    height: 150px;
+  }
+}
