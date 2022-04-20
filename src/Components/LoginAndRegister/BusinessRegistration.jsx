@@ -1,10 +1,9 @@
 import { useState, useRef } from "react";
 
 import axios from "axios";
-import Snackbar from "@mui/material/Snackbar";
+
 import { useSelector, useDispatch } from "react-redux";
 import { StepLabel, Step, Typography, Stepper, Container } from "@mui/material";
-import { SnackbarProvider, useSnackbar } from "notistack";
 import { Button, Form, Alert, Col } from "react-bootstrap";
 import "./LoginRegistration.css";
 import CompanyDetails from "./businessRegistrationComponents/CompanytDetails";

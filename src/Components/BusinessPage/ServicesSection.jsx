@@ -23,7 +23,7 @@ function ServicesSection({ data }) {
                   {data.companydetails &&
                     data.companydetails.store_services.map((item, i) => {
                       return (
-                        <div className="service-container">
+                        <div className="service-container" key={item + "_" + i}>
                           <div className="service-item">
                             <span>{item}</span>
                           </div>
@@ -45,7 +45,7 @@ function ServicesSection({ data }) {
             {data.companydetails &&
               data.companydetails.store_services.map((item, i) => {
                 return (
-                  <div className="service-container">
+                  <div className="service-container" key={item + "_" + i}>
                     <div className="service-item">
                       <span>{item}</span>
                     </div>

@@ -32,18 +32,19 @@ export const updateProduct = async (userId, productId, formData) => {
   }
 };
 
-export const getUserProducts = async (userId, callback) => {
-  axios
-    .get(`${URL}/business/${userId}/products`)
-    .then((res) => {
-      const userData = res.data;
-      callback(userData);
-      console.log(userData);
-    })
-    .catch((error) => {
-      const errorMsg = error.message;
-      console.log(errorMsg);
-    });
+// Not used - to impplement
+export const getUserProducts = async (userId, callback, loading) => {
+  loading(false);
+  try {
+    let res = await axios.get(`${URL}/business/${userId}/products`);
+    let userData = await res.data;
+    callback(userData);
+    loading(true);
+    console.log(userData);
+  } catch (error) {
+    console.log(error);
+    loading(false);
+  }
 };
 // export const updateProduct = async (userId, formData) => {
 //   var requestOptions = {

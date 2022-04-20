@@ -1,27 +1,88 @@
-import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import { Row, Col, Modal, Form, FloatingLabel } from "react-bootstrap";
+import axios from "axios";
 
 const AddProductModal = ({
   handleAddModal,
-  data,
-  onChange,
   handleFormSubmit,
-  fileChangedHandler,
-  previewSource,
+  fetchProducts,
 }) => {
-  const { name, price, description } = data;
+  let params = useParams();
+  let dispatch = useDispatch();
+  // const { name, price, description } = data;
   const modalStatus = useSelector((s) => s.helper.addProductModal);
+  const user = useSelector((s) => s.users.user);
   const [validated, setValidated] = useState(false);
+  const [data, setData] = useState({});
+  const [selectedFile, setSelectedFile] = useState();
+  const [previewSource, setPreviewSource] = useState("");
+  const [fileInputState, setFileInputState] = useState("");
 
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    const previewFile = (file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreviewSource(reader.result);
+      };
+    };
+    previewFile(file);
+    setSelectedFile(file);
+    setFileInputState(e.target.value);
+  };
+  const onChangeSetFormData = ({ target }) => {
+    setData({ ...data, [target.name]: target.value });
+    console.log(target.value);
+  };
+  const handlePost = () => {
+    let formData = null;
+    if (selectedFile) {
+      formData = new FormData();
+      formData.append("image", selectedFile);
+    }
+    addProduct(data, formData);
+  };
+  const addProduct = async (textPayload, imgPayload = null) => {
+    try {
+      let res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/business/${user._id}/products`,
+        textPayload
+      );
+      let data = await res.data;
+
+      console.log("product no img", data);
+      if (imgPayload) {
+        let imgResponse = await axios.post(
+          `${process.env.REACT_APP_API_URL}/business/${user._id}/products/${res.data._id}/upload`,
+          imgPayload
+        );
+        console.log(imgResponse);
+        setFileInputState("");
+        setPreviewSource("");
+        setData("");
+        setTimeout(() => {
+          fetchProducts();
+        }, 1000);
+        handleAddModal();
+      } else {
+        setFileInputState("");
+        setPreviewSource("");
+        setData("");
+        handleAddModal();
+        setTimeout(() => {
+          fetchProducts();
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <Modal
-      size="lg"
-      show={modalStatus}
-      onHide={handleAddModal}
-      // className="align-middle"
-    >
+    <Modal size="lg" show={modalStatus} onHide={handleAddModal}>
       <Modal.Header closeButton>
         <Modal.Title>Add Product</Modal.Title>
       </Modal.Header>
@@ -33,8 +94,8 @@ const AddProductModal = ({
                 <Form.Control
                   name="name"
                   type="text"
-                  value={name}
-                  onChange={onChange}
+                  value={data.name}
+                  onChange={onChangeSetFormData}
                 />
               </FloatingLabel>
             </Col>
@@ -45,8 +106,8 @@ const AddProductModal = ({
                   type="number"
                   placeholder="1.99"
                   step=".01"
-                  value={price}
-                  onChange={onChange}
+                  value={data.price}
+                  onChange={onChangeSetFormData}
                 />
               </FloatingLabel>
             </Col>
@@ -58,8 +119,8 @@ const AddProductModal = ({
                 <Form.Control
                   name="description"
                   type="text"
-                  value={description}
-                  onChange={onChange}
+                  value={data.description}
+                  onChange={onChangeSetFormData}
                 />
               </FloatingLabel>
             </Col>
@@ -68,7 +129,7 @@ const AddProductModal = ({
           <Row className="g-2">
             <Col md>
               <FloatingLabel label="Select Product Status">
-                <Form.Select onChange={onChange} name="status">
+                <Form.Select onChange={onChangeSetFormData} name="status">
                   <option selected disabled>
                     Set stock level
                   </option>
@@ -81,7 +142,7 @@ const AddProductModal = ({
             </Col>
             <Col md>
               <FloatingLabel label="Select Product Units">
-                <Form.Select onChange={onChange} name="units">
+                <Form.Select onChange={onChangeSetFormData} name="units">
                   <option selected disabled>
                     Units
                   </option>
@@ -101,9 +162,21 @@ const AddProductModal = ({
           <br />
           <Row>
             <Col>
-              <Form.Group controlId="formFile" className="mb-3">
-                <Form.Control type="file" onChange={fileChangedHandler} />
-              </Form.Group>
+              <input
+                id="fileInput"
+                type="file"
+                name="image"
+                onChange={handleFileInputChange}
+                value={fileInputState}
+                className="form-input"
+              />
+              {previewSource && (
+                <img
+                  src={previewSource}
+                  alt="chosen"
+                  style={{ height: "300px" }}
+                />
+              )}
             </Col>
           </Row>
           <Form.Group className="mb-3">
@@ -120,7 +193,11 @@ const AddProductModal = ({
         <Button onClick={handleAddModal} className="mx-1">
           Cancel
         </Button>
-        <Button onClick={handleFormSubmit} className="mx-1" variant="contained">
+        <Button
+          onClick={() => handlePost(data, fileInputState)}
+          className="mx-1"
+          variant="contained"
+        >
           Submit
         </Button>
       </Modal.Footer>

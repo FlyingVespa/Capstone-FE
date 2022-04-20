@@ -127,9 +127,9 @@ const ProductsSection = ({ data }) => {
               </Row>
               <Row>
                 {filterData.length > 0 &&
-                  filterData.map((item) => (
+                  filterData.map((item, i) => (
                     <>
-                      <Product product={item} index={item.id} />
+                      <Product product={item} index={item.id} key={i + item} />
                     </>
                   ))}
               </Row>{" "}

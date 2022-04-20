@@ -30,12 +30,10 @@ function MenuCanvas({ show, handleClose }) {
             </Nav.Item>
 
             <Nav.Item>
-              <Link to="/business/me/dashboard" eventKey="link-1">
-                Dashboard
-              </Link>
+              <Link to="/business/me/dashboard">Dashboard</Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="link-2">Logout</Nav.Link>
+              <Nav.Link>Logout</Nav.Link>
             </Nav.Item>
           </Nav>
         </Offcanvas.Body>

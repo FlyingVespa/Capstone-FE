@@ -127,7 +127,6 @@ const NavBar = ({ URL, user }) => {
                   color="success"
                   size="medium"
                   onClick={handleLoginModal}
-                  exact
                 >
                   Login
                 </Nav.Link>

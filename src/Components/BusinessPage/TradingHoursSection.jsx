@@ -138,7 +138,7 @@ function TradingHoursSection({ data, test }) {
               <tbody>
                 {data &&
                   data.map((d, i) => (
-                    <tr id="table-row">
+                    <tr id="table-row" key={d.day + i}>
                       {today === d.day ? (
                         <>
                           <td>
