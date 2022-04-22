@@ -9,10 +9,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
-import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 
 // styling
-import { Container, Table, Button, Form, ButtonGroup } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 // components
 import { styled } from "@mui/material/styles";
 import empty from "../../assets/images/empty.svg";
@@ -23,34 +23,32 @@ import UpdateProductModal from "./UpdateProductModal";
 import Avatar from "@mui/material/Avatar";
 
 import { deleteProduct, updateProduct } from "../../network/lib/products";
-const StyledGridOverlay = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100%",
-}));
-
-//  to export
-function CustomNoRowsOverlay() {
-  return (
-    <StyledGridOverlay>
-      <img src={empty} style={{ height: "400px" }} />
-    </StyledGridOverlay>
-  );
-}
+import { CustomToolbar, CustomNoRowsOverlay } from "./tableSettings.js";
 
 const DATATABLE = () => {
   let dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [selectedFile, setSelectedFile] = useState();
 
+  const addProductModal = useSelector((s) => s.helper.addProductModal);
+  const updateProductModal = useSelector((s) => s.helper.updateProductModal);
   const user = useSelector((s) => s.users.user);
-  const userId = user._id;
-  const fileChangedHandler = (e) => {
-    setSelectedFile(e.target.files[0]);
-    console.log("selected file", selectedFile);
+
+  // const userId = user._id;
+
+  const handleAddModal = () => {
+    dispatch({ type: "SET_ADD_MODAL", payload: !addProductModal });
   };
+  const handleUpdateModal = async (params) => {
+    dispatch({ type: "SET_UPDATE_MODAL", payload: !updateProductModal });
+  };
+
+  const onChangeSetFormData = ({ target }) => {
+    setFormData({ ...formData, [target.name]: target.value });
+  };
+
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -201,31 +199,10 @@ const DATATABLE = () => {
     },
   ];
 
-  const [formData, setFormData] = useState({});
-
-  const [selectedFile, setSelectedFile] = useState();
-
-  const addProductModal = useSelector((s) => s.helper.addProductModal);
-  const updateProductModal = useSelector((s) => s.helper.updateProductModal);
-  const handleAddModal = () => {
-    dispatch({ type: "SET_ADD_MODAL", payload: !addProductModal });
-  };
-  const handleUpdateModal = async (params) => {
-    dispatch({ type: "SET_UPDATE_MODAL", payload: !updateProductModal });
-  };
-
-  const onChangeSetFormData = ({ target }) => {
-    setFormData({ ...formData, [target.name]: target.value });
-  };
-
   return (
     <>
       <Container>
         <div style={{ height: "65vh", width: "100%" }}>
-          <Button color="primary" onClick={handleAddModal}>
-            Add record
-          </Button>
-
           {products && !loading && (
             <DataGrid
               autoHeight={true}
@@ -239,7 +216,7 @@ const DATATABLE = () => {
               editMode="row"
               rowHeight={45}
               components={{
-                Toolbar: GridToolbar,
+                Toolbar: CustomToolbar,
                 NoRowsOverlay: CustomNoRowsOverlay,
               }}
               sx={{

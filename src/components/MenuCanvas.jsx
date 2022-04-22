@@ -33,6 +33,9 @@ function MenuCanvas({ show, handleClose }) {
               <Link to="/business/me/dashboard">Dashboard</Link>
             </Nav.Item>
             <Nav.Item>
+              <Link to="/business/me">Profile</Link>
+            </Nav.Item>
+            <Nav.Item>
               <Nav.Link>Logout</Nav.Link>
             </Nav.Item>
           </Nav>

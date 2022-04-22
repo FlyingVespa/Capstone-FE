@@ -1,20 +1,28 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Card, Spinner } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Spinner,
+  Container,
+  Form,
+  InputGroup,
+} from "react-bootstrap";
 import { FormLabel } from "@mui/material";
 import axios from "axios";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-// import { FormLabel } from "@mui/material";
+
 import { useDispatch, useSelector } from "react-redux";
 
-const LocationDetails = ({ f }) => {
+const LocationDetails = ({ f, d, s }) => {
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
-  const [selected, setSelected] = useState(false);
-  const [address, setAddress] = useState(null);
-  const [addressData, setAddressData] = useState(null);
+  const [selected, setSelected] = useState(d ? d.address : {});
+  const [address, setAddress] = useState(d ? d.address : {});
+  const [addressData, setAddressData] = useState(d ? d.address : {});
 
   const [coordinates, setCoordinates] = useState({
     lat: null,
@@ -23,6 +31,9 @@ const LocationDetails = ({ f }) => {
   const handleLoading = (payload) => {
     dispatch({ type: "SET_LOADING", payload: payload });
   };
+  useEffect(() => {
+    setAddress(d.address);
+  }, []);
 
   const loadingRedux = useSelector((s) => s.helper.loading);
   const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -74,6 +85,10 @@ const LocationDetails = ({ f }) => {
     setCoordinates(latLng);
     getAddress(latLng.lat, latLng.lng);
   };
+  useEffect(() => {
+    setAddress(d.address);
+    console.log("address", address);
+  }, []);
 
   useEffect(() => {
     if (address) {
@@ -89,7 +104,11 @@ const LocationDetails = ({ f }) => {
 
   return (
     <div className="address-details my-1">
-      <FormLabel component="legend">Address Details</FormLabel>
+      {d.address ? (
+        <></>
+      ) : (
+        <FormLabel component="legend">Address Details</FormLabel>
+      )}
       <PlacesAutocomplete
         fullWidth
         value={input}
@@ -105,39 +124,56 @@ const LocationDetails = ({ f }) => {
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
             <Row className="mt-3">
-              <Row>
-                <input {...getInputProps({ placeholder: "Type address" })} />
-                <div>
-                  {loading ? (
-                    <Row>
-                      <span>
-                        <Spinner animation="grow" /> Searching address...
-                      </span>
-                    </Row>
-                  ) : null}
-
-                  {suggestions.map((suggestion, sugIndex) => {
-                    const style = {
-                      backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
-                    };
-
-                    return (
-                      <div
-                        key={sugIndex}
-                        {...getSuggestionItemProps(suggestion, { style })}
-                      >
-                        {suggestion.description}
-                      </div>
-                    );
+              <InputGroup>
+                <InputGroup.Text>Address</InputGroup.Text>
+                <Form.Control
+                  // disabled={s}
+                  {...getInputProps({
+                    placeholder: "Type address",
+                    disabled: s,
                   })}
-                </div>
-              </Row>
-              {}
+                />
+              </InputGroup>
+              <div>
+                {loading ? (
+                  <Row>
+                    <span>
+                      <Spinner animation="grow" /> Searching address...
+                    </span>
+                  </Row>
+                ) : null}
+
+                {suggestions.map((suggestion, sugIndex) => {
+                  const style = {
+                    backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                  };
+
+                  return (
+                    <div
+                      key={sugIndex}
+                      {...getSuggestionItemProps(suggestion, { style })}
+                    >
+                      {suggestion.description}
+                    </div>
+                  );
+                })}
+              </div>
+
               {input.length > 3 && loadingRedux ? (
                 <span>
                   <Spinner animation="grow" /> Plotting location, wait before
                   next step..
                 </span>
+              ) : d.address ? (
+                <Container>
+                  <Card className="mt-2 p-1">
+                    <span>
+                      {d.address?.street_number} {d.address?.street_name},{" "}
+                      {d.address?.city}, {d.address?.state},{" "}
+                      {d.address?.country}
+                    </span>
+                  </Card>
+                </Container>
               ) : (
                 <>
                   {address && address.length > 2 && selected && (

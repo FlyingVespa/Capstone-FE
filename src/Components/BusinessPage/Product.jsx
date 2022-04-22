@@ -4,7 +4,6 @@ import { Col, Image } from "react-bootstrap";
 import ProductDetailsModal from "./ProductDetailsModal";
 function Product({ product, index }) {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

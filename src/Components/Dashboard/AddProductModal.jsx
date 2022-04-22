@@ -1,17 +1,20 @@
-import { useParams } from "react-router";
-import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
-import { Button } from "@mui/material";
-import { Row, Col, Modal, Form, FloatingLabel } from "react-bootstrap";
+// library
 import axios from "axios";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+
+// styling
+import { Row, Col, Modal, Form, FloatingLabel } from "react-bootstrap";
+import { Button } from "@mui/material";
+
+// components
+import { notifySwal } from "../../utils/sweetarlert.js";
 
 const AddProductModal = ({
   handleAddModal,
   handleFormSubmit,
   fetchProducts,
 }) => {
-  let params = useParams();
-  let dispatch = useDispatch();
   // const { name, price, description } = data;
   const modalStatus = useSelector((s) => s.helper.addProductModal);
   const user = useSelector((s) => s.users.user);
@@ -64,6 +67,7 @@ const AddProductModal = ({
         setFileInputState("");
         setPreviewSource("");
         setData("");
+        notifySwal("Succesfully added", "success");
         setTimeout(() => {
           fetchProducts();
         }, 1000);
@@ -73,12 +77,14 @@ const AddProductModal = ({
         setPreviewSource("");
         setData("");
         handleAddModal();
+        notifySwal("Succesfully added", "success");
         setTimeout(() => {
           fetchProducts();
         }, 1000);
       }
     } catch (error) {
       console.log(error);
+      notifySwal("Failed to add", "error");
     }
   };
   return (

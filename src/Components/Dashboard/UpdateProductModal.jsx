@@ -1,10 +1,22 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useState } from "react";
-
-import { Button } from "@mui/material";
-import { Row, Col, Modal, Form, FloatingLabel, Image } from "react-bootstrap";
+// library
 import axios from "axios";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+// styling
+import { Button } from "@mui/material";
+import {
+  Row,
+  Col,
+  Modal,
+  Form,
+  FloatingLabel,
+  Image,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
+
+// components
+import { notifySwal } from "../../utils/sweetarlert.js";
 import { FaCamera } from "react-icons/fa";
 
 const UpdateProductModal = ({
@@ -23,14 +35,14 @@ const UpdateProductModal = ({
   const modalStatus = useSelector((s) => s.helper.updateProductModal);
   const user = useSelector((s) => s.users.user);
 
-  const handleEdit = (productId, paypload, file) => {
+  const handleEdit = () => {
     console.log("p", data);
     let formData = data;
     if (selectedFile) {
       formData = new FormData();
       formData.append("image", selectedFile);
     }
-    updateProduct(productId, paypload, file);
+    updateProduct(data, fileInputState);
   };
 
   const handleFileInputChange = (e) => {
@@ -47,32 +59,34 @@ const UpdateProductModal = ({
     setFileInputState(e.target.value);
   };
 
-  const updateProduct = async (productId, payload, file = null) => {
+  const updateProduct = async (payload, file = null) => {
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/business/${user._id}/products/${productId}`,
+        `${process.env.REACT_APP_API_URL}/business/${user._id}/products/${data._id}`,
         payload
       );
       const productData = await response.data;
 
       if (file) {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/business/${user._id}/products/${productId}/upload`,
+          `${process.env.REACT_APP_API_URL}/business/${user._id}/products/${data._id}/upload`,
           file
         );
         console.log(response);
         setFileInputState("");
         setPreviewSource("");
-
+        setSelectedFile("");
+        notifySwal("Updated Succesfully", "success");
+        handleUpdateModal();
         setTimeout(() => {
           fetchProducts();
         }, 1000);
-        handleUpdateModal();
       } else {
         setFileInputState("");
         setPreviewSource("");
-
+        setSelectedFile("");
         handleUpdateModal();
+        notifySwal("Updated Succesfully", "success");
         setTimeout(() => {
           fetchProducts();
         }, 1000);
@@ -80,8 +94,14 @@ const UpdateProductModal = ({
       }
     } catch (error) {
       console.log(error);
+      notifySwal("Updated Succesfully", "error");
     }
   };
+
+  const addImageFileInput = async () => {
+    let item = await document.getElementById("selectedFileInput");
+  };
+
   return (
     <Modal
       size="lg"
@@ -169,18 +189,29 @@ const UpdateProductModal = ({
               </FloatingLabel>
             </Col>
           </Row>
-
+          <br />
+          <Form.Control
+            type="file"
+            // id="selectedFileInput"
+            // value={selectedFile}
+            onChange={handleFileInputChange}
+          />
           <br />
           <Row>
             {/* <Col id="modalImage"> */}
-            <div id="dcontainer">
+            <Col id="dcontainer">
               <Image src={data.image} alt="image" id="image" />
-              <div id="middle">
-                <Button id="text">
+              {/* <div id="middle"> */}
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip id="button-tooltip-2">Change Image</Tooltip>}
+              >
+                <Button id="text" onClick={addImageFileInput}>
                   <FaCamera />
                 </Button>
-              </div>
-            </div>
+              </OverlayTrigger>
+              {/* </div> */}
+            </Col>
 
             {/* </Col> */}
           </Row>
@@ -199,7 +230,7 @@ const UpdateProductModal = ({
           Cancel
         </Button>
         <Button
-          onClick={() => handleEdit(data._id, data, fileInputState)}
+          onClick={() => handleEdit(data, fileInputState)}
           className="mx-1"
           variant="contained"
         >

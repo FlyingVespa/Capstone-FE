@@ -1,16 +1,10 @@
 // Styling
-import { useState } from "react";
-import {
-  Checkbox,
-  TextField,
-  FormLabel,
-  FormGroup,
-  Switch,
-} from "@mui/material";
+import { useState, useEffect } from "react";
+import { FormLabel, FormGroup } from "@mui/material";
 
 import { Col, Row, FormControl, Form } from "react-bootstrap";
 
-const TradingHoursDetails = ({ f }) => {
+const TradingHoursDetails = ({ f, d, s }) => {
   const [time, setTime] = useState([
     { day: 0, trading: false, open: "08:20", closed: "17:00" },
     { day: 1, trading: true, open: "08:20", closed: "17:00" },
@@ -26,13 +20,11 @@ const TradingHoursDetails = ({ f }) => {
     newTime[target.name][target.id] = target.value;
     setTime(newTime);
     f(time);
-    console.log(time);
   };
   const handleTrading = ({ target }) => {
     const newTime = [...time];
     newTime[target.name][target.id] = target.checked;
     f(time);
-    console.log(time);
   };
 
   const weekday = [
@@ -48,9 +40,14 @@ const TradingHoursDetails = ({ f }) => {
   return (
     <div className="m-0">
       <FormGroup>
-        <FormLabel component="legend" className="text-center">
-          Trading Hours & Days
-        </FormLabel>
+        {d ? (
+          <></>
+        ) : (
+          <FormLabel component="legend" className="text-center">
+            Trading Hours & Days
+          </FormLabel>
+        )}
+
         {time &&
           time.map((item, i) => (
             <Row className="trading-hours">
@@ -62,6 +59,7 @@ const TradingHoursDetails = ({ f }) => {
                   name={i}
                   checked={time[i].trading}
                   onChange={handleTrading}
+                  disabled={s}
                 />
               </Col>
               {item.trading === true ? (
@@ -73,6 +71,7 @@ const TradingHoursDetails = ({ f }) => {
                       type="time"
                       value={time[i].open}
                       onChange={handleTimeChange}
+                      disabled={s}
                     />
                   </Col>
                   <Col xs={1}>
@@ -85,6 +84,7 @@ const TradingHoursDetails = ({ f }) => {
                       type="time"
                       value={time[i].closed}
                       onChange={handleTimeChange}
+                      disabled={s}
                     />
                   </Col>
                 </>

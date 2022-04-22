@@ -1,15 +1,25 @@
 // libraries
 import React, { useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 // styling
-import { Col, Container, FormControl, Row, Accordion } from "react-bootstrap";
-import { TextField } from "@mui/material";
+import {
+  Col,
+  Container,
+  FormControl,
+  Row,
+  Accordion,
+  Button,
+} from "react-bootstrap";
+import { IconButton, TextField } from "@mui/material";
 import { useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 // components
 import Product from "./Product";
 import PDFDocumentRequest from "../BusinessPage/PDF/PDFDocumentRequest";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import AddIcon from "@mui/icons-material/Add";
 
 const ProductsSection = ({ data }) => {
   let params = useParams();
@@ -18,6 +28,8 @@ const ProductsSection = ({ data }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+
+  const loggedin = useSelector((s) => s.helper.loggedin);
   const PROFILE_ID = data._id;
   const fetchProducts = async () => {
     setLoading(true);
@@ -104,9 +116,9 @@ const ProductsSection = ({ data }) => {
             <BiShoppingBag className="mx-2" />
             PRODUCT LIST
           </p>
-          {filterData.length > 0 ? (
+
+          {products.length > 0 ? (
             <>
-              {" "}
               <Row>
                 <Col>
                   <TextField
@@ -121,22 +133,106 @@ const ProductsSection = ({ data }) => {
                     size="small"
                     className="m-2"
                   />
-
                   <PDFDocumentRequest data={data} products={products} />
                 </Col>
               </Row>
               <Row>
-                {filterData.length > 0 &&
+                {filterData.length > 0 ? (
                   filterData.map((item, i) => (
                     <>
-                      <Product product={item} index={item.id} key={i + item} />
+                      <Product product={item} index={item.id} key={i + item} />{" "}
+                      <Col
+                        style={{
+                          display: "flex",
+                          // justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Link to="/business/me/dashboard">
+                          <Button
+                            variant="outline-secondary"
+                            style={{
+                              height: "3rem",
+                              width: "3rem",
+                              fontSize: "large",
+                              border: "3px solid grey",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <AddIcon />
+                          </Button>
+                        </Link>
+                      </Col>
                     </>
-                  ))}
-              </Row>{" "}
+                  ))
+                ) : (
+                  <Col
+                    style={{
+                      display: "flex",
+                      // justifyContent: "center",
+                      alignItems: "center",
+                      paddingLeft: "8px",
+                    }}
+                  >
+                    <Link
+                      to="/business/me/dashboard"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Button
+                        variant="outline-secondary"
+                        style={{
+                          height: "3rem",
+                          // width: "3rem",
+                          fontSize: "large",
+                          border: "3px solid grey",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        Add Products <AddIcon />
+                      </Button>
+                    </Link>
+                  </Col>
+                )}
+              </Row>
             </>
           ) : (
             <Row>
-              <p>No products listed</p>
+              {loggedin ? (
+                <Col
+                  style={{
+                    display: "flex",
+                    // justifyContent: "center",
+                    alignItems: "center",
+                    paddingLeft: "8px",
+                  }}
+                >
+                  <Link
+                    to="/business/me/dashboard"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="outline-secondary"
+                      style={{
+                        height: "3rem",
+                        // width: "3rem",
+                        fontSize: "large",
+                        border: "3px solid grey",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      Add Products <AddIcon />
+                    </Button>
+                  </Link>
+                </Col>
+              ) : (
+                <></>
+              )}
             </Row>
           )}
           <hr />

@@ -73,9 +73,8 @@ const BusinessPage = (props) => {
                   </Row>
                 </Container>
                 <ServicesSection data={profileData} />
-                {profileData.products?.length > 0 && (
-                  <ProductsSection data={profileData} />
-                )}
+
+                <ProductsSection data={profileData} />
               </>
             )}
             {profileData.address && <MapSection data={profileData} />}

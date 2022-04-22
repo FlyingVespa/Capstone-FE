@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import axios from "axios";
 
+import { notifySwal, confirmSwal } from "../../utils/sweetarlert.js";
 const URL = process.env.REACT_APP_API_URL;
 
 // 1. GET product
@@ -75,15 +76,7 @@ export const addProduct = async (userId, formData, fetchData) => {
 };
 
 export const deleteProduct = (businessId, dataid, callback) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
+  confirmSwal().then((result) => {
     if (result.isConfirmed) {
       try {
         axios
@@ -91,7 +84,7 @@ export const deleteProduct = (businessId, dataid, callback) => {
           .then((res) => {
             if (res.status == 204) {
               console.log("deleted");
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              notifySwal("Sucessfully deleted", "success");
             }
           })
           .then(setTimeout(() => callback(), 1000))
@@ -99,7 +92,7 @@ export const deleteProduct = (businessId, dataid, callback) => {
             console.log(error);
           });
       } catch (error) {
-        Swal.fire("Error!", "Could not delete Item.", "Error");
+        notifySwal("Could not delete", "error");
       }
     }
   });
