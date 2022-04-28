@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@600&family=Work+Sans:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Quicksand:wght@300&family=Viga&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Pacifico&family=Prompt:wght@700&family=Quicksand:wght@300&family=Righteous&family=Viga&display=swap");
 
 html,
 body {
@@ -66,7 +67,6 @@ body {
   height: 250px;
   transform: scaleX(-1);
   filter: drop-shadow(0px 10px 15px rgb(65, 65, 65));
-  z-index: 1;
 }
 .landing h1 {
   font-family: "Work Sans", sans-serif;
@@ -93,7 +93,6 @@ body {
   text-transform: uppercase;
   margin: 40px 0;
   width: 300px;
-  z-index: 2;
   padding: 10px;
   font-size: 1.2rem;
   color: #2e5e37;
@@ -102,7 +101,6 @@ body {
 #wave {
   position: absolute;
   bottom: 0px;
-  z-index: 1;
 }
 
 #wave1 {
@@ -411,13 +409,10 @@ footer {
 
   .landing img {
     height: 550px;
-    /* display: block; */
-    z-index: 2;
   }
 
   #btn-landing {
     margin-top: 0 !important;
-    z-index: 3;
   }
 }
 
@@ -446,3 +441,10 @@ footer {
 }
 
 /* ========================================================================== */
+#navbar-title {
+  font-family: Pacifico;
+  font-size: 30px;
+}
+#navbar-title span:first-of-type {
+  color: rgb(78, 122, 93);
+}

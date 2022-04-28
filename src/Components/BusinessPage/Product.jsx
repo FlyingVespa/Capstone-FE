@@ -60,7 +60,11 @@ function Product({ product, index }) {
   return (
     <>
       <Col xs={12} sm={6} md={4} xl={3} key={index + product.name}>
-        <div className="product-container" key={index} onClick={handleShow}>
+        <div
+          className="product-container"
+          key={index + product.name}
+          onClick={handleShow}
+        >
           {checkStockLevel()}
 
           {/* <Image key={index} src={product.image} id="avatar-product" /> */}

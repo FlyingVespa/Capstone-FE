@@ -131,7 +131,7 @@ const ProductsSection = ({ data }) => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     fullWidth
                     size="small"
-                    className="m-2"
+                    className="mx-1 my-3"
                   />
                   <PDFDocumentRequest data={data} products={products} />
                 </Col>
@@ -141,37 +141,11 @@ const ProductsSection = ({ data }) => {
                   filterData.map((item, i) => (
                     <>
                       <Product product={item} index={item.id} key={i + item} />{" "}
-                      <Col
-                        style={{
-                          display: "flex",
-                          // justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Link to="/business/me/dashboard">
-                          <Button
-                            variant="outline-secondary"
-                            style={{
-                              height: "3rem",
-                              width: "3rem",
-                              fontSize: "large",
-                              border: "3px solid grey",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <AddIcon />
-                          </Button>
-                        </Link>
-                      </Col>
                     </>
                   ))
                 ) : (
                   <Col
                     style={{
-                      display: "flex",
-                      // justifyContent: "center",
                       alignItems: "center",
                       paddingLeft: "8px",
                     }}
@@ -197,6 +171,13 @@ const ProductsSection = ({ data }) => {
                     </Link>
                   </Col>
                 )}
+                <Col
+                  style={{
+                    display: "flex",
+
+                    alignItems: "center",
+                  }}
+                ></Col>
               </Row>
             </>
           ) : (
@@ -205,9 +186,7 @@ const ProductsSection = ({ data }) => {
                 <Col
                   style={{
                     display: "flex",
-                    // justifyContent: "center",
                     alignItems: "center",
-                    paddingLeft: "8px",
                   }}
                 >
                   <Link
@@ -218,7 +197,6 @@ const ProductsSection = ({ data }) => {
                       variant="outline-secondary"
                       style={{
                         height: "3rem",
-                        // width: "3rem",
                         fontSize: "large",
                         border: "3px solid grey",
                         display: "flex",

@@ -154,6 +154,9 @@
 /* ============================================================ */
 /* PRODUCT SECTION */
 
+.product-section p:first-of-type {
+  font-family: "Viga", "Helvetica Neue", "Helvetica";
+}
 #pdf-button img {
   height: 23px;
 }
@@ -175,7 +178,7 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
   position: relative;
-  z-index: -1;
+
   height: 3rem;
   border-radius: 0 5px 5px 0;
   padding: 2px 10px;
@@ -223,7 +226,6 @@
   transition: all 0.2s ease-in-out;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
-  z-index: -1;
 }
 .avatar-product.medium {
   border: solid 3px rgb(240, 226, 100);

@@ -1,9 +1,17 @@
 // Libraries
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Turn as Hamburger } from "hamburger-react";
 import axios from "axios";
 // Styling
-import { Container, Navbar, Nav, Button, Offcanvas } from "react-bootstrap";
+import {
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  Image,
+  NavbarBrand,
+} from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 // Componets
@@ -17,29 +25,21 @@ import MenuCanvas from "./MenuCanvas";
 let initialState = { email: "test@business.com", password: "1234" };
 let windowLocation = window.location.href;
 
-const NavBar = ({ URL, user }) => {
+const NavBar = ({ URL }) => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const helper = useSelector((s) => s.helper);
   const [loginDetails, setLoginDetails] = useState(initialState);
+  const [isOpen, setOpen] = useState(false);
 
   const [showOffCanvasMenu, setShowOffCanvasMenu] = useState(false);
 
   const handleClose = () => setShowOffCanvasMenu(false);
   const handleShow = () => setShowOffCanvasMenu(true);
 
-  const logoutUser = () => {
-    try {
-      axios
-        .get(`${URL}/auth/logout`, { withCredentials: true })
-        .then(
-          dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false }) &&
-            navigate("/")
-        );
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  const loggedin = useSelector((s) => s.helper.loggedin);
+  const user = useSelector((s) => s.users.loggedUser);
+
   const handleLoginModal = () => {
     dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
   };
@@ -47,63 +47,27 @@ const NavBar = ({ URL, user }) => {
     dispatch({ type: "SET_REGISTER_MODAL", payload: !helper.registerModal });
     navigate("/register");
   };
-  const handleChange = ({ target }) => {
-    setLoginDetails({ ...loginDetails, [target.name]: target.value });
-  };
 
-  const loginUser = async () => {
-    try {
-      const resp = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
-        loginDetails,
-        {
-          withCredentials: true,
-        }
-      );
-      let data = resp.data;
-
-      await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-      if (resp.data.role === "client") {
-        await dispatch({
-          type: "SET_LOGIN_MODAL",
-          payload: !helper.loginModal,
-        });
-        await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-        console.log("role", data.role);
-        navigate("/profile/me");
-      } else if (resp.data.role === "user") {
-        await dispatch({
-          type: "SET_LOGIN_MODAL",
-          payload: !helper.loginModal,
-        });
-        await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-        console.log("role", data.role);
-        navigate("/business/me");
-      } else {
-        console.log("no role has been assigned to account");
-        console.log("role", data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  let windowWidth = window.innerWidth;
-  let ccc = windowLocation.toString();
-
+  useEffect(() => {}, [handleLoginModal]);
   return (
     <>
       <Navbar className="navbar-top" expand="lg">
         <Container>
           <Navbar.Brand href="/">
-            <Avatar id="avatar" src={logo} />
-            BuyLocal.online
+            <Image
+              id="avatar"
+              src={logo}
+              style={{ height: "2.5rem", border: "green 2px solid" }}
+            />
+          </Navbar.Brand>
+          <Navbar.Brand id="navbar-title">
+            <span>buylocal</span>
+            <span>.online</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" />
             <Nav>
-              <Button onClick={handleShow}> OffCanvas</Button>
               <MenuCanvas show={showOffCanvasMenu} handleClose={handleClose} />
               {/* {helper.loggedin ? (
                 <>
@@ -120,31 +84,63 @@ const NavBar = ({ URL, user }) => {
                   )}
                 </>
               ) : ( */}
-              <>
-                <Nav.Link
-                  className="mx-2"
-                  variant="contained"
-                  color="success"
-                  size="medium"
-                  onClick={handleLoginModal}
-                >
-                  Login
-                </Nav.Link>
-                <Nav.Link onClick={() => navigate("/register")}>
-                  Register Free
-                </Nav.Link>
-              </>
             </Nav>
           </Navbar.Collapse>
+          <div class="hamburger-menu">
+            <input id="menu__toggle" type="checkbox" />
+            <label class="menu__btn" for="menu__toggle">
+              <span></span>
+            </label>
+
+            <ul className="menu__box">
+              {loggedin === true ? (
+                <>
+                  <li>
+                    <Nav.Link
+                      className="menu__item"
+                      variant="contained"
+                      color="success"
+                      size="medium"
+                      onClick={handleLoginModal}
+                    >
+                      Login
+                    </Nav.Link>
+                  </li>
+                  <li>
+                    <Nav.Link
+                      onClick={() => navigate("/register")}
+                      className="menu__item"
+                    >
+                      Register Free
+                    </Nav.Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Nav.Link
+                    onClick={() => navigate("/register")}
+                    className="menu__item"
+                  >
+                    Register Free
+                  </Nav.Link>
+                </>
+              )}
+              <li>
+                <a class="menu__item" href="#">
+                  Contact
+                </a>
+              </li>
+              <li>
+                <a class="menu__item" href="#">
+                  Twitter
+                </a>
+              </li>
+            </ul>
+          </div>
         </Container>
       </Navbar>
-      <LoginModal
-        open={helper.productModal}
-        handleClose={handleLoginModal}
-        loginDetails={loginDetails}
-        handleChange={handleChange}
-        loginUser={loginUser}
-      />
+      <LoginModal open={helper.productModal} handleClose={handleLoginModal} />
       <SelectRegisterModal
         show={helper.registerModal}
         handleClose={handleRegisterModal}

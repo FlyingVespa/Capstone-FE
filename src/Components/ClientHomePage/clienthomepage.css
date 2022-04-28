@@ -139,8 +139,7 @@
 .client-profile .nav-tabs {
   width: fit-content;
   padding-right: 0;
-  /* box-shadow: rgba(100, 100, 111, 0.2) 20px 0px 20px 0px; */
-  z-index: 1;
+
   border-radius: 5px 5px 0px 0px;
 }
 .client-profile .tab-content {
