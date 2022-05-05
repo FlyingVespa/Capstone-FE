@@ -1,7 +1,7 @@
 // Libraries
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Turn as Hamburger } from "hamburger-react";
+
 import axios from "axios";
 // Styling
 import {
@@ -10,17 +10,28 @@ import {
   Nav,
   Button,
   Image,
-  NavbarBrand,
+  Badge,
+  Col,
+  Row,
+  Card,
 } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 // Componets
+import { FiSettings, FiUser } from "react-icons/fi";
+import {
+  AiOutlineShop,
+  AiOutlinePoweroff,
+  AiOutlineAppstoreAdd,
+} from "react-icons/ai";
 import logo from "../assets/logo/shop.png";
 import LoginModal from "./LoginAndRegister/LoginModal";
 import DropDownSettings from "./Navigation/DropDownSettings";
 import StandardNav from "./Navigation/StandardNav";
 import SelectRegisterModal from "./LoginAndRegister/SelectRegisterModal";
 import MenuCanvas from "./MenuCanvas";
+
+import { logoutUser } from "../utils/utils.js";
 
 let initialState = { email: "test@business.com", password: "1234" };
 let windowLocation = window.location.href;
@@ -38,7 +49,7 @@ const NavBar = ({ URL }) => {
   const handleShow = () => setShowOffCanvasMenu(true);
 
   const loggedin = useSelector((s) => s.helper.loggedin);
-  const user = useSelector((s) => s.users.loggedUser);
+  const user = useSelector((s) => s.users.user);
 
   const handleLoginModal = () => {
     dispatch({ type: "SET_LOGIN_MODAL", payload: !helper.loginModal });
@@ -48,7 +59,17 @@ const NavBar = ({ URL }) => {
     navigate("/register");
   };
 
-  useEffect(() => {}, [handleLoginModal]);
+  useEffect(() => {
+    if (user) {
+      console.log("user", user.username);
+    }
+  }, [handleLoginModal]);
+
+  const handelNavigate = async (params) => {
+    let menuToggle = document.getElementById("menu_toggle");
+    await setTimeout(() => (menuToggle.checked = false), 400);
+    await navigate(params);
+  };
   return (
     <>
       <Navbar className="navbar-top" expand="lg">
@@ -57,84 +78,92 @@ const NavBar = ({ URL }) => {
             <Image
               id="avatar"
               src={logo}
-              style={{ height: "2.5rem", border: "green 2px solid" }}
+              style={{ height: "2.5rem", padding: "5px" }}
             />
           </Navbar.Brand>
-          <Navbar.Brand id="navbar-title">
-            <span>buylocal</span>
-            <span>.online</span>
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto" />
-            <Nav>
-              <MenuCanvas show={showOffCanvasMenu} handleClose={handleClose} />
-              {/* {helper.loggedin ? (
-                <>
-                  {windowWidth < 992 ? (
-                    <StandardNav logoutUser={logoutUser} currentUser={user} />
-                  ) : (
-                    <>
-                      <Avatar src={user.img_user} className="mx-3" />
-                      <DropDownSettings
-                        logoutUser={logoutUser}
-                        currentUser={user}
-                      />
-                    </>
-                  )}
-                </>
-              ) : ( */}
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="/">
+                <span>buylocal</span>
+                <span>.online</span>
+              </Nav.Link>
             </Nav>
+            {loggedin !== true ? (
+              <Nav>
+                <Button variant="light">Register</Button>
+                <Button variant="success">Login</Button>
+              </Nav>
+            ) : (
+              <></>
+            )}
           </Navbar.Collapse>
+
           <div class="hamburger-menu">
-            <input id="menu__toggle" type="checkbox" />
-            <label class="menu__btn" for="menu__toggle">
+            <input id="menu_toggle" type="checkbox" />
+            <label class="menu_btn" for="menu_toggle">
               <span></span>
             </label>
 
-            <ul className="menu__box">
+            <ul className="menu_box">
               {loggedin === true ? (
                 <>
+                  <Row className="menu_profile_box">
+                    <Col md={4}>
+                      <Image src={user.img_logo} />
+                    </Col>
+                    <Col>
+                      <p>{user.username}</p>
+                      <p>{user.email}</p>
+                      <Badge onClick={logoutUser} bg="secondary">
+                        <AiOutlinePoweroff id="menu_item_icon" />
+                        <span>Sign Out</span>
+                      </Badge>
+                    </Col>
+                  </Row>
+
+                  <hr />
+                </>
+              ) : (
+                <>
                   <li>
-                    <Nav.Link
-                      className="menu__item"
-                      variant="contained"
-                      color="success"
-                      size="medium"
-                      onClick={handleLoginModal}
-                    >
+                    <Nav.Link className="menu_item" onClick={handleLoginModal}>
                       Login
                     </Nav.Link>
                   </li>
                   <li>
                     <Nav.Link
-                      onClick={() => navigate("/register")}
-                      className="menu__item"
+                      onClick={() => handelNavigate("/register")}
+                      className="menu_item"
                     >
                       Register Free
                     </Nav.Link>
                   </li>
                 </>
-              ) : (
-                <>
-                  {" "}
-                  <Nav.Link
-                    onClick={() => navigate("/register")}
-                    className="menu__item"
-                  >
-                    Register Free
-                  </Nav.Link>
-                </>
               )}
-              <li>
-                <a class="menu__item" href="#">
-                  Contact
-                </a>
+              <li onClick={() => handelNavigate("/business/me")}>
+                <Nav.Link className="menu_item">
+                  <FiUser id="menu_item_icon" />
+                  My Profile
+                </Nav.Link>
               </li>
-              <li>
-                <a class="menu__item" href="#">
-                  Twitter
-                </a>
+              <li onClick={() => handelNavigate("/business")}>
+                <Nav.Link className="menu_item">
+                  <AiOutlineShop id="menu_item_icon" />
+                  Browse Businesses
+                </Nav.Link>
+              </li>
+
+              <li onClick={() => handelNavigate("business/me/dashboard")}>
+                <Nav.Link className="menu_item" href="#">
+                  <FiSettings id="menu_item_icon" />
+                  Settings
+                </Nav.Link>
+              </li>
+              <li id="creator_stamp">
+                <span>created by Hedri Nel</span>
+                <br />
+                <span> First demo project 2022</span>
               </li>
             </ul>
           </div>

@@ -1,35 +1,27 @@
 // Libraries
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { useNavigate } from "react-router";
 import cities from "cities.json";
-
-import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import Box from "@mui/material/Box";
 // styling
 
 import shopping from "../assets/images/shopping.svg";
 import "./ClientHomePage/clienthomepage.css";
-import {
-  Container,
-  Col,
-  Button,
-  InputGroup,
-  Row,
-  Image,
-  FormControl,
-  FloatingLabel,
-  FormSelect,
-  Form,
-} from "react-bootstrap";
+import { Container, Col, Button, Row, Image } from "react-bootstrap";
 import { setOptions } from "leaflet";
+import axios from "axios";
 // Components
 
 const LandingPage = () => {
-  const [defaultCity, setDefaultCity] = useState("messina");
+  const navigate = useNavigate();
+  const [defaultCity, setDefaultCity] = useState("");
   const [filterData, setFilteredData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("messina");
-  const [ops, setOptions] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
 
   const searchInput = useRef();
   const style0 = {
@@ -63,29 +55,7 @@ const LandingPage = () => {
   };
   let data = cities;
 
-  function checkStockLevel() {
-    if (filterData.length > 0 && filterData.length < 5) {
-      setOptions(filterData.map((item) => item.name));
-    }
-  }
-
-  useEffect(() => {
-    setFilteredData(
-      data.filter((item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
-    checkStockLevel();
-  }, [searchQuery, data]);
-  console.log(filterData);
-  console.log(ops);
-
-  let navigate = useNavigate();
-  // const setF = () => {
-  //   if (searchQuery.length > 2) {
-  //     set;
-  //   }
-  // };
+  // =========================================================
 
   return (
     <div style={style0}>
@@ -106,30 +76,8 @@ const LandingPage = () => {
           >
             <Row className="g-2">
               <Col md>
-                <FormControl
-                  id="product_search"
-                  color="success"
-                  label="Search Products"
-                  type="search"
-                  placeholder="Search catalog"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  fullWidth
-                  size="small"
-                  className="m-2"
-                />
-              </Col>
-
-              <Form.Select id="datalistOptions">
-                {filterData.length > 0 &&
-                  filterData
-                    .slice(0, 8)
-                    .map((item) => <option>{item.name}</option>)}
-              </Form.Select>
-
-              <Col md>
                 <Button onClick={() => navigate("/business")}>
-                  Shop Locally
+                  Browse Local Stores
                 </Button>
               </Col>
             </Row>

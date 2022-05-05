@@ -45,6 +45,22 @@ const ProductsSection = ({ data }) => {
       setLoading(false);
     }
   };
+
+  // const fetchProducts = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await axios.get(
+  //       `${process.env.REACT_APP_API_URL}/business/${PROFILE_ID}`
+  //     );
+  //     let data = await res.data.products;
+  //     await setProducts(data);
+  //     console.log(data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
   const filterProducts = () => {
     if (products.length > 0) {
       setFilteredData(

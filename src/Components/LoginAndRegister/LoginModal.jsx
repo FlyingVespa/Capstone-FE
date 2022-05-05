@@ -60,8 +60,6 @@ const LoginModal = ({ handleClose }) => {
       );
       let data = resp.data;
       console.log(resp);
-      // await dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
-
       setValidationError(null);
       if (resp.data.role === "client") {
         timerSuccess(navigate, "/profile/me");
@@ -72,6 +70,7 @@ const LoginModal = ({ handleClose }) => {
         });
       } else if (resp.data.role === "user") {
         timerSuccess(navigate, "/business/me");
+        dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
         dispatch({ type: "SET_LOGGEDIN_STATUS", payload: true });
         dispatch({
           type: "SET_LOGIN_MODAL",

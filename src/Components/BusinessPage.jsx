@@ -38,7 +38,7 @@ const BusinessPage = (props) => {
       });
       let data = await res.data;
       await setProfileData(res.data);
-      dispatch({ type: "CURRENT_USER_DETAILS", payload: data });
+      dispatch({ type: "CURRENT_USER_DETAILS", payload: res.data });
       // console.log("ProfileData:", data);
       setLoading(false);
     } catch (error) {

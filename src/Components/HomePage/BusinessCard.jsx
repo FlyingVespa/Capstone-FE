@@ -45,7 +45,10 @@ function BusinessCard({ item, checked }) {
     <>
       {!checked ? (
         <Row className="m-1">
-          <Card id="business_card">
+          <Card
+            id="business_card"
+            onClick={() => navigate(`/business/${item._id}`)}
+          >
             <div className="card-horizontal">
               {tradingStatus ? (
                 <Badge id="trading_status_badge" bg="success">
