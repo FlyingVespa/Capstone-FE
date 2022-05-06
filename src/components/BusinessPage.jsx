@@ -27,7 +27,7 @@ const BusinessPage = (props) => {
   const user = useSelector((s) => s.users.user);
 
   const userId = params.userId;
-  const [profileData, setProfileData] = useState({});
+  const [profileData, setProfileData] = useState(undefined);
   const [loading, setLoading] = useState(false);
 
   const fetchUserData = async (profileId) => {
@@ -36,7 +36,6 @@ const BusinessPage = (props) => {
       const res = await axios.get(`${URL}/business/${profileId}`, {
         withCredentials: true,
       });
-      let data = await res.data;
       await setProfileData(res.data);
       dispatch({ type: "CURRENT_USER_DETAILS", payload: res.data });
       // console.log("ProfileData:", data);
