@@ -37,12 +37,12 @@ const UpdateProductModal = ({
 
   const handleEdit = () => {
     console.log("p", data);
-    let formData = data;
+    let formData = null;
     if (selectedFile) {
       formData = new FormData();
       formData.append("image", selectedFile);
     }
-    updateProduct(data, fileInputState);
+    updateProduct(data, formData);
   };
 
   const handleFileInputChange = (e) => {
@@ -68,6 +68,7 @@ const UpdateProductModal = ({
       const productData = await response.data;
 
       if (file) {
+        console.log(file)
         const response = await axios.post(
           `${process.env.REACT_APP_API_URL}/business/${user._id}/products/${data._id}/upload`,
           file

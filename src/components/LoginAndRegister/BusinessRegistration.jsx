@@ -135,7 +135,7 @@ const BusinessRegistration = () => {
       case 1:
         return <CompanyDetails f={handleCompanyDetailsChange} />;
       case 2:
-        return <LocationDetails f={handleAddressChange} />;
+        return <LocationDetails f={handleAddressChange} d={datas} />;
       case 3:
         return <TradingHoursDetails f={handleTimeChange} />;
       default:

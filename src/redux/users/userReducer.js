@@ -9,6 +9,7 @@ import {
   FETCH_USERS_SUCCESS,
   REGISTER_BUSINESS_USER,
   STORE_TRADING_STATUS,
+  USER_LOGGED_OUT,
 } from "./userTypes";
 
 const intitialState = {
@@ -70,6 +71,13 @@ const userReducer = (state = intitialState, action) => {
       return {
         ...state,
         storeTradingStatus: action.payload,
+      };
+
+    case USER_LOGGED_OUT:
+      return {
+        ...state,
+        ...intitialState,
+        user: {},
       };
 
     default:

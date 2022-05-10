@@ -70,6 +70,16 @@ const NavBar = ({ URL }) => {
     await setTimeout(() => (menuToggle.checked = false), 400);
     await navigate(params);
   };
+
+  const handleLogout = () => {
+    logoutUser().then(() => {
+      console.log("logout then");
+      dispatch({ type: "USER_LOGGED_OUT" });
+      dispatch({ type: "SET_LOGGEDIN_STATUS", payload: false });
+      navigate("/");
+    });
+  };
+
   return (
     <>
       <Navbar className="navbar-top" expand="lg">
@@ -115,7 +125,7 @@ const NavBar = ({ URL }) => {
                     <Col>
                       <p>{user.username}</p>
                       <p>{user.email}</p>
-                      <Badge onClick={logoutUser} bg="secondary">
+                      <Badge onClick={handleLogout} bg="secondary">
                         <AiOutlinePoweroff id="menu_item_icon" />
                         <span>Sign Out</span>
                       </Badge>
