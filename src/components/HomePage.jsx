@@ -134,18 +134,31 @@ const HomePage = () => {
   // search all products
   //  return items that contains query save in value searchValue
   // take companies filter searchValues - save in new value
-  const filterAllProducts = () => {
-    let searchedProducts = allProducts.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    console.log("sP", searchedProducts);
-    let mappedSP = searchedProducts.map((product) => product._id);
-    console.log("mappedSP", mappedSP);
+  const filterAllProducts = async () => {
+    // let searchedProducts = allProducts.filter((item) =>
+    //   item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    // );
+    // console.log("sP", searchedProducts);
+    // let mappedSP = searchedProducts.map((product) => product._id);
+    // console.log("mappedSP", mappedSP);
 
-    let newComp = mappedSP.filter((com) =>
-      companies.map((c) => c.products.includes(com))
-    );
-    console.log("nC", newComp);
+    // let newComp = mappedSP.filter((com) =>
+    //   companies.map((c) => c.products.includes(com))
+    // );
+    // console.log("nC", newComp);
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${URL}/business?search=${searchQuery.trim()}`
+      );
+      let data = await res.data;
+      await setCompanies(data);
+      console.log("data", data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   //
